@@ -29,7 +29,7 @@ def init_main_window(p_window: QWidget, p_btn_txt_element: list[str], p_per_row:
     p_window.setLayout(window_layout)
 
 def _handle_language_click(p_window, p_btn_txt: str):
-    from chooselang import LangSetup
+    from chooselang import LangSetup #avoidance of cross import
     LangSetup.setup_all(p_window, p_btn_txt)
 
 
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("ReadySet")
         #-----------------SIZE-AND-POS---------------------------
-        self.resize(400, 300)
+        self.resize(400, 200)
 
         frame = self.frameGeometry()
         center = QApplication.primaryScreen().availableGeometry().center()
@@ -54,6 +54,17 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()  # <-- QMainWindow needs a central window
         init_main_window(central_widget, self._button_labels_txt)
         self.setCentralWidget(central_widget)  # <-- not just setLayout() directly
+
+    def resizeEvent(self, event): #resizeEvent is a special method of Qt:
+        # it gets called automatically every time the window size changes.
+        super().resizeEvent(event)
+
+        if hasattr(self, "back_button"):
+            margin = 12
+            self.back_button.move(
+                margin,
+                self.height() - self.back_button.height() - margin
+            )
 
 def main():
 

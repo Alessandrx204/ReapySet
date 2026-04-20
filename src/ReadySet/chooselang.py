@@ -9,7 +9,8 @@ class LangSetup:
     def setup_all(p_window, p_chosen_lang):
         match p_chosen_lang:
             case "Python":
-                error_window(p_window, p_text="Python Language is not available yet")
+                #error_window(p_window, p_text="Python Language is not available yet")
+                LangSetup.common_window_update(p_window)
             case "Kotlin/Java":
                 error_window(p_window, p_text="Kotlin and Java aren't yet supported")
             case "C/C++":
@@ -45,7 +46,10 @@ class LangSetup:
             p_window.back_button.hide()
             p_window.back_button.clicked.connect(lambda: LangSetup.restore_window(p_window))
 
-        margin = 12
+        if not hasattr(p_window, "_hide_connected"):
+            p_window._hide_connected = False
+
+        margin = 2
         p_window.back_button.move(
             margin,
             p_window.height() - p_window.back_button.height() - margin,
@@ -64,12 +68,14 @@ class LangSetup:
         p_window.back_button.raise_()
 
         p_window._anim.stop()
+        if p_window._hide_connected:
+            p_window._anim.finished.disconnect(p_window.back_button.hide)
+            p_window._hide_connected = False
+
         p_window._anim.setDuration(250)
         p_window._anim.setStartValue(start_rect)
         p_window._anim.setEndValue(end_rect)
         p_window._anim.start()
-
-
 
     @staticmethod
     def restore_window(p_window):
@@ -79,18 +85,20 @@ class LangSetup:
         if not hasattr(p_window, "_anim"):
             p_window._anim = QPropertyAnimation(p_window, b"geometry")
 
+        if not hasattr(p_window, "_hide_connected"):
+            p_window._hide_connected = False
+
         p_window._anim.stop()
         p_window._anim.setDuration(250)
         p_window._anim.setStartValue(p_window.geometry())
         p_window._anim.setEndValue(p_window._saved_geometry)
-        try:
-            p_window._anim.finished.disconnect()
-        except RuntimeError:
-            pass
-        if hasattr(p_window, "back_button"):
+
+        if hasattr(p_window, "back_button") and not p_window._hide_connected:
             p_window._anim.finished.connect(p_window.back_button.hide)
-            p_window._anim.start()
-            p_window._expanded_geometry = None
+            p_window._hide_connected = True
+
+        p_window._anim.start()
+        p_window._expanded_geometry = None
 
 
 
@@ -109,3 +117,5 @@ def error_window(p_parent=None, p_title="Error", p_text="Something Went Wrong", 
 
     if msg.clickedButton() == learn_more:
         QDesktopServices.openUrl(QUrl(p_url))
+
+
