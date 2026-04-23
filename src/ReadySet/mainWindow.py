@@ -1,36 +1,68 @@
 import sys
+from pathlib import Path
+
+#import qdarktheme
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout
 #from chooselang import LangSetup
 
-def init_main_window(p_window: QWidget, p_btn_txt_element: list[str], p_per_row: int = 5):
-    window_layout:QGridLayout = QGridLayout()
+def _create_language_buttons(
+    p_window: QWidget,
+    p_button_labels_list: list[str],
+    p_max_btn_per_row: int,
+    p_window_layout: QGridLayout
+    ) -> list[QPushButton]:
+    """Creates and places language buttons in a brick-like structure."""
+
+
+
+    buttons: list = []
+
+    for i, btn_label in enumerate(p_button_labels_list):
+        btn_in_row: int = i // p_max_btn_per_row
+        index_column: int = i % p_max_btn_per_row
+        row_offset = 1 if (btn_in_row % 2 == 1) else 0
+        col: int = index_column * 2 + row_offset
+
+        button = QPushButton(btn_label)
+        button.clicked.connect(
+            lambda checked=True, btn_txt=btn_label: _handle_language_click(p_window.window(), btn_txt, p_buttons=buttons)
+        )
+
+        p_window_layout.addWidget(button, btn_in_row, col, 1, 2)
+        buttons.append(button)
+
+    return buttons
+
+
+def init_main_window(
+    p_window: QWidget,
+    p_btn_txt_element: list[str],
+    p_max_btn_per_row: int = 5) -> list[QPushButton]:
+
+    """Initialises the main window layout and its widgets."""
+    window_layout = QGridLayout()
     window_layout.setVerticalSpacing(25)
     window_layout.setAlignment(
         Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter
-    ) #aligns to the widgets
-    # each button takes 2 cloumns, offset od odd rows is +1 column
+    )
 
-    """organises the buttons in a brick like stricksutre by leaving empy columns"""
-
-    for i, program_lang in enumerate(p_btn_txt_element):
-        btn_in_row = i // p_per_row #integer division
-        index_column: int = i % p_per_row
-        row_offset = 1 if (btn_in_row % 2 == 1) else 0
-        col: int = index_column * 2 + row_offset
-        button = QPushButton(program_lang)
-        button.clicked.connect(
-            lambda checked=False, btn_txt=program_lang: _handle_language_click(p_window.window(), btn_txt)
-        )
-
-        window_layout.addWidget(button, btn_in_row, col, 1, 2)
+    buttons = _create_language_buttons(p_window, p_btn_txt_element, p_max_btn_per_row, window_layout)
 
     p_window.setLayout(window_layout)
+    return buttons
 
-def _handle_language_click(p_window, p_btn_txt: str):
-    from chooselang import LangSetup #avoidance of cross import
-    LangSetup.setup_all(p_window, p_btn_txt)
+
+
+
+
+
+
+def _handle_language_click(p_window, p_btn_txt: str, p_buttons: list[QPushButton]):
+    from window_reshaping_logic import LangSetup #avoidance of cross import
+    LangSetup.setup_buttons(p_window, p_btn_txt, p_buttons)
 
 
 class MainWindow(QMainWindow):
@@ -49,10 +81,16 @@ class MainWindow(QMainWindow):
 
         self.move(top_left)
         #-----------------END-SIZE-AND-POS-BLOCK--------------------------
-        self._button_labels_txt: list[str] = ["Python", "Kotlin/Java", "C/C++", "C#/F#", "Ts/JavaScript", "GDscript", "Rust", "GO", "Lua"]
+        self._button_labels_list: list[str] = ["Python", "Kotlin/Java", "C/C++", "C#/F#", "Ts/JavaScript", "GDscript", "Rust", "GO", "Lua"]
 
         central_widget = QWidget()  # <-- QMainWindow needs a central window
-        init_main_window(central_widget, self._button_labels_txt)
+
+
+        init_main_window(central_widget,
+                         self._button_labels_list)  # Important: this inserts the button text and generates the buttons
+
+
+
         self.setCentralWidget(central_widget)  # <-- not just setLayout() directly
 
     def resizeEvent(self, event): #resizeEvent is a special method of Qt:
@@ -70,6 +108,14 @@ def main():
 
     app: QApplication = QApplication(sys.argv)
     window: MainWindow = MainWindow()
+    base_dir : Path = Path(__file__).resolve().parent
+    icon_path : Path = base_dir / "resources" / "icon.png" #sets icon
+
+    icon : QIcon = QIcon(str(icon_path))
+
+    app.setWindowIcon(icon)
+    window.setWindowIcon(icon)
+
     window.show()
     sys.exit(app.exec())
 
