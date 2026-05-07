@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QApplication
 
 from logic_mainwindow import LogicMainWindow
 from config import MwConfig as Mwc
-
+#os.environ["QT_MAC_WANTS_LAYER"] = "1"
 
 def main():
     app: QApplication = QApplication(sys.argv)
@@ -27,6 +27,9 @@ def main():
     #print(f"Cartella da cui parte lo script: {os.getcwd()}")
     #print(f"File presenti in questa cartella: {os.listdir(os.getcwd())}")
     #print("-----------------------")
+
+    # Svuota il percorso dei plugin per costringere Qt a cercare altrove
+    #os.environ["QT_PLUGIN_PATH"] = ""
     sys.exit(app.exec())
 
 

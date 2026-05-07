@@ -65,14 +65,20 @@ class RsMainWindow(QMainWindow):
         outer_layout.addWidget(self.widget1)
         outer_layout.addWidget(self.central_widget2, 0)
         outer_layout.addWidget(self.widget3_stacked, 1)
-        self.widget3_stacked.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.widget3_stacked.setStyleSheet("background-color:"
+                                           " rgb(255, 255, 255);"
+                                           " border-radius: 10px; ") # border: 5px solid rgb(x, y, z);
         self.widget3_stacked.setEnabled(False)
         self.setCentralWidget(wrapper)
         # ------------------------ END TOP WIDGET --------------------------#
         # ------------------- TOOLBAR / STATUSBAR BUTTONS ------------------#
 
 
-        self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel) #ignore
+        self.button_box = (
+            QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok
+            | QDialogButtonBox.StandardButton.Cancel
+        )) #ignore
 
 
         # 2. gets reference to internal buttons to configure them
@@ -159,5 +165,5 @@ class RsMainWindow(QMainWindow):
     def button_labels_list(self):
         return self._button_labels_list
 
-#-----------------------------------------------------END-MAIN-WINDOW--CLASS--------------------------------------------
+#-----------------------------------------------------END-MAIN-WINDOW--CLASS-------------------------------------------#
 
