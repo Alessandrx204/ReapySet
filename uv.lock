@@ -1,6 +1,6 @@
 version = 1
 revision = 3
-requires-python = ">=3.14"
+requires-python = "==3.13.*"
 
 [[package]]
 name = "pyside6"
@@ -51,7 +51,7 @@ wheels = [
 ]
 
 [[package]]
-name = "reapyset"
+name = "readyset"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
