@@ -23,13 +23,6 @@ def main():
 
     m_window.show()
     m_window.original_geometry = m_window.geometry()
-    #print("--- DEBUG PERCORSI ---")
-    #print(f"Cartella da cui parte lo script: {os.getcwd()}")
-    #print(f"File presenti in questa cartella: {os.listdir(os.getcwd())}")
-    #print("-----------------------")
-
-    # Svuota il percorso dei plugin per costringere Qt a cercare altrove
-    #os.environ["QT_PLUGIN_PATH"] = ""
     sys.exit(app.exec())
 
 
