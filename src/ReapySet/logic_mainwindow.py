@@ -67,6 +67,7 @@ class LogicMainWindow(RsMainWindow):
 
         self.back_button.setEnabled(True)
         print(button_label_txt)
+        #self.collapse_window()
 
 
         ...

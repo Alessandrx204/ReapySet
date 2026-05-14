@@ -2,7 +2,7 @@ import sys
 the_label_txt: str = ("Lorem ipsum dolor sit amet, consectetur "
                       "adipiscing elit.\n Donec placerat tortor elit, quis "
                       "lacinia augue cursus sed.\n Nullam eu quam in libero "
-                      "laoreet vulputate🏳️‍⚧️!?.").capitalize()
+                      "laoreet vulputate🏳️‍⚧️.").capitalize()
 
 
 def get_label_stylesheet() -> str:
@@ -12,7 +12,7 @@ def get_label_stylesheet() -> str:
     elif sys.platform == "win32":  # Windows
         serif_fallback = "Georgia"
         emoji_font = "Segoe UI Emoji"
-    else:                           # Linux
+    else:  # Linux e altri
         serif_fallback = "DejaVu Serif"
         emoji_font = "Noto Color Emoji"
 
