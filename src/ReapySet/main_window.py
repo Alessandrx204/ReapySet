@@ -10,7 +10,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, Q
 import logic_mainwindow
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
 from config import MwConfig as Mwc
-
+import widgets.sample_picker as sample_picker
 
 # import qdarktheme
 
@@ -45,6 +45,17 @@ class RsMainWindow(QMainWindow):
 
         #self.setAutoFillBackground(True)
         # ----------------- END-PALETTE --------------------------#
+        def _labeled_field(label_txt: str, widget: QWidget) -> QWidget:
+            """Utility: wraps a widget with a label above it."""
+            container = QWidget()
+            layout = QVBoxLayout(container)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(2)
+            layout.addWidget(QLabel(label_txt))
+            layout.addWidget(widget)
+            container.setStyleSheet(
+                str(Mwc.Widget1.QlineTopTextQSS) if not isinstance(widget, (QPushButton, QComboBox)) else "")
+            return container
 
 
         #-----------------END-SIZE-AND-POS-BLOCK--------------------------#
@@ -75,14 +86,17 @@ class RsMainWindow(QMainWindow):
 
 
         self.w1_github_input = QLineEdit()
-        self.widget1Layout.addWidget(self.w1_github_input)
-        self.w1_github_input.setPlaceholderText("github repository URL...")
+        self.w1_github_input.setEnabled(False)
+        self.widget1Layout.addWidget(_labeled_field(Mwc.Widget1.github_box_top_label, self.w1_github_input))
+        self.w1_github_input.setPlaceholderText(Mwc.Widget1.github_box_placeholder_txt)
         self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
         self.w1_path_input = QLineEdit()
-        self.widget1Layout.addWidget(self.w1_path_input)
-        self.w1_path_input.setPlaceholderText("Project Path...")
+        self.widget1Layout.addWidget(_labeled_field(f"{Mwc.Widget1.path_box_top_label}", self.w1_path_input))
+        self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
         self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
-        #self.w1_path_input.setText(str(Path.home() / "Projects/"))
+
+
+
 
         text_ = str(Path.home() / "Projects/")
 
@@ -93,16 +107,32 @@ class RsMainWindow(QMainWindow):
         self.w1_path_input.setTextMargins(0, 0, 50, 0) # adds a white space
 
         self.w1_sample_input = QLineEdit()
-        self.w1_sample_input.setPlaceholderText("Sample project?...")
-        self.widget1Layout.addWidget(self.w1_sample_input)
+        self.w1_sample_input.setPlaceholderText(Mwc.Widget1.sample_box_placeholder_txt)
+
+        self.widget1Layout.addWidget(_labeled_field(Mwc.Widget1.sample_box_top_label, self.w1_sample_input))
+
         self.w1_sample_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
 
-        self.w1_browse_samples_button = QPushButton("Browse...")
-        self.widget1Layout.addWidget(self.w1_browse_samples_button)
+        self.w1_browse_samples_button = QPushButton(Mwc.Widget1.browse_button_text)
+        #self.widget1Layout.addWidget(self.w1_browse_samples_button)
+        self.widget1Layout.addWidget(_labeled_field("", self.w1_browse_samples_button)) #moves down a bit the button by gioving it a null text in a QVBox
+        self.w1_browse_samples_button.clicked.connect(
+            lambda: self._on_folder_selected(sample_picker.pick_folder(self))
+        )
+
+        self.w1_sample_input.textChanged.connect(self._on_sample_input_changed)
+
+
+
+
+
 
         self.w1_select_editor = QComboBox()
-        self.widget1Layout.addWidget(self.w1_select_editor)
-        self.w1_select_editor.addItems(["VSCode", "Pycharm", "Godot", "Intellij IDEA ", "Zed", "Sublime Text", "Notepad++","nVim"])
+        self.widget1Layout.addWidget(_labeled_field("", self.w1_select_editor))
+        self.w1_select_editor.addItems(Mwc.Widget1.select_editor_Combobox_entry)
+        self.w1_select_editor.currentTextChanged.connect(
+            lambda text: print(text)
+        )
 
 
 
@@ -113,7 +143,7 @@ class RsMainWindow(QMainWindow):
         self.widget3_stacked.setStyleSheet("background-color:"
                                            " rgb(255, 255, 255);"
                                            " border-radius: 10px; ") # border: 5px solid rgb(x, y, z);
-        self.widget3_stacked.setEnabled(False)
+        self.widget3_stacked.setEnabled(True)
         self.setCentralWidget(wrapper)
 
         # ------------------------ END TOP WIDGET --------------------------#
@@ -129,7 +159,7 @@ class RsMainWindow(QMainWindow):
         # 2. gets reference to internal buttons to configure them
         self.confirm_button = self.button_box.button(QDialogButtonBox.StandardButton.Ok)
         self.confirm_button.setText("Confirm")
-        #self.confirm_button.setIcon(QIcon(pythonlogo))
+
 
         self.cancel_button = self.button_box.button(QDialogButtonBox.StandardButton.Cancel)
 
@@ -155,6 +185,11 @@ class RsMainWindow(QMainWindow):
         self.statusBar().addWidget(self.back_button)
         self.statusBar().addPermanentWidget(self.button_box)  # on the right ( for whatever reason)
 
+    def _on_sample_input_changed(self, text: str):
+        if text:
+            self.w1_sample_input.setTextMargins(0, 0, 50, 0)
+        else:
+            self.w1_sample_input.setTextMargins(0, 0, 0, 0)  # dynamic padding
         # ------------------- END BUTTONS -------------------
 
 
@@ -200,5 +235,14 @@ class RsMainWindow(QMainWindow):
 
         self._language_buttons = buttons
         return buttons
+
+
+    def _on_folder_selected(self, folder: str):
+        if folder:
+            self.usr_selected_folder = folder
+            self.w1_sample_input.setText(folder)
+
+
+
 #-----------------------------------------------------END-MAIN-WINDOW--CLASS-------------------------------------------#
 

@@ -62,12 +62,12 @@ class LogicMainWindow(RsMainWindow):
             btn.setEnabled(i in self._enabled_buttons)
 
     def handle_event(self, button_label_txt):
-        #self.setMaximumSize(550, 450)  # MAX SIZE
+
         self.expand_window()
 
         self.back_button.setEnabled(True)
         print(button_label_txt)
-        #self.collapse_window()
+
 
         ...
 
@@ -77,3 +77,9 @@ class LogicMainWindow(RsMainWindow):
     def handle_back_button(self):
         self.back_button.setEnabled(False)
         self.collapse_window()
+
+
+    def handle_github_button_on_enter_pressed(self):
+        print("downloading repo")
+
+
