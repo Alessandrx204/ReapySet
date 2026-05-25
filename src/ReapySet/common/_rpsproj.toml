@@ -1,0 +1,33 @@
+# ==============================================================================
+# GLOBAL CONFIGURATION
+# ==============================================================================
+[global]
+boilerplate_project_path = ""
+project_path = ""
+folder_name = ""
+fav_editor = "pycharm"  # Options: pycharm, clion, rider, etc.
+GitHub_repo_link = ""
+
+# ==============================================================================
+# LANGUAGE SPECIFIC CONFIGURATIONS
+# ==============================================================================
+
+[languages.python]
+enabled = false
+interpreter_version = ""
+interpreter_path = ""
+package_manager = "venv"  # Default fallback
+
+[languages.rust]
+enabled = false
+edition = "2024"          # Default edition
+compiler_path = "/usr/bin/rustc"
+
+[languages.dotnet]
+enabled = false
+sdk_version = "10.0"
+sdk_path = "/usr/share/dotnet"
+sln_type = "sln"          # Options: sln, slnx
+language = "CS"           # Options: CS, FS, VB
+unit_test_library = ""    # Empty string means none can be MStest xunit Nunit...
+flat_layout = false       # true = project and solution in the same folder

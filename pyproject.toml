@@ -4,5 +4,8 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13,<3.14"
 dependencies = [
+    "pyobjc-framework-Cocoa; sys_platform == 'darwin'",
+    "pyqtdarktheme>=2.1.0",
     "pyside6>=6.11.0",
+    "tomlkit>=0.15.0",
 ]
