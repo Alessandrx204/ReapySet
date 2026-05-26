@@ -5,7 +5,7 @@
 boilerplate_project_path = ""
 project_path = ""
 folder_name = ""
-fav_editor = "pycharm"  # Options: pycharm, clion, rider, etc.
+fav_editor = "pycharm"  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot, sublimetext.
 GitHub_repo_link = ""
 
 # ==============================================================================
@@ -16,14 +16,14 @@ GitHub_repo_link = ""
 enabled = false
 interpreter_version = ""
 interpreter_path = ""
-package_manager = "venv"  # Default fallback
+package_manager = "venv"  # venv is the Default fallback
 
-[languages.rust]
+[languages.rust] # NOT IMPLEMENTED YET
 enabled = false
 edition = "2024"          # Default edition
 compiler_path = "/usr/bin/rustc"
 
-[languages.dotnet]
+[languages.dotnet] # NOT IMPLEMENTED YET
 enabled = false
 sdk_version = "10.0"
 sdk_path = "/usr/share/dotnet"
@@ -31,3 +31,12 @@ sln_type = "sln"          # Options: sln, slnx
 language = "CS"           # Options: CS, FS, VB
 unit_test_library = ""    # Empty string means none can be MStest xunit Nunit...
 flat_layout = false       # true = project and solution in the same folder
+
+[languages.jvm] # NOT IMPLEMENTED YET
+enabled = false
+sdk_version = "21"                # JDK version (es. 17, 21)
+sdk_path = "/usr/lib/jvm/java-21" # JDK Path
+build_tool = "gradle"             # Options: Empty string means none it can be gradle, maven
+language = "kotlin"               # Options: kotlin, java
+unit_test_library = ""            # Options: junit4, junit5, kotest, spock or none
+
