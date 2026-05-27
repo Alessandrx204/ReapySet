@@ -18,7 +18,7 @@ def main():
     qdarktheme.load_palette(
         theme="dark",
         custom_colors={
-            "primary": "#FCE3F4"
+            "primary": "#FCE3F4" # pink-ish
         }
     )
 )
