@@ -1,4 +1,5 @@
 #from PySide6.QtGui import QPalette, QColor, QFontDatabase
+import os
 import sys
 from pathlib import Path
 
@@ -185,6 +186,15 @@ class RsMainWindow(QMainWindow):
         self.statusBar().addWidget(self.back_button)
         self.statusBar().addPermanentWidget(self.button_box)  # on the right ( for whatever reason)
         self._connect_qlineedit(self.w1_path_input, "global", "project_path")
+
+
+        #TODO: decide if this is worth keeping or not (most likely not)
+        self.w1_path_input.textChanged.connect(
+            lambda text: TomlHandler.toml_edit("global",
+                                               "folder_name",
+                                               os.path.basename(os.path.normpath(text)))
+        )
+
         self._connect_qlineedit(self.w1_sample_input, "global", "boilerplate_project_path")
         self._connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
 

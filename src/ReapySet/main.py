@@ -1,6 +1,10 @@
 import atexit
 import os
 import sys
+import time
+
+# Start the timer immediately at the script entry point
+start_time = time.perf_counter()
 
 import qdarktheme
 from PySide6.QtGui import QIcon, Qt
@@ -18,7 +22,10 @@ def main():
     qdarktheme.load_palette(
         theme="dark",
         custom_colors={
-            "primary": "#FCE3F4" # pink-ish
+            "primary": "#FCE3F0", # pink-ish
+            "background": "#202124",
+            "foreground": "#E8EAED",
+
         }
     )
 )
@@ -47,6 +54,11 @@ def main():
             pass
 
     m_window.original_geometry = m_window.geometry()
+
+    # Calculate and print total startup time before entering the event loop
+    end_time = time.perf_counter()
+    print(f"ReadySet started in: {end_time - start_time:.4f} seconds")
+
     atexit.register(TomlHandler.clear_sandbox)
     sys.exit(app.exec())
 
