@@ -135,8 +135,15 @@ class MwConfig:
     @dataclass
     class Widget3:
         """Widget 3: per language widgets"""
+        widget3_qss: str = """
+            QStackedWidget {
+                border-radius: 10px;
+                background-color: transparent;
+            }
+        """
 
         """python"""
+
         py_qlabel_txt: str = "Please Setup Your Python Workspace! (^-^)/"
         py_qlabel_qss: str = """QLabel { 
             font-family: "Times New Roman" ;
@@ -185,6 +192,7 @@ QRadioButton:checked {
     color: rgba(230, 190, 255, 0.90); 
     font-weight: 500; 
 }"""
+
         py_MAX_RBTNS_PER_ROW: int = 4
         py_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
             ("PY:UV", "uv", "uv_logo.png"),

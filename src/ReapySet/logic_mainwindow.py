@@ -29,7 +29,7 @@ class LogicMainWindow(RsMainWindow):
 
         match lang_id:
             case "PY":
-                TomlHandler.set_enabled_lang("python")
+                TomlHandler.set_enabled_1lang("python")
                 self._lang_widget = SW3.PythonGenWidget(self)
             case "RUST":
                 print("testing rust")

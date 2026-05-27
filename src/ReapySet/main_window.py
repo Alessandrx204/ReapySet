@@ -2,7 +2,7 @@
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import QPoint, QSize, Qt, QRectF
+from PySide6.QtCore import QPoint, QSize, Qt, QRectF, QTimer
 from PySide6.QtGui import QIcon, QFontMetrics, QPainterPath, QRegion, QCursor
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
@@ -11,6 +11,8 @@ import logic_mainwindow
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
 from config import MwConfig as Mwc
 import widgets.widget1.sample_picker as sample_picker
+from common.toml_handler import TomlHandler
+
 
 # import qdarktheme
 
@@ -22,11 +24,12 @@ class RsMainWindow(QMainWindow):
         self._language_buttons = None
         self.setWindowTitle(Mwc.mw_title)
 
+
         #-----------------SIZE-AND-POS---------------------------
         self.resize(Mwc.mw_width, Mwc.mw_height)
 
-        self.setMaximumSize(Mwc.mw_width, Mwc.mw_height) # MAX SIZE
-        self.status = self.statusBar() # adds a status bar
+        self.setMaximumSize(Mwc.mw_width, Mwc.mw_height)  # MAX SIZE
+        self.status = self.statusBar()  # adds a status bar
 
         frame = self.frameGeometry()
         screen = QApplication.screenAt(QCursor.pos())  # schermo dove c'è il cursore
@@ -38,11 +41,12 @@ class RsMainWindow(QMainWindow):
         frame.moveCenter(centre)
 
         top_left: QPoint = frame.topLeft()
-        top_left.setY(top_left.y() +Mwc.mw_y_offset) #offsets 150 px to Y - is up + is down
+        top_left.setY(top_left.y() + Mwc.mw_y_offset)  #offsets 150 px to Y - is up + is down
 
         self.move(top_left)
         # ----------------- PALETTE --------------------------#
         """Disabled due inability to work on os theme changes"""
+
         #std_palette: QPalette = self.palette()
         #std_palette.setColor(QPalette.ColorRole.Window, QColor(248, 248, 245))
         #std_palette.setColor(QPalette.ColorRole.Button, QColor(241, 241, 239))
@@ -62,13 +66,12 @@ class RsMainWindow(QMainWindow):
                 str(Mwc.Widget1.QlineTopTextQSS) if not isinstance(widget, (QPushButton, QComboBox)) else "")
             return container
 
-
         #----------------------------------------------------------------#
         #self._button_labels_list: list[str] = Mwc.LangBtnWidget.button_list
         self.button_labels_dict: dict[str, list] = Mwc.LangBtnWidget().button_dict
-        self._enabled_buttons = Mwc.LangBtnWidget().enabled_btns #enabled buttons list
+        self._enabled_buttons = Mwc.LangBtnWidget().enabled_btns  #enabled buttons list
         self.widget0 = QWidget()  # <-- top Widget containts stuffs like "hello" news titles etc...
-        self.widget1 = QWidget()  #<--- stuff like github and path
+        self.widget1 = QWidget()  #<--- stuff like GitHub and path
         self.central_widget2 = QWidget()  # <-- QMainWindow needs a central window
         self.widget3_stacked = QStackedWidget()  # <-- Widget for the lower part of the Window
         self.main_layout = QGridLayout(self.central_widget2)
@@ -82,16 +85,13 @@ class RsMainWindow(QMainWindow):
 
         big_label.setStyleSheet(get_label_stylesheet())  #src/the_label_widget0.py
 
-
         outer_layout.addWidget(big_label)
         outer_layout.addWidget(self.widget1)
 
-
         self.widget1Layout = QHBoxLayout()
 
-
         self.w1_github_input = QLineEdit()
-        self.w1_github_input.setEnabled(False)
+        self.w1_github_input.setEnabled(False) #GitHub enabled y/n?
         self.widget1Layout.addWidget(_labeled_field(Mwc.Widget1.github_box_top_label, self.w1_github_input))
         self.w1_github_input.setPlaceholderText(Mwc.Widget1.github_box_placeholder_txt)
         self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
@@ -100,16 +100,14 @@ class RsMainWindow(QMainWindow):
         self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
         self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
 
-
-
-
         text_ = str(Path.home() / "Projects/")
 
         metrics = QFontMetrics(self.w1_path_input.font())
         elided = metrics.elidedText(text_, Qt.TextElideMode.ElideLeft, self.w1_path_input.width())
 
-        self.w1_path_input.setText(elided + "/" if not sys.platform.startswith("win") else elided+"\\" ) #text that scorlls on the left
-        self.w1_path_input.setTextMargins(0, 0, 50, 0) # adds a white space
+        self.w1_path_input.setText(
+            elided + "/" if not sys.platform.startswith("win") else elided + "\\")  #text that scorlls on the left
+        self.w1_path_input.setTextMargins(0, 0, 50, 0)  # adds a white space
 
         self.w1_sample_input = QLineEdit()
         self.w1_sample_input.setPlaceholderText(Mwc.Widget1.sample_box_placeholder_txt)
@@ -120,37 +118,31 @@ class RsMainWindow(QMainWindow):
 
         self.w1_browse_samples_button = QPushButton(Mwc.Widget1.browse_button_text)
         #self.widget1Layout.addWidget(self.w1_browse_samples_button)
-        self.widget1Layout.addWidget(_labeled_field("", self.w1_browse_samples_button)) #moves down a bit the button by gioving it a null text in a QVBox
+        self.widget1Layout.addWidget(_labeled_field("",
+                                                    self.w1_browse_samples_button))  #moves down a bit the button by gioving it a null text in a QVBox
         self.w1_browse_samples_button.clicked.connect(
             lambda: self._on_folder_selected(sample_picker.pick_folder(self))
         )
 
         self.w1_sample_input.textChanged.connect(self._on_sample_input_changed)
 
-
-
-
-
-
-        self.w1_select_editor = QComboBox()
+        self.w1_select_editor: QComboBox = QComboBox()
         self.widget1Layout.addWidget(_labeled_field("", self.w1_select_editor))
         self.w1_select_editor.addItems(Mwc.Widget1.select_editor_Combobox_entry)
+        TomlHandler.toml_edit(
+            "global", "fav_editor",
+            f"{self.w1_select_editor.currentText().lower()}"
+                             )# saves current editor on boot
         self.w1_select_editor.currentTextChanged.connect(
-            lambda text: print(text)
+            #saves in the toml common/toml_playground/toml_playground_cc.toml in the fav editor section .lower() for easy parsing
+            lambda p_text: TomlHandler.toml_edit("global", "fav_editor", f"{p_text.lower()}")
         )
-
-
 
         self.widget1.setLayout(self.widget1Layout)
         self.widget1.setEnabled(True)
         outer_layout.addWidget(self.central_widget2, 0)
         outer_layout.addWidget(self.widget3_stacked, 1)
-        self.widget3_stacked.setStyleSheet("""
-            QStackedWidget {
-                border-radius: 10px;
-                background-color: transparent;
-            }
-        """)
+        self.widget3_stacked.setStyleSheet(Mwc.Widget3.widget3_qss)
         self.widget3_stacked.setEnabled(True)
         self.setCentralWidget(wrapper)
 
@@ -158,31 +150,31 @@ class RsMainWindow(QMainWindow):
         # ------------------- TOOLBAR / STATUSBAR BUTTONS ------------------#
 
         # noinspection PyTypeChecker
-        self.button_box = QDialogButtonBox(
+        self.button_box: QDialogButtonBox = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok |
             QDialogButtonBox.StandardButton.Cancel
         )
 
-
         # 2. gets reference to internal buttons to configure them
-        self.confirm_button = self.button_box.button(QDialogButtonBox.StandardButton.Ok)
+        self.confirm_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Ok)
         self.confirm_button.setText("Confirm")
 
+        self.cancel_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Cancel)
 
-        self.cancel_button = self.button_box.button(QDialogButtonBox.StandardButton.Cancel)
-
-
-        self.back_button = QPushButton("Back")
+        self.back_button: QPushButton = QPushButton("Back")
         self.back_button.setEnabled(False)
-
-
 
         self.confirm_button.setEnabled(False)
         self.cancel_button.setEnabled(False)
-
-
+        # noinspection PyStatementEffect
         self.back_button.clicked.connect(
-            lambda: logic_mainwindow.LogicMainWindow.handle_back_button(self)  # type: ignore
+            lambda: (
+                logic_mainwindow.LogicMainWindow.handle_back_button(self), #type: ignore (since pyright
+                                                                        # doesnt catch up on inheritance)
+                TomlHandler.set_disabled_all_langs(),  # noqa linter complains it doesnt return anything
+                                                                            # but that's the whole point,
+                                                                        # no need to return anything there
+            )
         )
 
         self.button_box.accepted.connect(lambda: print("Confirm pressed"))
@@ -192,6 +184,10 @@ class RsMainWindow(QMainWindow):
         #self.back_button.setStyleSheet("margin-left: 2px;")
         self.statusBar().addWidget(self.back_button)
         self.statusBar().addPermanentWidget(self.button_box)  # on the right ( for whatever reason)
+        self._connect_qlineedit(self.w1_path_input, "global", "project_path")
+        self._connect_qlineedit(self.w1_sample_input, "global", "boilerplate_project_path")
+        self._connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
+
 
     def _on_sample_input_changed(self, text: str):
         if text:
@@ -200,13 +196,9 @@ class RsMainWindow(QMainWindow):
             self.w1_sample_input.setTextMargins(0, 0, 0, 0)  # dynamic padding
         # ------------------- END BUTTONS -------------------
 
-
-
-
-
         #self.setCentralWidget(self.central_widget2)  # <-- not just setLayout() directly
 
-    def resizeEvent(self, event): #resizeEvent is a special method of Qt:
+    def resizeEvent(self, event):  #resizeEvent is a special method of Qt:
         # it gets called automatically every time the window size changes.
         super().resizeEvent(event)
         path = QPainterPath()
@@ -247,7 +239,6 @@ class RsMainWindow(QMainWindow):
         self._language_buttons = buttons
         return buttons
 
-
     def _on_folder_selected(self, folder: str):
         if folder:
             self.usr_selected_folder = folder
@@ -255,5 +246,17 @@ class RsMainWindow(QMainWindow):
 
 
 
-#-----------------------------------------------------END-MAIN-WINDOW--CLASS-------------------------------------------#
 
+    def _connect_qlineedit(self, p_widget: QLineEdit, p_section: str, p_key: str, p_subsection: str = None)-> None:
+
+        _timer = QTimer(self)
+        _timer.setSingleShot(True)
+        _timer.setInterval(100)
+        p_widget.textChanged.connect(lambda:_timer.start())
+        _timer.timeout.connect(
+            lambda: TomlHandler.toml_edit(p_section, p_key, p_widget.text(), p_subsection)
+                               )
+
+
+
+#-----------------------------------------------------END-MAIN-WINDOW--CLASS-------------------------------------------#

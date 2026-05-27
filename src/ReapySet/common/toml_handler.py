@@ -36,8 +36,15 @@ class TomlHandler:
         TomlHandler._toml_write(data)
 
     @staticmethod
-    def set_enabled_lang(p_lang: str) -> None:
+    def set_enabled_1lang(p_lang: str) -> None:
         toml_line = TomlHandler._toml_read()
         for lang in toml_line["languages"]:
             toml_line["languages"][lang]["enabled"] = (lang == p_lang)
+        TomlHandler._toml_write(toml_line)
+
+    @staticmethod
+    def set_disabled_all_langs() -> None:  # no need for p_lang
+        toml_line = TomlHandler._toml_read()
+        for lang in toml_line["languages"]:
+            toml_line["languages"][lang]["enabled"] = False
         TomlHandler._toml_write(toml_line)

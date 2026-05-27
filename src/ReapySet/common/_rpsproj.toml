@@ -5,8 +5,8 @@
 boilerplate_project_path = ""
 project_path = ""
 folder_name = ""
-fav_editor = "pycharm"  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot, sublimetext.
-GitHub_repo_link = ""
+fav_editor = ""  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot, sublimetext.
+github_repo_link = ""
 
 # ==============================================================================
 # LANGUAGE SPECIFIC CONFIGURATIONS
@@ -16,7 +16,7 @@ GitHub_repo_link = ""
 enabled = false
 interpreter_version = ""
 interpreter_path = ""
-package_manager = "venv"  # venv is the Default fallback
+package_manager = "PY:VENV"  # venv is the Default fallback
 
 [languages.rust] # NOT IMPLEMENTED YET
 enabled = false
