@@ -1,4 +1,5 @@
 import os
+import shutil
 import sys
 from dataclasses import dataclass, field
 from functools import cached_property
@@ -6,6 +7,7 @@ from pathlib import Path
 
 
 from PySide6.QtCore import QEasingCurve
+from common.toml_handler import TomlHandler, CONFIG_PATH
 
 
 def _get_root() -> Path:
@@ -67,6 +69,7 @@ class MwConfig:
         def cpp_logo(self)        -> Path: return self.res / "cpp_logo.svg"
         @property
         def python_wallpaper(self) -> Path: return self.res / "python_free_wallpaper.png"
+
 
     @dataclass
     class Widget1:
@@ -192,7 +195,6 @@ QRadioButton:checked {
     color: rgba(230, 190, 255, 0.90); 
     font-weight: 500; 
 }"""
-
         py_MAX_RBTNS_PER_ROW: int = 4
         py_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
             ("PY:UV", "uv", "uv_logo.png"),
@@ -210,15 +212,38 @@ QRadioButton:checked {
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
         py_interpreter_qcombobox_coords: tuple[int, int] = (0, 4)
         py_pkg_manager_rbtns_spacing: int = 4
-        py_uv_path: str = "/opt/homebrew/bin/uv"
-        py_poetry_path: str = ""
-        py_hatch_path: str = ""
-        py_pdm_path: str = ""
-        py_pipenv_path: str = ""
-        py_virtualenv_path: str = ""
-        py_conda_path: str = ""
-        py_mamba_path: str = ""
-        py_pixi_path: str = ""
+
+#@dataclass()
+class LogicVariables:
+    class EditorCmd:
+        @staticmethod
+        def get_cmd(editor: str) -> str:
+            """reads from cinfig.toml"""
+            key = editor.lower().replace(" ", "_") + "_cmd"
+            return TomlHandler.toml_get(CONFIG_PATH, "editors", key) or ""
+
+    class PythonVars:
+        py_uv_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "uv_path") or shutil.which("uv") or "" # noqa "" avoids crashes or None by returning an empy string which is falsy
+        py_poetry_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "poetry_path") or shutil.which( "poetry") or ""# noqa
+        py_hatch_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "hatch_path") or shutil.which("hatch") or ""  # noqa
+        py_pdm_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pdm_path") or shutil.which("pdm") or ""# noqa
+
+        py_pipenv_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pipenv_path") or shutil.which("pipenv") or ""# noqa
+        py_virtualenv_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "virtualenv_path") or shutil.which("virtualenv") or ""# noqa
+        py_conda_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "conda_path") or shutil.which("conda") or ""# noqa
+        py_mamba_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "mamba_path") or shutil.which("mamba") or ""# noqa
+        py_pixi_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pixi_path") or shutil.which("pixi") or ""# noqa #todo have a look here before push
+            #----- iCmd stands for Init(ialise) Command -----#
+        py_venv_icmd: list[str] = ["python", "-m", "venv", ".venv"]  # python -m venv .venv (dentro proj_path)
+        py_uv_icmd: list[str] = [py_uv_path, "init"]  # uv init <proj_path>
+        py_poetry_icmd: list[str] = [py_poetry_path, "new"]  # poetry new <proj_path>
+        py_hatch_icmd: list[str] = [py_hatch_path, "new"]  # hatch new <proj_path>
+        py_pdm_icmd: list[str] = [py_pdm_path, "init"]  # pdm init (cdw=proj_path)
+        py_pipenv_icmd: list[str] = [py_pipenv_path, "install"]  # pipenv install (cdw=proj_path)
+        py_virtualenv_icmd: list[str] = [py_virtualenv_path, ".venv"]  # virtualenv .venv (cdw=proj_path)
+        py_conda_icmd: list[str] = [py_conda_path, "create", "-p"]  # conda create -p <proj_path>
+        py_mamba_icmd: list[str] = [py_mamba_path, "create", "-p"]  # mamba create -p <proj_path>
+        py_pixi_icmd: list[str] = [py_pixi_path, "init"]  # pixi init <proj_path>
 
 
 

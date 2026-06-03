@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, Q
 
 import logic_mainwindow
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
+from common.confirm_button_logic import ConfirmButtonLogic
 from config import MwConfig as Mwc
 import widgets.widget1.sample_picker as sample_picker
 from common.toml_handler import TomlHandler
@@ -108,6 +109,7 @@ class RsMainWindow(QMainWindow):
 
         self.w1_path_input.setText(
             elided + "/" if not sys.platform.startswith("win") else elided + "\\")  #text that scorlls on the left
+        TomlHandler.toml_edit("global", "project_path", self.w1_path_input.text())
         self.w1_path_input.setTextMargins(0, 0, 50, 0)  # adds a white space
 
         self.w1_sample_input = QLineEdit()
@@ -178,7 +180,7 @@ class RsMainWindow(QMainWindow):
             )
         )
 
-        self.button_box.accepted.connect(lambda: print("Confirm pressed"))
+        self.button_box.accepted.connect(lambda : ConfirmButtonLogic().on_confirm_clicked())
         self.button_box.rejected.connect(lambda: print("Cancel pressed"))
 
         # adds to status bar
@@ -197,6 +199,8 @@ class RsMainWindow(QMainWindow):
 
         self._connect_qlineedit(self.w1_sample_input, "global", "boilerplate_project_path")
         self._connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
+
+    #---------------- INIT END ---------------------#
 
 
     def _on_sample_input_changed(self, text: str):
@@ -257,15 +261,16 @@ class RsMainWindow(QMainWindow):
 
 
 
-    def _connect_qlineedit(self, p_widget: QLineEdit, p_section: str, p_key: str, p_subsection: str = None)-> None:
+    def _connect_qlineedit(self, p_widget: QLineEdit, p_section: str, p_key: str, p_subsection: str|None = None) -> None:
 
         _timer = QTimer(self)
         _timer.setSingleShot(True)
-        _timer.setInterval(100)
+        _timer.setInterval(500)
         p_widget.textChanged.connect(lambda:_timer.start())
-        _timer.timeout.connect(
-            lambda: TomlHandler.toml_edit(p_section, p_key, p_widget.text(), p_subsection)
-                               )
+        _timer.timeout.connect(lambda: (
+            TomlHandler.toml_edit(p_section, p_key, p_widget.text(), p_subsection),
+            self._update_confirm_button() #type: ignore , it is resolved since it is called in the child class despite says otherwise
+        ))
 
 
 

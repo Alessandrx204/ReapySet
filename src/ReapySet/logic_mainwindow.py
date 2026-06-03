@@ -80,6 +80,7 @@ class LogicMainWindow(RsMainWindow):
         ))
 
         QTimer.singleShot(Mwc.mw_expansion_time, lambda: self.setMinimumSize(Mwc.mw_width, Mwc.mw_expanded_height))
+        QTimer.singleShot(Mwc.mw_expansion_time, lambda: self._update_confirm_button())
 
 
 
@@ -91,12 +92,13 @@ class LogicMainWindow(RsMainWindow):
     def collapse_window(self):
         if self._lang_widget:
             self.widget3_stacked.removeWidget(self._lang_widget)
-            self._lang_widget.deleteLater()
+            self._lang_widget.deleteLater() # qt method
             self._lang_widget = None
+            self.confirm_button.setEnabled(False)
 
 
         self.setMinimumSize(Mwc.mw_width, Mwc.mw_height)
-        self.setMaximumSize(Mwc.mw_width, Mwc.mw_expanded_height)  # lascia libertà di scendere
+        #self.setMaximumSize(Mwc.mw_width, Mwc.mw_expanded_height)  # a bit more free
 
         QTimer.singleShot(Mwc.mw_widget_enable_delay, lambda: self.widget3_stacked.setEnabled(False))
         self.anim.setDuration(Mwc.mw_collapse_time)
@@ -111,7 +113,7 @@ class LogicMainWindow(RsMainWindow):
             btn.setEnabled(i in self._enabled_buttons)
 
     def handle_event(self, button_label_txt):
-        self.expand_window(button_label_txt)  # ← passa il label
+        self.expand_window(button_label_txt)  # ←  label
         self.back_button.setEnabled(True)
         print(button_label_txt)
 
@@ -129,4 +131,9 @@ class LogicMainWindow(RsMainWindow):
     def handle_github_button_on_enter_pressed(self):
         print("downloading repo...")
 
+    def _update_confirm_button(self) -> None:
+        data = TomlHandler._toml_read()
+        path_ok = bool(data["global"]["project_path"].strip())
+        lang_ok = any(data["languages"][i]["enabled"] for i in data["languages"])
+        self.confirm_button.setEnabled(path_ok and lang_ok)
 

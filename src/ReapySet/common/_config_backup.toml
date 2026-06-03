@@ -1,0 +1,41 @@
+[general]
+boilerplates_folder = ""   # path cartella boilerplates
+
+[editors]
+pycharm_cmd       = "pycharm {path}"
+vscode_cmd        = "code {path}"
+clion_cmd         = "clion {path}"
+rider_cmd         = "rider {path}"
+zed_cmd           = "zed {path}"
+sublime_text_cmd  = "subl {path}"
+nvim_cmd          = "nvim {path}"
+intellij_cmd      = "idea {path}"
+notepadpp_cmd     = "notepad++ {path}"
+godot_cmd         = "godot --path {path} -e"
+
+[python]
+uv_path         = ""
+poetry_path     = ""
+hatch_path      = ""
+pdm_path        = ""
+pipenv_path     = ""
+virtualenv_path = ""
+conda_path      = ""
+mamba_path      = ""
+pixi_path       = ""
+
+[rust]
+cargo_path      = ""   # placeholder
+
+[dotnet]
+dotnet_path     = ""   # placeholder
+
+[kotlin_java]
+gradle_path     = ""   # placeholder
+maven_path      = ""   # placeholder
+
+[go]
+go_path         = ""   # placeholder
+
+[lua]
+lua_path        = ""   # placeholder

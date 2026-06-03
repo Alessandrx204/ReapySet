@@ -3,6 +3,8 @@ import os
 import sys
 import time
 
+from PySide6.QtCore import QTimer
+
 # Start the timer immediately at the script entry point
 start_time = time.perf_counter()
 
@@ -31,9 +33,10 @@ def main():
 )
     m_window: LogicMainWindow = LogicMainWindow()
     #qdarktheme.setup_theme()
-    m_window.create_language_buttons(m_window.button_labels_dict,
+    QTimer.singleShot(0, lambda: m_window.create_language_buttons(m_window.button_labels_dict,
                                      Mwc.LangBtnWidget.max_btn_x_row,
-                                     m_window.main_layout)
+                                     m_window.main_layout))
+    #m_window._connect_qlineedit(m_window.w1_path_input, "global", "project_path")
 
 
     icon: QIcon = QIcon(str(Mwc.Images().icon_path))
