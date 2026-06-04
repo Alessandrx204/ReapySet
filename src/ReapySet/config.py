@@ -212,6 +212,23 @@ QRadioButton:checked {
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
         py_interpreter_qcombobox_coords: tuple[int, int] = (0, 4)
         py_pkg_manager_rbtns_spacing: int = 4
+        QlineEditQSS: str = ("\n"
+                             "                QLineEdit {\n"
+                             "                    font-size: 12px;\n"
+                             "                    border: 2px solid rgb(65, 65, 63);\n"
+                             "                    border-radius: 5px;\n"
+                             "                    background-color: rgb(30, 30, 28);\n"
+                             "                    color: rgb(220, 220, 220);\n"
+                             "                }\n"
+                             "                QLineEdit:hover {\n"
+                             "                    border: 2px solid rgb(150, 60, 105);      /* dawn pink */\n"
+                             "                    background-color: rgb(38, 38, 36);        /* light pink */\n"
+                             "                }\n"
+                             "                QLineEdit:focus {\n"
+                             "                    border: 2px solid rgb(236, 100, 175);     /* full pink */\n"
+                             "                    background-color: rgb(44, 44, 42);\n"
+                             "                }\n"
+                             "                ")
 
 #@dataclass()
 class LogicVariables:

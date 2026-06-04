@@ -31,6 +31,12 @@ class LogicMainWindow(RsMainWindow):
             case "PY":
                 TomlHandler.set_enabled_1lang("python")
                 self._lang_widget = SW3.PythonGenWidget(self)
+                self._connect_qlineedit(
+                    self._lang_widget.unb_interp_qlinedit,
+                    "languages",
+                    "unb_interpreter_version",
+                    "python"
+                )
             case "RUST":
                 print("testing rust")
                 return

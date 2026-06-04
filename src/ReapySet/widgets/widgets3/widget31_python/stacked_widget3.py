@@ -4,7 +4,7 @@ import sys
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon, QPixmap, Qt
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel
+    QApplication, QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
 )
 #from pathlib import Path
 
@@ -43,7 +43,7 @@ class PythonGenWidget(QWidget):
         self.python_label = QLabel(Mwc.Widget3.py_qlabel_txt)
         self.python_label.setStyleSheet(Mwc.Widget3.py_qlabel_qss)
 
-        #base_dir = Path(__file__).parents[3]
+
         self.bg_image_path = str(Mwc.Images().python_wallpaper)
         self.bg_label = QLabel(self)
         self.bg_label.lower()
@@ -53,6 +53,17 @@ class PythonGenWidget(QWidget):
         self.setup_interpreter_selector(Mwc.Widget3.py_interpreter_qcombobox_coords[0],
                                         Mwc.Widget3.py_interpreter_qcombobox_coords[1])
         self.setup_package_manager_selector(ENTRIES, max_per_row=MAX_PER_ROW)
+
+        self.unb_interp_qlinedit = QLineEdit(self)
+        self.unb_interp_qlinedit.setStyleSheet(Mwc.Widget3.QlineEditQSS)
+        self.unb_interp_qlinedit.setMaximumWidth(60)
+        self.unb_interp_qlinedit.setSizePolicy(
+                            QSizePolicy.Policy.Fixed,
+                            QSizePolicy.Policy.Fixed
+                                              )
+        self.main_layout.addWidget(self.unb_interp_qlinedit,
+                                   4,
+                                   4,)
 
     def setup_interpreter_selector(self, row: int, col: int) -> None:
         populate_interpreter_combobox(self.select_interpreter)
