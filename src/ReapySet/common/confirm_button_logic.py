@@ -57,23 +57,41 @@ class ConfirmButtonLogic:
         else:
             msg.exec()
 
-    def _openin_editor(self, p_editor, p_proj_path) -> None:
-        _cmd = LcFg.EditorCmd.get_cmd(p_editor)
-        if not _cmd:
-            self._warn_missing_tool(p_editor)
-            return
+    def _check_editor(self, p_editor: str) -> bool:
+        cmd = LcFg.EditorCmd.get_cmd(p_editor)
 
-        executable = _cmd.split()[0]
-        resolved = shutil.which(executable) or (executable if Path(executable).is_file() else None) # noqa it'll never run. on 3.12
+        if not cmd:
+            self._warn_missing_tool(p_editor)
+            return False
+
+        executable = cmd.split()[0]
+
+        resolved = (
+                shutil.which(executable) # noqa it'll never run on 3.12
+                or (executable if Path(executable).is_file() else None)
+        )
+
         if not resolved:
             self._warn_missing_tool(p_editor)
-            return
+            return False
 
-        editor_openin_cmd = _cmd.format(path=p_proj_path)
-        subprocess.Popen(editor_openin_cmd.split())
+        return True
 
+    def _openin_editor(self, p_editor: str, p_proj_path: str) -> None:
+
+
+
+        cmd = LcFg.EditorCmd.get_cmd(p_editor)
+        editor_openin_cmd = cmd.format(path=p_proj_path)
+
+        try:
+            subprocess.Popen(editor_openin_cmd.split())
+
+        except Exception:
+            self._warn_missing_tool(p_editor)
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
-
+        if not self._check_editor(p_editor):
+            return # if editor is not to be found or cli is not functioning it doesnt even create the venv
         Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
         pm: str = p_py_config["package_manager"]
@@ -136,7 +154,7 @@ class ConfirmButtonLogic:
                     self._warn_missing_tool("pixi")
                     return
 
-            case "PY:CONDA":
+            case "PY:GENERIC_CONDA":
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_conda_icmd
