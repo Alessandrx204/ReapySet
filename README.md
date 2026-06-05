@@ -45,7 +45,8 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 | Typescript/Javascript |  TBD |
 | Kotlin/java |  TBD  |
 | C/C++ |  TBD  |
-| Lua |  TBD  |
+| C/C++ |  TBD  |
+| GO |  TBD  |
 | GDSsript |  TBD  |
 
 ### Python Workspace Configuration
