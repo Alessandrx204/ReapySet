@@ -33,19 +33,19 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 
 ### Project Setup
 - Create projects in a chosen location
-- Editor integration (currently VSCode)
+- Editor integration (currently VSCode, pycharm, clion, intellij idea, notepad++, godot's editor, sublime text)
 - Optional boilerplates support *(WIP)*
 
 ### Multi-language support *(planned / partial)*
-- Python 🐍
-- Rust 🦀
-- .NET
-- Kotlin / Java ☕
-- C / C++
-- TypeScript / JavaScript
-- Go
-- Lua
-- GDScript
+- Python 🐍 (almost 90% functional)
+- Rust 🦀 - soon
+- .NET - soon
+- Kotlin / Java ☕ - possibly
+- C / C++ - possibly
+- TypeScript / JavaScript - possibly
+- Go - possibly
+- Lua - possibly
+- GDScript - possibly
 
 ### Python Workspace Configuration
 Choose your preferred environment/package manager:
