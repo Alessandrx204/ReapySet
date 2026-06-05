@@ -128,14 +128,12 @@ Current development state:
 
 ## Roadmap
 
-- [ ] Better interpreter detection
+- [ ] Better UI and UX
 - [ ] GitHub project import
-- [ ] Boilerplate marketplace
+- [ ] Boilerplates' repo (i hate writing those)
 - [ ] Per-language configuration presets
-- [ ] Project templates
 - [ ] Better macOS / Windows native styling
-- [ ] Terminal integration
-- [ ] Plugin system *(maybe)*
+- [ ] Terminal Command line version
 
 ---
 
@@ -143,20 +141,22 @@ Current development state:
 
 ReapySet tries to stay:
 
-- **Fast** → minimal clicks
+- **fast** → minimal clicks
 - **Simple** → opinionated defaults
 - **Modern** → clean desktop UX
 - **Developer-first** → less setup, more coding
+- **Sovreign** →  Made by EU Developers mainly for EU developers
+- **Cozy** →  cute greetings, about IT, European and lgbt civil rights, always comfy 
 
 ---
 
 ## Contributing
 
-This project is experimental and evolving quickly.  
-Issues, ideas and feedback are welcome.
+feel free to submit a pr,
 
 ---
 
 ## License
 source code is all right reserved/Qt binaries are available in coordance to Qt's LGPL License
+
 
