@@ -42,11 +42,11 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 | python | ⚠️ In progress |
 | rust | 🚧 Planned |
 | .NET | 🚧 Planned |
-| Typescript/Javascript | ? TBD |
-| Kotlin/java | ? TBD  |
-| C/C++ | ? TBD  |
-| Lua | ? TBD  |
-| GDSsript | ? TBD  |
+| Typescript/Javascript |  TBD |
+| Kotlin/java |  TBD  |
+| C/C++ |  TBD  |
+| Lua |  TBD  |
+| GDSsript |  TBD  |
 
 ### Python Workspace Configuration
 Choose your preferred environment/package manager:
