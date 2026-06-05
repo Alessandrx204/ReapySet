@@ -14,6 +14,7 @@ from common.confirm_button_logic import ConfirmButtonLogic
 from config import MwConfig as Mwc
 import widgets.widget1.sample_picker as sample_picker
 from common.toml_handler import TomlHandler
+from widgets.MwFuctions import MwFucs as Mwf
 
 
 # import qdarktheme
@@ -56,17 +57,7 @@ class RsMainWindow(QMainWindow):
 
         #self.setAutoFillBackground(True)
         # ----------------- END-PALETTE --------------------------#
-        def _labeled_field(label_txt: str, widget: QWidget) -> QWidget:
-            """Utility: wraps a widget with a label above it."""
-            container = QWidget()
-            layout = QVBoxLayout(container)
-            layout.setContentsMargins(0, 0, 0, 0)
-            layout.setSpacing(2)
-            layout.addWidget(QLabel(label_txt))
-            layout.addWidget(widget)
-            container.setStyleSheet(
-                str(Mwc.Widget1.QlineTopTextQSS) if not isinstance(widget, (QPushButton, QComboBox)) else "")
-            return container
+
 
         #----------------------------------------------------------------#
         #self._button_labels_list: list[str] = Mwc.LangBtnWidget.button_list
@@ -94,11 +85,11 @@ class RsMainWindow(QMainWindow):
 
         self.w1_github_input = QLineEdit()
         self.w1_github_input.setEnabled(False) #GitHub enabled y/n?
-        self.widget1Layout.addWidget(_labeled_field(Mwc.Widget1.github_box_top_label, self.w1_github_input))
+        self.widget1Layout.addWidget(Mwf.labeled_field(Mwc.Widget1.github_box_top_label, self.w1_github_input))
         self.w1_github_input.setPlaceholderText(Mwc.Widget1.github_box_placeholder_txt)
         self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
         self.w1_path_input = QLineEdit()
-        self.widget1Layout.addWidget(_labeled_field(f"{Mwc.Widget1.path_box_top_label}", self.w1_path_input))
+        self.widget1Layout.addWidget(Mwf.labeled_field(f"{Mwc.Widget1.path_box_top_label}", self.w1_path_input))
         self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
         self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
 
@@ -115,14 +106,13 @@ class RsMainWindow(QMainWindow):
         self.w1_sample_input = QLineEdit()
         self.w1_sample_input.setPlaceholderText(Mwc.Widget1.sample_box_placeholder_txt)
 
-        self.widget1Layout.addWidget(_labeled_field(Mwc.Widget1.sample_box_top_label, self.w1_sample_input))
+        self.widget1Layout.addWidget(Mwf.labeled_field(Mwc.Widget1.sample_box_top_label, self.w1_sample_input))
 
         self.w1_sample_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
 
         self.w1_browse_samples_button = QPushButton(Mwc.Widget1.browse_button_text)
         #self.widget1Layout.addWidget(self.w1_browse_samples_button)
-        self.widget1Layout.addWidget(_labeled_field("",
-                                                    self.w1_browse_samples_button))  #moves down a bit the button by gioving it a null text in a QVBox
+        self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_browse_samples_button))  #moves down a bit the button by gioving it a null text in a QVBox
         self.w1_browse_samples_button.clicked.connect(
             lambda: self._on_folder_selected(sample_picker.pick_folder(self))
         )
@@ -130,7 +120,7 @@ class RsMainWindow(QMainWindow):
         self.w1_sample_input.textChanged.connect(self._on_sample_input_changed)
 
         self.w1_select_editor: QComboBox = QComboBox()
-        self.widget1Layout.addWidget(_labeled_field("", self.w1_select_editor))
+        self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_select_editor))
         self.w1_select_editor.addItems(Mwc.Widget1.select_editor_Combobox_entry)
         TomlHandler.toml_edit(
             "global", "fav_editor",

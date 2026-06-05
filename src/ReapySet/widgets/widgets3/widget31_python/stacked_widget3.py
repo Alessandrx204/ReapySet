@@ -6,6 +6,8 @@ from PySide6.QtGui import QIcon, QPixmap, Qt
 from PySide6.QtWidgets import (
     QApplication, QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
 )
+
+from widgets.MwFuctions import MwFucs as Mwf
 #from pathlib import Path
 
 from widgets.widgets3.widget31_python.python_interpreter_utils import populate_interpreter_combobox
@@ -61,17 +63,45 @@ class PythonGenWidget(QWidget):
                             QSizePolicy.Policy.Fixed,
                             QSizePolicy.Policy.Fixed
                                               )
-        self.main_layout.addWidget(self.unb_interp_qlinedit,
-                                   4,
-                                   4,)
+        self.main_layout.addWidget(
+            Mwf.labeled_field(Mwc.Widget3.py_unb_interp_qlinedit_top_txt, self.unb_interp_qlinedit, w1qss="", gqss="""QLabel { 
+                                                                                                                                font-family: Arial;
+                                                                                                                                font-weight: bold; 
+                                                                                                                                font-size: 9px;
+                                                                                                                                color: #efebf0; /* grey */
+                                                                                                                                                }"""
+                                                                                                                                                ),
+            Mwc.Widget3.py_unb_interpreter_box_coords[0],
+            Mwc.Widget3.py_unb_interpreter_box_coords[1],
 
-    def setup_interpreter_selector(self, row: int, col: int) -> None:
+            alignment=Qt.AlignmentFlag.AlignVCenter)
+        self.unb_interp_qlinedit.setPlaceholderText(Mwc.Widget3.py_unb_interp_qlinedit_inner_txt)
+
+    def setup_interpreter_selector(self, p_row: int, p_col: int) -> None:
         populate_interpreter_combobox(self.select_interpreter)
-        self.main_layout.addWidget(self.select_interpreter, row, col)
-        self.select_interpreter.currentIndexChanged.connect(
-            lambda: self.on_interpreter_changed(self.select_interpreter)
+
+        self.main_layout.addWidget(
+            Mwf.labeled_field(Mwc.Widget3.py_interp_qcbox_top_txt, self.select_interpreter, w1qss="", gqss="""QLabel { 
+                                                                                                                                font-family: Arial;
+                                                                                                                                font-weight: bold; 
+                                                                                                                                font-size: 10px;
+                                                                                                                                color: #efebf0; /* grey */
+                                                                                                                                                }"""
+                                                                                                                                                ),
+            p_row,
+            p_col,
+            alignment=Qt.AlignmentFlag.AlignVCenter
         )
-        self.on_interpreter_changed(self.select_interpreter)  # ← chiamata iniziale
+
+        self.select_interpreter.currentIndexChanged.connect(
+            lambda: self.on_interpreter_changed(
+                self.select_interpreter
+            )
+        )
+
+        self.on_interpreter_changed(
+            self.select_interpreter
+        )
 
     def setup_package_manager_selector(self, entries, max_per_row=Mwc.Widget3.py_MAX_RBTNS_PER_ROW,
                                        row_offset=Mwc.Widget3.py_pkg_manager_rbtns_coords[0],

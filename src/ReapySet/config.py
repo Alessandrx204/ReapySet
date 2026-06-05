@@ -21,7 +21,7 @@ class MwConfig:
     """Main Window configs"""
     mw_title: str = "ReapySet"
 
-    mw_width: int = 765
+    mw_width: int = 770
     mw_height: int = 370
 
     mw_height_expansion: int = 280
@@ -146,8 +146,11 @@ class MwConfig:
         """
 
         """python"""
-
         py_qlabel_txt: str = "Please Setup Your Python Workspace! (^-^)/"
+        py_interp_qcbox_top_txt: str = "locally installed interpreters"
+        py_unb_interp_qlinedit_top_txt: str = "exact Interp. version\n(only uv & conda dervivatives)"
+        py_unb_interp_qlinedit_inner_txt: str = "e.g. 3.13.5"
+
         py_qlabel_qss: str = """QLabel { 
             font-family: "Times New Roman" ;
             letter-spacing: 1.5px; 
@@ -211,6 +214,7 @@ QRadioButton:checked {
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
         py_interpreter_qcombobox_coords: tuple[int, int] = (0, 4)
+        py_unb_interpreter_box_coords: tuple[int, int] = (4, 4)
         py_pkg_manager_rbtns_spacing: int = 4
         QlineEditQSS: str = ("\n"
                              "                QLineEdit {\n"
