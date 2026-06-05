@@ -37,15 +37,16 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 - Optional boilerplates support *(WIP)*
 
 ### Multi-language support *(planned / partial)*
-- Python 🐍 (almost 90% functional)
-- Rust 🦀 - soon
-- .NET - soon
-- Kotlin / Java ☕ - possibly
-- C / C++ - possibly
-- TypeScript / JavaScript - possibly
-- Go - possibly
-- Lua - possibly
-- GDScript - possibly
+| Feature | Status |
+|----------|--------|
+| python | ⚠️ In progress |
+| rust | 🚧 Planned |
+| .NET | 🚧 Planned |
+| Typescript/Javascript | ? TBD |
+| Kotlin/java | ? TBD  |
+| C/C++ | ? TBD  |
+| Lua | ? TBD  |
+| GDSsript | ? TBD  |
 
 ### Python Workspace Configuration
 Choose your preferred environment/package manager:
