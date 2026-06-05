@@ -49,7 +49,7 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 | GDSsript |  TBD  |
 
 ### Python Workspace Configuration
-Choose your preferred environment/package manager:
+**available python package managers**
 
 - `venv`
 - `uv`
@@ -62,7 +62,7 @@ Choose your preferred environment/package manager:
 - `virtualenv`
 - `pdm`
 
-Interpreter selection is supported for locally installed Python versions.
+
 
 ---
 
@@ -158,5 +158,5 @@ Issues, ideas and feedback are welcome.
 ---
 
 ## License
-arr/lgpl
+source code is all right reserved/Qt binaries are available in coordance to Qt's LGPL License
 
