@@ -78,10 +78,10 @@ Interpreter selection is supported for locally installed Python versions.
 
 ### Requirements
 
-- Python 3.12+
+- Python 3.13.5+
 - PySide6
-- Supported package managers installed locally
-  (`uv`, `poetry`, `pixi`, `conda`, etc.)
+- pyobjc on osx
+- qtdarktheme
 
 ### Clone the project
 
@@ -157,5 +157,5 @@ Issues, ideas and feedback are welcome.
 ---
 
 ## License
+arr/lgpl
 
-MIT License
