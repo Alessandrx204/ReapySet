@@ -1,25 +1,22 @@
-# Copyright (c) 2026 Alessandra
-# All Rights Reserved.
+Copyright (c) 2026 Alessandra
+All Rights Reserved.
 
 This software and its original source code are proprietary. Unauthorized copying, 
 distribution, or modification of this software, via any medium, is strictly 
 prohibited without the express permission of the copyright holder.
 
 
+Third-Party Components & LGPL Compliance
 
----
-
-### Third-Party Components & LGPL Compliance
-
-This project incorporates **PySide6**, which is licensed under the 
-**GNU Lesser General Public License (LGPL) v3**. 
+This project incorporates PYSIDE6, which is licensed under the 
+GNU LESSER GENERAL PUBLIC LICENSE (LGPL) V3. 
 
 In strict compliance with the LGPL terms:
-* **Separation:** The core application logic is kept separate from the GUI library.
-* **No Modifications:** We do not modify the PySide6 source code.
-* **Relinking:** Users are permitted to replace the PySide6 shared libraries used 
+- SEPARATION: The core application logic is kept separate from the GUI library.
+- NO MODIFICATIONS: We do not modify the PySide6 source code.
+- RELINKING: Users are permitted to replace the PySide6 shared libraries used 
   by this software with their own versions for their own use, and reverse 
   engineering for debugging such modifications is permitted.
 
 The full LGPL v3 text and comprehensive third-party credits are provided in the 
-**LICENSE-3RD-PARTY.md** file included in this repository.
+LICENSE-3RD-PARTY.MD file included in this repository.
