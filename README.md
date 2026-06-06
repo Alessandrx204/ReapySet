@@ -19,13 +19,13 @@ The goal of ReapySet is to provide a clean and fast way to:
 
 - Create development workspaces
 - Configure interpreters automatically
-- Initialize environments
+- Initialise environments
 - Select package managers
 - Generate language-specific project structures
 - Open projects directly in your preferred editor
 - Apply boilerplates/templates
 
-Think of it as a **developer launcher + project initializer**, with a focus on speed and usability.
+Think of it as a **developer launcher + project initialiser**, with a focus on speed and usability.
 
 ---
 
@@ -42,10 +42,10 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 | python | ⚠️ In progress |
 | rust | 🚧 Planned |
 | .NET | 🚧 Planned |
-| Typescript/Javascript |  TBD |
+| Typescript/Javascript |  TBD  |
 | Kotlin/java |  TBD  |
 | C/C++ |  TBD  |
-| C/C++ |  TBD  |
+| lua |  TBD  |
 | GO |  TBD  |
 | GDSsript |  TBD  |
 
@@ -82,31 +82,32 @@ Think of it as a **developer launcher + project initializer**, with a focus on s
 
 - Python 3.13.5+
 - PySide6
-- pyobjc on osx
+- pyobjc on OS X
 - qtdarktheme
+- tomlkit
 
 ### Clone the project
 
-```bash
+```bash/zsh
 git clone https://github.com/yourname/reapyset.git
 cd reapyset
 ```
 
 ### Install dependencies
 
-```bash
+```bash/zsh
 uv sync
 ```
 
 or
 
-```bash
+```bash/zsh
 pip install -r requirements.txt
 ```
 
 ### Run
 
-```bash
+```bash/zsh
 python main.py
 ```
 
@@ -144,10 +145,10 @@ ReapySet tries to stay:
 
 - **fast** → minimal clicks
 - **Simple** → opinionated defaults
-- **Modern** → clean desktop UX
+- **Modern** → clean desktop UX across platforms, eliminating the pain of having different commands for pwsh and bash
 - **Developer-first** → less setup, more coding
 - **Sovreign** →  Made by EU Developers mainly for EU developers
-- **Cozy** →  cute greetings, about IT, European and lgbt civil rights, always comfy 
+- **Cozy** →  cute greetings, about IT, European and lgbtq civil rights and history, always comfy ✨
 
 ---
 
@@ -158,6 +159,6 @@ feel free to submit a pr,
 ---
 
 ## License
-source code is all right reserved/Qt binaries are available in coordance to Qt's LGPL License
+source code is all right reserved/Qt binaries are available in concordance to Qt's LGPLv3 License
 
 
