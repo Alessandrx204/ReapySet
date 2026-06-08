@@ -3,6 +3,7 @@ from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
 from main_window import RsMainWindow
 
 from config import MwConfig as Mwc
+from widgets.MwFuctions import MwFuncs as Mwf
 import widgets.widgets3.widget31_python.stacked_widget3 as SW3 #noqa
 from common.toml_handler import TomlHandler
 
@@ -31,12 +32,12 @@ class LogicMainWindow(RsMainWindow):
             case "PY":
                 TomlHandler.set_enabled_1lang("python")
                 self._lang_widget = SW3.PythonGenWidget(self)
-                self._connect_qlineedit(
+                Mwf.connect_qlineedit(
                     self._lang_widget.unb_interp_qlinedit,
                     "languages",
                     "unb_interpreter_version",
                     "python",
-                    p_version_validator = True #avoids injection of unnecessary characters to avoid malicious code injection only 1234567890 and "." basically
+                    p_regex_validation= r"^\d+\.\d+\.?\d*$" #avoids injection of unnecessary characters to avoid malicious code injection only 1234567890 and "." basically
 
                 )
             case "RUST":

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
 )
 
-from widgets.MwFuctions import MwFucs as Mwf
+from widgets.MwFuctions import MwFuncs as Mwf
 #from pathlib import Path
 
 from widgets.widgets3.widget31_python.python_interpreter_utils import populate_interpreter_combobox

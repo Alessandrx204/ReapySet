@@ -14,7 +14,7 @@ from common.confirm_button_logic import ConfirmButtonLogic
 from config import MwConfig as Mwc
 import widgets.widget1.sample_picker as sample_picker
 from common.toml_handler import TomlHandler
-from widgets.MwFuctions import MwFucs as Mwf
+from widgets.MwFuctions import MwFuncs as Mwf
 
 
 # import qdarktheme
@@ -177,7 +177,7 @@ class RsMainWindow(QMainWindow):
         #self.back_button.setStyleSheet("margin-left: 2px;")
         self.statusBar().addWidget(self.back_button)
         self.statusBar().addPermanentWidget(self.button_box)  # on the right ( for whatever reason)
-        self._connect_qlineedit(self.w1_path_input, "global", "project_path")
+        Mwf.connect_qlineedit(self.w1_path_input, "global", "project_path")
 
 
         #TODO: decide if this is worth keeping or not (most likely not)
@@ -187,8 +187,8 @@ class RsMainWindow(QMainWindow):
                                                os.path.basename(os.path.normpath(text)))
         )
 
-        self._connect_qlineedit(self.w1_sample_input, "global", "boilerplate_project_path")
-        self._connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
+        Mwf.connect_qlineedit(self.w1_sample_input, "global", "boilerplate_project_path")
+        Mwf.connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
 
     #---------------- INIT END ---------------------#
 
@@ -248,29 +248,7 @@ class RsMainWindow(QMainWindow):
             self.usr_selected_folder = folder
             self.w1_sample_input.setText(folder)
 
-    def _connect_qlineedit(
-            self,
-            p_widget: QLineEdit,
-            p_section: str,
-            p_key: str,
-            p_subsection: str | None = None,
-            p_version_validator: bool = False  # attiva solo se True
-    ) -> None:
-
-        if p_version_validator:
-            _validator = QRegularExpressionValidator(
-                QRegularExpression(r"^\d+\.\d+\.?\d*$") #blocks insertion of  malicious code
-            )
-            p_widget.setValidator(_validator)
-
-        _timer = QTimer(self)
-        _timer.setSingleShot(True)
-        _timer.setInterval(500)
-        p_widget.textChanged.connect(lambda: _timer.start())
-        _timer.timeout.connect(lambda: (
-            TomlHandler.toml_edit(p_section, p_key, p_widget.text(), p_subsection),
-            self._update_confirm_button()  # type: ignore
-        ))
+    #_connect_qlineedit replaced with Mwf.connect_qlineedit
 
 
 
