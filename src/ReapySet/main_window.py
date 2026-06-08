@@ -3,8 +3,8 @@ import os
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import QPoint, QSize, Qt, QRectF, QTimer
-from PySide6.QtGui import QIcon, QFontMetrics, QPainterPath, QRegion, QCursor
+from PySide6.QtCore import QPoint, QSize, Qt, QRectF, QTimer, QRegularExpression
+from PySide6.QtGui import QIcon, QFontMetrics, QPainterPath, QRegion, QCursor, QRegularExpressionValidator
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
 
@@ -248,18 +248,28 @@ class RsMainWindow(QMainWindow):
             self.usr_selected_folder = folder
             self.w1_sample_input.setText(folder)
 
+    def _connect_qlineedit(
+            self,
+            p_widget: QLineEdit,
+            p_section: str,
+            p_key: str,
+            p_subsection: str | None = None,
+            p_version_validator: bool = False  # attiva solo se True
+    ) -> None:
 
-
-
-    def _connect_qlineedit(self, p_widget: QLineEdit, p_section: str, p_key: str, p_subsection: str|None = None) -> None:
+        if p_version_validator:
+            _validator = QRegularExpressionValidator(
+                QRegularExpression(r"^\d+\.\d+\.?\d*$") #blocks insertion of  malicious code
+            )
+            p_widget.setValidator(_validator)
 
         _timer = QTimer(self)
         _timer.setSingleShot(True)
         _timer.setInterval(500)
-        p_widget.textChanged.connect(lambda:_timer.start())
+        p_widget.textChanged.connect(lambda: _timer.start())
         _timer.timeout.connect(lambda: (
             TomlHandler.toml_edit(p_section, p_key, p_widget.text(), p_subsection),
-            self._update_confirm_button() #type: ignore , it is resolved since it is called in the child class despite says otherwise
+            self._update_confirm_button()  # type: ignore
         ))
 
 

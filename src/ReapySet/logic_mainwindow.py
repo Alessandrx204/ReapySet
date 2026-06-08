@@ -35,7 +35,9 @@ class LogicMainWindow(RsMainWindow):
                     self._lang_widget.unb_interp_qlinedit,
                     "languages",
                     "unb_interpreter_version",
-                    "python"
+                    "python",
+                    p_version_validator = True #avoids injection of unnecessary characters to avoid malicious code injection only 1234567890 and "." basically
+
                 )
             case "RUST":
                 print("testing rust")
