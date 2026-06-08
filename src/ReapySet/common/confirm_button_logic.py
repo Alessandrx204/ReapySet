@@ -89,11 +89,17 @@ class ConfirmButtonLogic:
 
         except Exception:
             self._warn_missing_tool(p_editor)
+
+    def _run_cmd(self, cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess | None:
+        try:
+            return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
+        except FileNotFoundError:
+            return None
+
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
         if not self._check_editor(p_editor):
-            return # if editor is not to be found or cli is not functioning it doesnt even create the venv
-        Path(p_proj_path).mkdir(parents=True, exist_ok=True)
-
+            return  # if editor is not to be found or cli is not functioning it doesnt even create the venv
+            # post conditional mkdir
         pm: str = p_py_config["package_manager"]
         interp: str = p_py_config["interpreter_path"]
 
@@ -109,7 +115,7 @@ class ConfirmButtonLogic:
             "languages",
             "unb_interpreter_version",
             "python"
-        )
+        ) # unbound interpreter
 
         # for conda / mamba / pixi unbound version if any else specific path's version
         pm_python_ver: str | None = unb_interp_ver or interp_ver
@@ -119,16 +125,21 @@ class ConfirmButtonLogic:
 
         match pm:
             case "PY:UV":
-                try:
-                    subprocess.Popen(
-                        LcFg.PythonVars.py_uv_icmd
-                        + [p_proj_path, "--python", uvs_python]
-                    )
-                except Exception:
+                result = self._run_cmd(
+                    LcFg.PythonVars.py_uv_icmd + [p_proj_path, "--python", uvs_python]
+                )
+                if result is None:
                     self._warn_missing_tool("uv")
                     return
+                if result.returncode != 0:
+                    self._warn_missing_tool("uv: invalid interpretr version!",p_msg_txt="",
+                                            p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
+                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    return
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
             case "PY:POETRY":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_poetry_icmd + [p_proj_path]
@@ -138,91 +149,116 @@ class ConfirmButtonLogic:
                     return
 
             case "PY:PIXI":
-                try:
-                    procs = subprocess.Popen(
-                        LcFg.PythonVars.py_pixi_icmd + [p_proj_path]
-                    )
-                    procs.wait()
-
-                    if pm_python_ver:
-                        subprocess.Popen(
-                            [LcFg.PythonVars.py_pixi_path, "add", f"python={pm_python_ver}"],
-                            cwd=p_proj_path
-                        )
-
-                except Exception:
+                result = self._run_cmd(
+                    LcFg.PythonVars.py_pixi_icmd + [p_proj_path]
+                )
+                if result is None:
                     self._warn_missing_tool("pixi")
                     return
+                if result.returncode != 0:
+                    self._warn_missing_tool("Pixi: invalid interpretr version!", p_msg_txt="",
+                                            p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
+                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    return
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
+                if pm_python_ver:
+                    result2 = self._run_cmd(
+                        [LcFg.PythonVars.py_pixi_path, "add", f"python={pm_python_ver}"],
+                        cwd=p_proj_path
+                    )
+                    if result2 is None:
+                        self._warn_missing_tool("pixi")
+                        return
+                    if result2.returncode != 0:
+                        self._warn_missing_tool("Pixi: invalid interpretr version!", p_msg_txt="",
+                                                p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
+                                                p_info_txt=result2.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                        return
 
             case "PY:GENERIC_CONDA":
-                try:
-                    subprocess.Popen(
-                        LcFg.PythonVars.py_conda_icmd
-                        + [str(Path(p_proj_path) / ".conda")]
-                        + ([f"python={pm_python_ver}"] if pm_python_ver else [])
-                    )
-                except Exception:
+                result = self._run_cmd(
+                    LcFg.PythonVars.py_conda_icmd
+                    + [str(Path(p_proj_path) / ".conda")]
+                    + ([f"python={pm_python_ver}"] if pm_python_ver else [])
+                )
+                if result is None:
                     self._warn_missing_tool("conda")
                     return
+                if result.returncode != 0:
+                    self._warn_missing_tool("Conda: invalid interpretr version!", p_msg_txt="",
+                                            p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
+                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    return
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
             case "PY:MAMBA":
-                try:
-                    subprocess.Popen(
-                        LcFg.PythonVars.py_mamba_icmd
-                        + [str(Path(p_proj_path) / ".mamba")]
-                        + ([f"python={pm_python_ver}"] if pm_python_ver else [])
-                    )
-                except Exception:
+                result = self._run_cmd(
+                    LcFg.PythonVars.py_mamba_icmd
+                    + [str(Path(p_proj_path) / ".mamba")]
+                    + ([f"python={pm_python_ver}"] if pm_python_ver else [])
+                )
+                if result is None:
                     self._warn_missing_tool("mamba")
                     return
+                if result.returncode != 0:
+                    self._warn_missing_tool("Mamba: invalid interpretr version!", p_msg_txt="",
+                                            p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
+                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    return
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
             case "PY:HATCH":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_hatch_icmd + [p_proj_path]
                     )
                 except Exception:
-                    self._warn_missing_tool("hatch")
+                    self._warn_missing_tool("hatch", p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization")
                     return
 
             case "PY:VENV":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         [interp, "-m", "venv", ".venv"],
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("pip")
+                    self._warn_missing_tool("pip", p_learn_more_url="https://docs.python.org/3/library/venv.html")
                     return
 
             case "PY:PDM":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_pdm_icmd + ["--python", interp],
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("pdm")
+                    self._warn_missing_tool("pdm", p_learn_more_url="//pdm-project.org/en/latest/usage/project/")
                     return
 
             case "PY:PIPENV":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_pipenv_icmd + ["--python", interp],
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("pipenv")
+                    self._warn_missing_tool("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/")
                     return
 
             case "PY:VIRTUALENV":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         [LcFg.PythonVars.py_virtualenv_path, "-p", interp, ".venv"],
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("virtualenv")
+                    self._warn_missing_tool("virtualenv", p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html")
                     return
 
         self._openin_editor(p_editor, p_proj_path)
@@ -232,7 +268,7 @@ class ConfirmButtonLogic:
         ...
 
     def on_confirm_clicked(self) -> None:
-        data = TomlHandler._toml_read()
+        data = TomlHandler._toml_read() # noqa
         proj_path = data["global"]["project_path"]
         editor = data["global"]["fav_editor"]
 
@@ -240,4 +276,4 @@ class ConfirmButtonLogic:
             self.setup_python(data["languages"]["python"], proj_path, editor)
         elif data["languages"]["rust"]["enabled"]:
             self.setup_rust(data["languages"]["rust"], proj_path, editor)
-        # ...
+
