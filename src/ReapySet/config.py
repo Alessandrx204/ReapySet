@@ -98,7 +98,7 @@ class MwConfig:
         path_box_top_label: str         = "Project Location:"
         path_box_placeholder_txt: str   = "Project Path...?"
         sample_box_top_label: str       = "Boilerplates:"
-        sample_box_placeholder_txt: str = "Leave Blank for None"
+        boilerplates_box_placeholder_txt: str = "COMING SOON"
         browse_button_text: str         = "Browse"
         select_editor_Combobox_top_label: str = ""
 

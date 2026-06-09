@@ -36,7 +36,7 @@ def main():
     QTimer.singleShot(0, lambda: m_window.create_language_buttons(m_window.button_labels_dict,
                                      Mwc.LangBtnWidget.max_btn_x_row,
                                      m_window.main_layout))
-    #m_window._connect_qlineedit(m_window.w1_path_input, "global", "project_path")
+
 
 
     icon: QIcon = QIcon(str(Mwc.Images().icon_path))
@@ -46,15 +46,7 @@ def main():
 
 
     m_window.show()
-    if sys.platform == "darwin":
-        try:
-            import objc
-            from AppKit import NSApplication
-            ns_app = NSApplication.sharedApplication()
-            ns_window = ns_app.windows()[0]
-            ns_window.setCollectionBehavior_(1 << 2)  # NSWindowCollectionBehaviorMoveToActiveSpace
-        except Exception:#type: ignore
-            pass
+
 
     m_window.original_geometry = m_window.geometry()
 

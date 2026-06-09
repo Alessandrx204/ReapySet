@@ -89,7 +89,7 @@ class LogicMainWindow(RsMainWindow):
         ))
 
         QTimer.singleShot(Mwc.mw_expansion_time, lambda: self.setMinimumSize(Mwc.mw_width, Mwc.mw_expanded_height))
-        QTimer.singleShot(Mwc.mw_expansion_time, lambda: self._update_confirm_button())
+        QTimer.singleShot(Mwc.mw_expansion_time+ 500, lambda: self._update_confirm_button())
 
 
 
@@ -136,8 +136,8 @@ class LogicMainWindow(RsMainWindow):
         self.back_button.setEnabled(False)
         self.collapse_window()
 
-
-    def handle_github_button_on_enter_pressed(self):
+    @staticmethod
+    def handle_github_button_on_enter_pressed():
         print("downloading repo...")
 
     def _update_confirm_button(self) -> None:
