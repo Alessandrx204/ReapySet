@@ -236,6 +236,7 @@ class RsMainWindow(QMainWindow):
             col = index_column * 2 + row_offset
 
             button = QPushButton(name)
+            button.setStyleSheet(Mwc.LangBtnWidget.lang_btns_qss)#?
             if logo_path is not None:
                 button.setIcon(QIcon(str(logo_path)))
                 button.setIconSize(QSize(25, 15))

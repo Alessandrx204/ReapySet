@@ -35,7 +35,7 @@ class ConfirmButtonLogic:
     # and a list of commands that will be called via subprpcess.Popen(py_uv/py_poetry/py_venv_init_cmd:set[set[str]]
     # rs_cargo dotnet else with a match case)
     @staticmethod
-    def _warn_missing_tool(p_tool_name: str,
+    def _warn_missing_popup(p_tool_name: str,
                            p_learn_more_url: str = "about:blank",
                            p_window_title: str = "Tool Not Found",
                            p_msg_txt: str = "not found or not installed.",
@@ -61,7 +61,7 @@ class ConfirmButtonLogic:
         cmd = LcFg.EditorCmd.get_cmd(p_editor)
 
         if not cmd:
-            self._warn_missing_tool(p_editor)
+            self._warn_missing_popup(p_editor)
             return False
 
         executable = cmd.split()[0]
@@ -72,7 +72,7 @@ class ConfirmButtonLogic:
         )
 
         if not resolved:
-            self._warn_missing_tool(p_editor)
+            self._warn_missing_popup(p_editor)
             return False
 
         return True
@@ -88,7 +88,7 @@ class ConfirmButtonLogic:
             subprocess.Popen(editor_openin_cmd.split())
 
         except Exception:
-            self._warn_missing_tool(p_editor)
+            self._warn_missing_popup(p_editor)
 
     def _run_cmd(self, cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess | None:
         try:
@@ -129,12 +129,13 @@ class ConfirmButtonLogic:
                     LcFg.PythonVars.py_uv_icmd + [p_proj_path, "--python", uvs_python]
                 )
                 if result is None:
-                    self._warn_missing_tool("uv")
+                    self._warn_missing_popup("uv")
                     return
                 if result.returncode != 0:
-                    self._warn_missing_tool("uv: invalid interpretr version!",p_msg_txt="",
-                                            p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
-                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    self._warn_missing_popup("uv: invalid interpretr version!",
+                                             p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
+                                             p_msg_txt="",
+                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
                     return
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
@@ -145,7 +146,7 @@ class ConfirmButtonLogic:
                         LcFg.PythonVars.py_poetry_icmd + [p_proj_path]
                     )
                 except Exception:
-                    self._warn_missing_tool("poetry")
+                    self._warn_missing_popup("poetry")
                     return
 
             case "PY:PIXI":
@@ -153,12 +154,13 @@ class ConfirmButtonLogic:
                     LcFg.PythonVars.py_pixi_icmd + [p_proj_path]
                 )
                 if result is None:
-                    self._warn_missing_tool("pixi")
+                    self._warn_missing_popup("pixi")
                     return
                 if result.returncode != 0:
-                    self._warn_missing_tool("Pixi: invalid interpretr version!", p_msg_txt="",
-                                            p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
-                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    self._warn_missing_popup("Pixi: invalid interpretr version!",
+                                             p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
+                                             p_msg_txt="",
+                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
                     return
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 if pm_python_ver:
@@ -167,12 +169,13 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path
                     )
                     if result2 is None:
-                        self._warn_missing_tool("pixi")
+                        self._warn_missing_popup("pixi")
                         return
                     if result2.returncode != 0:
-                        self._warn_missing_tool("Pixi: invalid interpretr version!", p_msg_txt="",
-                                                p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
-                                                p_info_txt=result2.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                        self._warn_missing_popup("Pixi: invalid interpretr version!",
+                                                 p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
+                                                 p_msg_txt="",
+                                                 p_info_txt=result2.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
                         return
 
             case "PY:GENERIC_CONDA":
@@ -182,12 +185,13 @@ class ConfirmButtonLogic:
                     + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                 )
                 if result is None:
-                    self._warn_missing_tool("conda")
+                    self._warn_missing_popup("conda")
                     return
                 if result.returncode != 0:
-                    self._warn_missing_tool("Conda: invalid interpretr version!", p_msg_txt="",
-                                            p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
-                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    self._warn_missing_popup("Conda: invalid interpretr version!",
+                                             p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
+                                             p_msg_txt="",
+                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
                     return
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
@@ -198,12 +202,13 @@ class ConfirmButtonLogic:
                     + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                 )
                 if result is None:
-                    self._warn_missing_tool("mamba")
+                    self._warn_missing_popup("mamba")
                     return
                 if result.returncode != 0:
-                    self._warn_missing_tool("Mamba: invalid interpretr version!", p_msg_txt="",
-                                            p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
-                                            p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    self._warn_missing_popup("Mamba: invalid interpretr version!",
+                                             p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
+                                             p_msg_txt="",
+                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
                     return
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
@@ -214,7 +219,8 @@ class ConfirmButtonLogic:
                         LcFg.PythonVars.py_hatch_icmd + [p_proj_path]
                     )
                 except Exception:
-                    self._warn_missing_tool("hatch", p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization")
+                    self._warn_missing_popup("hatch",
+                                             p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization")
                     return
 
             case "PY:VENV":
@@ -225,7 +231,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("pip", p_learn_more_url="https://docs.python.org/3/library/venv.html")
+                    self._warn_missing_popup("pip", p_learn_more_url="https://docs.python.org/3/library/venv.html")
                     return
 
             case "PY:PDM":
@@ -236,7 +242,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("pdm", p_learn_more_url="//pdm-project.org/en/latest/usage/project/")
+                    self._warn_missing_popup("pdm", p_learn_more_url="//pdm-project.org/en/latest/usage/project/")
                     return
 
             case "PY:PIPENV":
@@ -247,7 +253,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/")
+                    self._warn_missing_popup("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/")
                     return
 
             case "PY:VIRTUALENV":
@@ -258,7 +264,8 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path
                     )
                 except Exception:
-                    self._warn_missing_tool("virtualenv", p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html")
+                    self._warn_missing_popup("virtualenv",
+                                             p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html")
                     return
 
         self._openin_editor(p_editor, p_proj_path)

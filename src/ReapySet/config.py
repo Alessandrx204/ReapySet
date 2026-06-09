@@ -115,7 +115,102 @@ class MwConfig:
         images: "MwConfig.Images" = field(default_factory=lambda: MwConfig.Images())
         enabled_btns: list[int]   = field(default_factory=lambda: [0])
         cw_height:     int = 120
-        max_btn_x_row: int = 5
+        max_btn_x_row: int = 3 #ex 5
+        lang_btns_qss: str = ("QPushButton {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #66676b,\n"
+                              "        stop:0.45 #5f6063,\n"
+                              "        stop:1 #57585a\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #f3eaf0;\n"
+                              "\n"
+                              "    border-top: 1.25px solid #c28cb7;\n"
+                              "    border-left: 1px solid #9e8299;\n"
+                              "    border-right: 1px solid #9e8299;\n"
+                              "    border-bottom: 2px solid #736473;\n"
+                              "\n"
+                              "    border-radius: 7px;\n"
+                              "    padding: 6px 18px;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:hover {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #96788f,\n"
+                              "        stop:0.5 #896d84,\n"
+                              "        stop:1 #80637a\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #ffd9e9;\n"
+                              "\n"
+                              "    border-top: 1px solid #ffc5df;\n"
+                              "    border-left: 1px solid #f0a2c5;\n"
+                              "    border-right: 1px solid #d989b0;\n"
+                              "    border-bottom: 2px solid #8d627d;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:pressed {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #4d424b,\n"
+                              "        stop:1 #433841\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #ffe3ef;\n"
+                              "\n"
+                              "    border-top: 1px solid #6d5565;\n"
+                              "    border-left: 1px solid #8e647d;\n"
+                              "    border-right: 1px solid #8e647d;\n"
+                              "    border-bottom: 1px solid #b97e9e;\n"
+                              "\n"
+                              "    padding-top: 7px;\n"
+                              "    padding-bottom: 5px;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:checked {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #734860,\n"
+                              "        stop:0.5 #643a52,\n"
+                              "        stop:1 #593047\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #ffe0ec;\n"
+                              "\n"
+                              "    border-top: 1px solid #ffc8de;\n"
+                              "    border-left: 1px solid #f1a5c8;\n"
+                              "    border-right: 1px solid #d887ad;\n"
+                              "    border-bottom: 2px solid #8d5c77;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:checked:hover {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #81506a,\n"
+                              "        stop:0.5 #74455e,\n"
+                              "        stop:1 #673a53\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #fff0f7;\n"
+                              "\n"
+                              "    border-top: 1px solid #ffd9ea;\n"
+                              "    border-left: 1px solid #ffb7d3;\n"
+                              "    border-right: 1px solid #e092b7;\n"
+                              "    border-bottom: 2px solid #99657f;\n"
+                              "}\n"
+                              "\n"
+                              "QPushButton:disabled {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #444548,\n"
+                              "        stop:1 #37383b\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #7f7178;\n"
+                              "    border: 1px solid #534a52;\n"
+                              "}")
 
         # built once at init instead of being recreated on every access
         button_dict: dict = field(init=False)
@@ -123,6 +218,14 @@ class MwConfig:
         def __post_init__(self):
             img = self.images
             self.button_dict = {
+                "Python":        ["PY",       img.python_logo],
+                "Rust (W.I.P.)":          ["RUST",     img.rust_logo],
+                ".NET (W.I.P.)":          ["DOTNET",   img.dotnet_logo],
+                "Kotlin/Java (W.I.P.)":   ["KT",       img.kotlin_logo],
+                "Ts/JavaScript (W.I.P.)": ["TSJS",     img.javascript_logo],
+            }
+
+            """self.button_dict = {
                 "Python":        ["PY",       img.python_logo],
                 "Rust":          ["RUST",     img.rust_logo],
                 ".NET":          ["DOTNET",   img.dotnet_logo],
@@ -132,18 +235,18 @@ class MwConfig:
                 "GO":            ["GO",       img.go_logo],
                 "Lua":           ["LUA",      img.lua_logo],
                 "GDScript":      ["GDSCRIPT", img.godot_logo],
-            }
+            }"""
 
 
     @dataclass
     class Widget3:
         """Widget 3: per language widgets"""
-        widget3_qss: str = """
-            QStackedWidget {
-                border-radius: 10px;
-                background-color: transparent;
-            }
-        """
+        widget3_qss: str = ("\n"
+                            "            QStackedWidget {\n"
+                            "                border-radius: 10px;\n"
+                            "                background-color: transparent;\n"
+                            "            }\n"
+                            "        ")
 
         """python"""
         py_qlabel_txt: str = "Please Setup Your Python Workspace! (^-^)/"
@@ -151,53 +254,69 @@ class MwConfig:
         py_unb_interp_qlinedit_top_txt: str = "exact Interp. version\n(only uv & conda dervivatives)"
         py_unb_interp_qlinedit_inner_txt: str = "e.g. 3.13.5"
 
-        py_qlabel_qss: str = """QLabel { 
-            font-family: "Times New Roman" ;
-            letter-spacing: 1.5px; 
-            font-style: bold; 
-            font-weight: 200;
-            font-size: 25pt;
-            padding: 20px;
-            qproperty-alignment: AlignCenter; 
-        }"""
-        py_radiobutton_qss: str = """QRadioButton {
-    spacing: -1px;
-    padding: 4px 14px;
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    border-radius: 7px;
-    background: qlineargradient(
-        x1:0, y1:0,
-        x2:0, y2:1,
-        stop:0 rgba(50, 50, 50, 180),
-        stop:1 rgba(30, 30, 30, 200)
-    );
-    color: rgba(235, 235, 235, 220);
-    font-size: 13px;
-    min-width: 90px;
-}
+        py_qlabel_qss: str = (
+            ""
+            "QLabel { \n"
+            "    font-family: \"Times New Roman\" ;\n"
+            "    letter-spacing: 1.5px; \n"
+            "    font-style: bold; \n"
+            "    font-weight: 200;\n"
+            "    font-size: 25pt;\n"
+            "    padding: 20px;\n"
+            "    qproperty-alignment: AlignCenter; \n"
+            "}"
+        )
 
-QRadioButton:hover {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: qlineargradient(
-        x1:0, y1:0,
-        x2:0, y2:1,
-        stop:0 rgba(70, 70, 70, 200),
-        stop:1 rgba(40, 40, 40, 220)
-    );
-}
-
-
-QRadioButton:checked {
-  
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    
-    /* Reversed gradient (darker at the top) to create an internal shadow effect */
-
-
-    /* A touch of very muted pink, just to highlight the selection */
-    color: rgba(230, 190, 255, 0.90); 
-    font-weight: 500; 
-}"""
+        py_radiobutton_qss: str = (
+            "QRadioButton {\n"
+            "    spacing: -1px;\n"
+            "    padding: 4px 14px;\n"
+            "    border: 2px solid rgba(0, 0, 0, 0.3);\n"
+            "    border-radius: 7px;\n"
+            "    background: qlineargradient(\n"
+            "        x1:0, y1:0,\n"
+            "        x2:0, y2:1,\n"
+            "        stop:0 rgba(50, 50, 50, 180),\n"
+            "        stop:1 rgba(30, 30, 30, 200)\n"
+            "    );\n"
+            "    color: rgba(235, 235, 235, 220);\n"
+            "    font-size: 13px;\n"
+            "    min-width: 90px;\n"
+            "}\n"
+            "\n"
+            "QRadioButton:hover {\n"
+            "    border: 1px solid rgba(255, 255, 255, 0.18);\n"
+            "    background: qlineargradient(\n"
+            "        x1:0, y1:0,\n"
+            "        x2:0, y2:1,\n"
+            "        stop:0 rgba(70, 70, 70, 200),\n"
+            "        stop:1 rgba(40, 40, 40, 220)\n"
+            "    );\n"
+            "}\n"
+            "\n"
+            "QRadioButton:disabled {\n"
+            "    border: 2px solid rgba(0, 0, 0, 0.18);\n"
+            "    background: qlineargradient(\n"
+            "        x1:0, y1:0,\n"
+            "        x2:0, y2:1,\n"
+            "        stop:0 rgba(38, 38, 38, 120),\n"
+            "        stop:1 rgba(24, 24, 24, 140)\n"
+            "    );\n"
+            "    color: rgba(180, 180, 180, 95);\n"
+            "}\n"
+            "\n"
+            "QRadioButton:checked {\n"
+            "  \n"
+            "    border: 2px solid rgba(0, 0, 0, 0.3);\n"
+            "    \n"
+            "    /* Reversed gradient (darker at the top) to create an internal shadow effect */\n"
+            "\n"
+            "\n"
+            "    /* A touch of very muted pink, just to highlight the selection */\n"
+            "    color: rgba(230, 190, 255, 0.90); \n"
+            "    font-weight: 500; \n"
+            "}"
+        )
         py_MAX_RBTNS_PER_ROW: int = 4
         py_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
             ("PY:UV", "uv", "uv_logo.png"),
@@ -210,6 +329,7 @@ QRadioButton:checked {
             ("PY:PIPENV", "PipEnv", "pipenv_logo.png"),
             ("PY:VIRTUALENV", "VirtualEnv", "virtualenv_logo.png"),
             ("PY:PDM", "PDM", "pdm_logo.png"),
+            ("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png"),
                                                          ])
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)

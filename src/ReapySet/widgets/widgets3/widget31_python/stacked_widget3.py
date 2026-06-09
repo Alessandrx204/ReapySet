@@ -14,19 +14,8 @@ from widgets.widgets3.widget31_python.python_interpreter_utils import populate_i
 from config import MwConfig as Mwc
 from common.toml_handler import TomlHandler
 # --- Data: (key, button txt, icon path) ---
-ENTRIES = [
-    ("PY:UV",            "uv",                       "uv_logo.png"),
-    ("PY:VENV",          "Venv(default)",        "python_logo.png"),
-    ("PY:POETRY",        "poetry",               "poetry_logo.png"),
-    ("PY:HATCH",         "Hatch",                   "pip_logo.png"),
-    ("PY:GENERIC_CONDA", "conda*",                "conda_logo.png"),
-    ("PY:PIXI",           "Pixi",                  "pixi_logo.png"),
-    ("PY:MAMBA",          "Mamba",                "mamba_logo.png"),
-    ("PY:PIPENV",         "PipEnv",              "pipenv_logo.png"),
-    ("PY:VIRTUALENV",      "VirtualEnv",     "virtualenv_logo.png"),
-    ("PY:PDM",             "PDM",                   "pdm_logo.png"),
-]
-
+widget3_instance = Mwc.Widget3()
+ENTRIES = widget3_instance.py_RBTNS_ENTRIES
 MAX_PER_ROW = 4  # p_max_entry_x_row
 
 
@@ -114,6 +103,7 @@ class PythonGenWidget(QWidget):
         pm_layout = QGridLayout(pm_widget)
         pm_layout.setSpacing(Mwc.Widget3.py_pkg_manager_rbtns_spacing)
         pm_layout.setContentsMargins(0, 0, 0, 0)
+        pm_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         for i, (key, label, icon_path) in enumerate(entries):
             row, col = divmod(i, max_per_row)
@@ -128,6 +118,10 @@ class PythonGenWidget(QWidget):
                 TomlHandler.toml_edit("languages", "package_manager", "venv", subsection="python")
                 #note: ensures the default type alwaays
                 # overrides the previously selected package managaer to avoind mixing them up
+            if i == len(entries) - 1:
+                btn.setEnabled(False) #disables mojo
+
+
 
 
 
