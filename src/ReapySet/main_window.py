@@ -152,7 +152,11 @@ class RsMainWindow(QMainWindow):
         # 2. gets reference to internal buttons to configure them
         self.confirm_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Ok)
         self.confirm_button.setText("Confirm")
+        self.confirm_button.clicked.connect(
 
+            self.handle_confirm_clicked
+
+        )
         #self.cancel_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Cancel)
 
         self.back_button: QPushButton = QPushButton("Back")
@@ -171,7 +175,8 @@ class RsMainWindow(QMainWindow):
             )
         )
 
-        self.button_box.accepted.connect(lambda : ConfirmButtonLogic().on_confirm_clicked())
+        #self.button_box.accepted.connect(lambda : ConfirmButtonLogic().on_confirm_clicked())
+        #self.confirm_button.clicked.connect(self.handle_confirm_clicked)
         #self.button_box.rejected.connect(lambda: print("Cancel pressed"))
         #self.button_box.rejected.connect(lambda: (logic_mainwindow.LogicMainWindow.handle_back_button(self), # type ignore
                                                   #TomlHandler.set_disabled_all_langs())) # noqa back button clone (for now)
@@ -236,6 +241,8 @@ class RsMainWindow(QMainWindow):
             col = index_column * 2 + row_offset
 
             button = QPushButton(name)
+            button.setProperty("lang_id", abbrev)
+            button.setProperty("selected", False)
             button.setStyleSheet(Mwc.LangBtnWidget.lang_btns_qss)#?
             if logo_path is not None:
                 button.setIcon(QIcon(str(logo_path)))

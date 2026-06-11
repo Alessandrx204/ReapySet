@@ -275,6 +275,7 @@ class ConfirmButtonLogic:
         ...
 
     def on_confirm_clicked(self) -> None:
+
         data = TomlHandler._toml_read() # noqa
         proj_path = data["global"]["project_path"]
         editor = data["global"]["fav_editor"]
@@ -283,4 +284,6 @@ class ConfirmButtonLogic:
             self.setup_python(data["languages"]["python"], proj_path, editor)
         elif data["languages"]["rust"]["enabled"]:
             self.setup_rust(data["languages"]["rust"], proj_path, editor)
+        elif data["languages"]["dotnet"]["enabled"]:
+            self.setup_dotnet(data["languages"]["dotnet"], proj_path, editor)
 

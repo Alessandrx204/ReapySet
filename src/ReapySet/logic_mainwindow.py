@@ -6,7 +6,7 @@ from config import MwConfig as Mwc
 from widgets.MwFuctions import MwFuncs as Mwf
 import widgets.widgets3.widget31_python.stacked_widget3 as SW3 #noqa
 from common.toml_handler import TomlHandler
-
+from common.confirm_button_logic import ConfirmButtonLogic
 
 
 
@@ -24,9 +24,11 @@ class LogicMainWindow(RsMainWindow):
         self.python_gen_widget.hide()
         self.lang_btn_cfg = Mwc.LangBtnWidget()
         self._lang_widget = None
+        self.confirm_logic = ConfirmButtonLogic()
+        self.confirm_busy = False
 
-    def expand_window(self, language: str):
-        lang_id = language  # "PY" it's already the id
+    def expand_window(self, p_language: str):
+        lang_id = p_language  # "PY" it's already the id
 
         match lang_id:
             case "PY":
@@ -121,8 +123,13 @@ class LogicMainWindow(RsMainWindow):
         for i, btn in enumerate(self._language_buttons):
             btn.setEnabled(i in self._enabled_buttons)
 
-    def handle_event(self, button_label_txt):
-        self.expand_window(button_label_txt)  # ←  label
+    def handle_event(self, button_label_txt: str):
+        for btn in self._language_buttons:
+            btn.setProperty("selected", btn.property("lang_id") == button_label_txt)
+
+            btn.style().unpolish(btn)
+            btn.style().polish(btn) # forces a refresh
+        self.expand_window(button_label_txt)
         self.back_button.setEnabled(True)
         print(button_label_txt)
 
@@ -146,3 +153,22 @@ class LogicMainWindow(RsMainWindow):
         lang_ok = any(data["languages"][i]["enabled"] for i in data["languages"])
         self.confirm_button.setEnabled(path_ok and lang_ok)
 
+    def handle_confirm_clicked(self) -> None:
+        if self.confirm_busy:
+            return
+        self.confirm_busy = True
+        self.confirm_button.setEnabled(False)
+
+        try:
+            self.confirm_logic.on_confirm_clicked()
+
+        finally:
+            QTimer.singleShot(
+                2000,
+                self._unlock_confirm_btn # no () since its a reference
+            )
+
+
+    def _unlock_confirm_btn(self) -> None:
+        self.confirm_busy = False
+        self._update_confirm_button()

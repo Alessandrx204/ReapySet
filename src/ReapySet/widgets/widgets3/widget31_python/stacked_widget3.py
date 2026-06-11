@@ -12,7 +12,7 @@ from widgets.MwFuctions import MwFuncs as Mwf
 
 from widgets.widgets3.widget31_python.python_interpreter_utils import populate_interpreter_combobox
 from config import MwConfig as Mwc
-from common.toml_handler import TomlHandler
+from common.toml_handler import TomlHandler, CONFIG_PATH, DEST_PATH
 # --- Data: (key, button txt, icon path) ---
 widget3_instance = Mwc.Widget3()
 ENTRIES = widget3_instance.py_RBTNS_ENTRIES
@@ -104,20 +104,44 @@ class PythonGenWidget(QWidget):
         pm_layout.setSpacing(Mwc.Widget3.py_pkg_manager_rbtns_spacing)
         pm_layout.setContentsMargins(0, 0, 0, 0)
         pm_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        project_pm = TomlHandler.toml_get(
+            p_file=DEST_PATH,
+            section="languages",
+            subsection="python",
+            key="package_manager"
+        )
+
+        default_pm = TomlHandler.toml_get(
+            p_file=CONFIG_PATH,
+            section="python",
+            key="default_pm"
+        )
+
+        checked_pm = project_pm or default_pm or "PY:VENV"
+
+        if not project_pm: # "" in toml is not none but empty string
+            TomlHandler.toml_edit(
+                "languages",
+                "package_manager",
+                checked_pm,
+                subsection="python"
+            )
 
         for i, (key, label, icon_path) in enumerate(entries):
             row, col = divmod(i, max_per_row)
-            btn = QRadioButton(label)
+            btn_label: str = label
+            if key == default_pm:
+                btn_label += " (default)" # adds default lbel to the. default pm
+            btn = QRadioButton(btn_label)
             btn.setProperty("key", key)
             btn.setIcon(QIcon(icon_path))
             btn.setIconSize(QSize(20, 20))
             self.group.addButton(btn, i)
             pm_layout.addWidget(btn, row, col)
-            if i == 1:
+            if key == checked_pm:
                 btn.setChecked(True)
-                TomlHandler.toml_edit("languages", "package_manager", "venv", subsection="python")
-                #note: ensures the default type alwaays
-                # overrides the previously selected package managaer to avoind mixing them up
+                # Selects the package manager currently stored in the project TOML.
+                # If missing, it was initialised from the global default.
             if i == len(entries) - 1:
                 btn.setEnabled(False) #disables mojo
 

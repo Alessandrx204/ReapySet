@@ -210,7 +210,23 @@ class MwConfig:
                               "\n"
                               "    color: #7f7178;\n"
                               "    border: 1px solid #534a52;\n"
-                              "}")
+                              "}\n"
+                              "\n"
+                              "QPushButton[selected=\"true\"]:disabled {\n"
+                              "    background-color: qlineargradient(\n"
+                              "        x1:0, y1:0, x2:0, y2:1,\n"
+                              "        stop:0 #734860,\n"
+                              "        stop:0.5 #643a52,\n"
+                              "        stop:1 #593047\n"
+                              "    );\n"
+                              "\n"
+                              "    color: #ffe0ec;\n"
+                              "\n"
+                              "    border-top: 1px solid #ffc8de;\n"
+                              "    border-left: 1px solid #f1a5c8;\n"
+                              "    border-right: 1px solid #d887ad;\n"
+                              "    border-bottom: 2px solid #8d5c77;\n"
+                              "}\n")
 
         # built once at init instead of being recreated on every access
         button_dict: dict = field(init=False)
@@ -320,7 +336,7 @@ class MwConfig:
         py_MAX_RBTNS_PER_ROW: int = 4
         py_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
             ("PY:UV", "uv", "uv_logo.png"),
-            ("PY:VENV", "Venv(default)", "python_logo.png"),
+            ("PY:VENV", "Venv", "python_logo.png"),
             ("PY:POETRY", "poetry", "poetry_logo.png"),
             ("PY:HATCH", "Hatch", "pip_logo.png"),
             ("PY:GENERIC_CONDA", "conda*", "conda_logo.png"),
