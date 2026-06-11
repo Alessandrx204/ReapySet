@@ -4,9 +4,9 @@ import os
 import sys
 from pathlib import Path
 
-
+#
 def get_python_interpreters() -> list[tuple[str, str]]:
-    """Restituisce lista di (label, path) degli interpreter Python trovati."""
+    """Returns a list of (label, path) pairs for the found Python interpreters."""
     found: dict[str, str] = {}
     is_windows = sys.platform == "win32"
 
@@ -19,7 +19,7 @@ def get_python_interpreters() -> list[tuple[str, str]]:
         path = shutil.which(cmd)
         if path is None:
             continue
-        real_path = str(Path(path).resolve())  # ← risolve symlink
+        real_path = str(Path(path).resolve())  # ← avoids symlink
         if real_path in found:
             continue
         try:
@@ -72,7 +72,7 @@ def get_python_interpreters() -> list[tuple[str, str]]:
     versions_dir = pyenv_root / "versions"
     if versions_dir.is_dir():
         for ver in sorted(versions_dir.iterdir()):
-            # ✅ Path invece di os.path.join
+
             python_exe = Path("python.exe") if is_windows else Path("bin") / "python"
             path_obj = ver / python_exe
             path = str(path_obj)
@@ -83,7 +83,7 @@ def get_python_interpreters() -> list[tuple[str, str]]:
 
 
 def populate_interpreter_combobox(combobox) -> None:  # type: ignore[no-untyped-def]
-    """Popola un QComboBox con gli interpreter trovati."""
+    """Populates a QComboBox with the found interpreters."""
     combobox.clear()
     interpreters = get_python_interpreters()
     if interpreters:
