@@ -90,4 +90,4 @@ def populate_interpreter_combobox(combobox) -> None:  # type: ignore[no-untyped-
         for path, label in interpreters:
             combobox.addItem(label, userData=path)
     else:
-        combobox.addItem("Nessun interprete trovato")
+        combobox.addItem("No interpreter was found")
