@@ -1,3 +1,4 @@
+import shlex
 import shutil
 import subprocess
 from pathlib import Path
@@ -79,24 +80,68 @@ class ConfirmButtonLogic:
 
     def _openin_editor(self, p_editor: str, p_proj_path: str) -> None:
 
-
-
         cmd = LcFg.EditorCmd.get_cmd(p_editor)
+
         editor_openin_cmd = cmd.format(path=p_proj_path)
 
         try:
-            subprocess.Popen(editor_openin_cmd.split())
+
+            subprocess.Popen(
+
+                shlex.split(editor_openin_cmd),
+
+                env=self._get_sterile_env()
+
+            )
+
+        except Exception:
+
+            self._warn_missing_popup(p_editor)
 
         except Exception:
             self._warn_missing_popup(p_editor)
 
+    def _get_sterile_env(self) -> dict[str, str]:
+
+        import os
+
+        clean_env = os.environ.copy()
+
+        for env_var in [
+
+            "VIRTUAL_ENV",
+
+            "PYTHONHOME",
+
+            "PYTHONPATH",
+
+            "CONDA_PREFIX",
+
+            "CONDA_DEFAULT_ENV",
+
+            "UV_PROJECT_ENVIRONMENT",
+
+            "UV_ACTIVE",
+
+            "PIPENV_ACTIVE",
+
+            "POETRY_ACTIVE",
+
+        ]:
+            clean_env.pop(env_var, None)
+
+        return clean_env
+
     def _run_cmd(self, cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess | None:
         try:
-            return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
+            return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd, env=self._get_sterile_env())
         except FileNotFoundError:
             return None
 
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
+        import os
+        for env_var in ["VIRTUAL_ENV", "PYTHONHOME", "PYTHONPATH", "CONDA_PREFIX"]:
+            os.environ.pop(env_var, None)
         if not self._check_editor(p_editor):
             return  # if editor is not to be found or cli is not functioning it doesnt even create the venv
             # post conditional mkdir
@@ -143,7 +188,9 @@ class ConfirmButtonLogic:
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
-                        LcFg.PythonVars.py_poetry_icmd + [p_proj_path]
+                        LcFg.PythonVars.py_poetry_icmd + [p_proj_path],
+                              env=self._get_sterile_env()
+
                     )
                 except Exception:
                     self._warn_missing_popup("poetry")
@@ -216,7 +263,7 @@ class ConfirmButtonLogic:
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
-                        LcFg.PythonVars.py_hatch_icmd + [p_proj_path]
+                        LcFg.PythonVars.py_hatch_icmd + [p_proj_path],env=self._get_sterile_env()
                     )
                 except Exception:
                     self._warn_missing_popup("hatch",
@@ -228,7 +275,8 @@ class ConfirmButtonLogic:
                 try:
                     subprocess.Popen(
                         [interp, "-m", "venv", ".venv"],
-                        cwd=p_proj_path
+                        cwd=p_proj_path,
+                        env=self._get_sterile_env()
                     )
                 except Exception:
                     self._warn_missing_popup("pip", p_learn_more_url="https://docs.python.org/3/library/venv.html")
@@ -239,7 +287,8 @@ class ConfirmButtonLogic:
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_pdm_icmd + ["--python", interp],
-                        cwd=p_proj_path
+                        cwd=p_proj_path,
+                        env=self._get_sterile_env()
                     )
                 except Exception:
                     self._warn_missing_popup("pdm", p_learn_more_url="//pdm-project.org/en/latest/usage/project/")
@@ -250,7 +299,8 @@ class ConfirmButtonLogic:
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_pipenv_icmd + ["--python", interp],
-                        cwd=p_proj_path
+                        cwd=p_proj_path,
+                        env=self._get_sterile_env()
                     )
                 except Exception:
                     self._warn_missing_popup("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/")
@@ -261,7 +311,8 @@ class ConfirmButtonLogic:
                 try:
                     subprocess.Popen(
                         [LcFg.PythonVars.py_virtualenv_path, "-p", interp, ".venv"],
-                        cwd=p_proj_path
+                        cwd=p_proj_path,
+                        env=self._get_sterile_env()
                     )
                 except Exception:
                     self._warn_missing_popup("virtualenv",

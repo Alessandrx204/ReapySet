@@ -1,4 +1,5 @@
 from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
+from PySide6.QtGui import QResizeEvent
 
 from main_window import RsMainWindow
 
@@ -7,9 +8,7 @@ from widgets.MwFuctions import MwFuncs as Mwf
 import widgets.widgets3.widget31_python.stacked_widget3 as SW3 #noqa
 from common.toml_handler import TomlHandler
 from common.confirm_button_logic import ConfirmButtonLogic
-
-
-
+from widgets.floating_widgets import MwAdditions
 
 
 def switch_stacked_widget():
@@ -26,7 +25,15 @@ class LogicMainWindow(RsMainWindow):
         self._lang_widget = None
         self.confirm_logic = ConfirmButtonLogic()
         self.confirm_busy = False
+        #----Widgets on top -----#
+        self.additions = MwAdditions(self)
+        self.additions.add_trans_flag(size=20)
+        self.additions.add_settings_button(size=22)
 
+    def resizeEvent(self, event: QResizeEvent):
+        super().resizeEvent(event)
+        self.additions.reposition_all()
+        # ----Widgets on top -----#
     def expand_window(self, p_language: str):
         lang_id = p_language  # "PY" it's already the id
 

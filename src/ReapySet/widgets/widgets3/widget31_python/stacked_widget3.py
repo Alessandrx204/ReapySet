@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 from widgets.MwFuctions import MwFuncs as Mwf
 #from pathlib import Path
 
-from widgets.widgets3.widget31_python.python_interpreter_utils import populate_interpreter_combobox
+from widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
 from config import MwConfig as Mwc
 from common.toml_handler import TomlHandler, CONFIG_PATH, DEST_PATH
 # --- Data: (key, button txt, icon path) ---

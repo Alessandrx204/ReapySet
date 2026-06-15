@@ -4,7 +4,33 @@ import os
 import sys
 from pathlib import Path
 
-#
+"""
+python_interpreter_find.py
+------------------------
+Utilities for detecting Python interpreters installed on the current machine.
+
+get_python_interpreters()
+    Scans three sources in order:
+      1. PATH  – runs `shutil.which` for common python/python3.6-20 names,
+                 resolves symlinks to avoid duplicates, and probes each
+                 candidate with `--version`.
+      2. Windows Python Launcher (`py`)  – queries `py -0` to list every
+                 version registered with the official Windows installer,
+                 then retrieves the real executable path for each one.
+      3. pyenv  – walks ~/.pyenv/versions/ (or %PYENV_ROOT%) and collects
+                 every interpreter found under bin/python (Unix) or
+                 python.exe (Windows).
+
+    Deduplication is handled via a dict keyed on the resolved absolute path,
+    so two names pointing to the same file are counted only once.
+    Returns a list of (path, label) tuples.
+
+populate_interpreter_combobox(combobox)
+    Convenience wrapper for Qt UIs: clears a QComboBox and fills it with
+    the results of get_python_interpreters(). Each item stores the
+    executable path as Qt userData so callers can retrieve it with
+    combobox.currentData().
+"""
 def get_python_interpreters() -> list[tuple[str, str]]:
     """Returns a list of (label, path) pairs for the found Python interpreters."""
     found: dict[str, str] = {}
@@ -13,7 +39,7 @@ def get_python_interpreters() -> list[tuple[str, str]]:
     # 1. Cerca nel PATH
     candidates: list[str] = ["python", "python3"] if not is_windows else ["python"]
     if not is_windows:
-        candidates += [f"python3.{v}" for v in range(8, 15)]
+        candidates += [f"python3.{v}" for v in range(6, 20)] #note my need to work aroud and remove the limit
 
     for cmd in candidates:
         path = shutil.which(cmd)
