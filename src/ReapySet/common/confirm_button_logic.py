@@ -98,9 +98,6 @@ class ConfirmButtonLogic:
 
             self._warn_missing_popup(p_editor)
 
-        except Exception:
-            self._warn_missing_popup(p_editor)
-
     def _get_sterile_env(self) -> dict[str, str]:
 
         import os
@@ -135,7 +132,7 @@ class ConfirmButtonLogic:
     def _run_cmd(self, cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess | None:
         try:
             return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd, env=self._get_sterile_env())
-        except FileNotFoundError:
+        except (FileNotFoundError, PermissionError):
             return None
 
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
@@ -180,7 +177,7 @@ class ConfirmButtonLogic:
                     self._warn_missing_popup("uv: invalid interpretr version!",
                                              p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
                                              p_msg_txt="",
-                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                                             p_info_txt=result.stderr + ":( \nNote: make sure UV is installed and the project path is valid")
                     return
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
@@ -197,67 +194,125 @@ class ConfirmButtonLogic:
                     return
 
             case "PY:PIXI":
-                result = self._run_cmd(
-                    LcFg.PythonVars.py_pixi_icmd + [p_proj_path]
-                )
-                if result is None:
-                    self._warn_missing_popup("pixi")
-                    return
-                if result.returncode != 0:
-                    self._warn_missing_popup("Pixi: invalid interpretr version!",
-                                             p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
-                                             p_msg_txt="",
-                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
-                    return
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
+
+                pixi_url = "https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project"
+
+                result = self._run_cmd(
+                    LcFg.PythonVars.py_pixi_icmd,
+                    cwd=p_proj_path
+                )
+
+                if result is None:
+                    self._warn_missing_popup(
+                        "pixi",
+                        p_learn_more_url=pixi_url
+                    )
+                    return
+
+                if result.returncode != 0:
+                    self._warn_missing_popup(
+                        "Pixi: project initialisation failed!",
+                        p_learn_more_url=pixi_url,
+                        p_msg_txt="",
+                        p_info_txt=(
+                                result.stderr
+                                + ":( \nNote: make sure Pixi is installed and the project path is valid."
+                        )
+                    )
+                    return
+
                 if pm_python_ver:
                     result2 = self._run_cmd(
                         [LcFg.PythonVars.py_pixi_path, "add", f"python={pm_python_ver}"],
                         cwd=p_proj_path
                     )
+
                     if result2 is None:
-                        self._warn_missing_popup("pixi")
+                        self._warn_missing_popup(
+                            "pixi",
+                            p_learn_more_url=pixi_url
+                        )
                         return
+
                     if result2.returncode != 0:
-                        self._warn_missing_popup("Pixi: invalid interpretr version!",
-                                                 p_learn_more_url="https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project",
-                                                 p_msg_txt="",
-                                                 p_info_txt=result2.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                        self._warn_missing_popup(
+                            "Pixi: invalid interpreter version!",
+                            p_learn_more_url=pixi_url,
+                            p_msg_txt="",
+                            p_info_txt=(
+                                    result2.stderr
+                                    + ":( \nNote: make sure you've entered a valid Python interpreter version."
+                            )
+                        )
                         return
 
             case "PY:GENERIC_CONDA":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
+
+                conda_url = (
+                    "https://docs.conda.io/projects/conda/en/latest/"
+                    "user-guide/tasks/manage-environments.html"
+                )
+
                 result = self._run_cmd(
                     LcFg.PythonVars.py_conda_icmd
                     + [str(Path(p_proj_path) / ".conda")]
                     + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                 )
+
                 if result is None:
-                    self._warn_missing_popup("conda")
+                    self._warn_missing_popup(
+                        "conda",
+                        p_learn_more_url=conda_url
+                    )
                     return
+
                 if result.returncode != 0:
-                    self._warn_missing_popup("Conda: invalid interpretr version!",
-                                             p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
-                                             p_msg_txt="",
-                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    self._warn_missing_popup(
+                        "Conda: invalid interpreter version!",
+                        p_learn_more_url=conda_url,
+                        p_msg_txt="",
+                        p_info_txt=(
+                                result.stderr
+                                + ":( \nNote: Make sure you've entered "
+                                  "a valid Python interpreter version."
+                        )
+                    )
                     return
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
             case "PY:MAMBA":
+                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
+
+                mamba_url = (
+                    "https://mamba.readthedocs.io/en/latest/user_guide/mamba.html"
+                )
+
                 result = self._run_cmd(
                     LcFg.PythonVars.py_mamba_icmd
                     + [str(Path(p_proj_path) / ".mamba")]
                     + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                 )
+
                 if result is None:
-                    self._warn_missing_popup("mamba")
+                    self._warn_missing_popup(
+                        "mamba",
+                        p_learn_more_url=mamba_url
+                    )
                     return
+
                 if result.returncode != 0:
-                    self._warn_missing_popup("Mamba: invalid interpretr version!",
-                                             p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
-                                             p_msg_txt="",
-                                             p_info_txt=result.stderr + ":( \nNote: Make sure the one you've entered a valid python interpreter version")
+                    self._warn_missing_popup(
+                        "Mamba: invalid interpreter version!",
+                        p_learn_more_url=mamba_url,
+                        p_msg_txt="",
+                        p_info_txt=(
+                                result.stderr
+                                + ":( \nNote: Make sure you've entered "
+                                  "a valid Python interpreter version."
+                        )
+                    )
                     return
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
             case "PY:HATCH":
                 Path(p_proj_path).mkdir(parents=True, exist_ok=True)
