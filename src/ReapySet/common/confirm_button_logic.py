@@ -143,7 +143,7 @@ class ConfirmButtonLogic:
         for env_var in ["VIRTUAL_ENV", "PYTHONHOME", "PYTHONPATH", "CONDA_PREFIX"]:
             os.environ.pop(env_var, None)
         if not self._check_editor(p_editor):
-            return  # if editor is not to be found or cli is not functioning it doesnt even create the venv
+            return  # if editor_page is not to be found or cli is not functioning it doesnt even create the venv
             # post conditional mkdir
         pm: str = p_py_config["package_manager"]
         interp: str = p_py_config["interpreter_path"]

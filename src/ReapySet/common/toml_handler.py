@@ -1,11 +1,11 @@
 import shutil
 from pathlib import Path
+
 import tomlkit
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QSyntaxHighlighter, QTextCharFormat, QColor, QFont
 from PySide6.QtWidgets import (
-    QPlainTextEdit, QDialogButtonBox, QDialog, QVBoxLayout, QMessageBox,
-)
+    QPlainTextEdit, QDialogButtonBox, QDialog, QVBoxLayout, QMessageBox, )
 
 _BASE: Path = Path(__file__).resolve().parent
 SRC_PATH: Path  = _BASE / "_rpsproj.toml"
@@ -82,7 +82,17 @@ class TomlHandler:
 
 
 
-
+# macOS + Qt/PySide6 note:
+# When using text widgets (QLineEdit/QPlainTextEdit) together with IME
+# input methods (Japanese, Chinese, etc.), macOS may print console warnings
+# such as:
+#
+#   TSMSendMessageToUIServer: CFMessagePortSendRequest FAILED(-1)
+#   error messaging the mach port for IMKCFRunLoopWakeUpReliable
+#
+# These are macOS InputMethodKit/Text Services Manager warnings and are
+# generally harmless if text input and IME composition work correctly.
+# No action required unless the app shows real input/focus issues.
 class TomlEditorDialog(QDialog):
     def __init__(self, config_path: Path, parent=None):
         super().__init__(parent)
@@ -91,35 +101,72 @@ class TomlEditorDialog(QDialog):
         self.setWindowTitle("Settings TOML")
         self.resize(700, 600)
 
-        self.editor = QPlainTextEdit()
-        self.editor.setPlainText(self.path.read_text(encoding="utf-8"))
+        self.editor_page = QPlainTextEdit()
+        self.editor_page.setPlainText(self.path.read_text(encoding="utf-8"))
 
-        self.highlighter = TomlHighlighter(self.editor.document())
+        self.highlighter = TomlHighlighter(self.editor_page.document())
 
-        buttons = QDialogButtonBox()
-        buttons.setStandardButtons(
+        buttons = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Save |
             QDialogButtonBox.StandardButton.Cancel # noqa
         )
 
+        buttons.button(
+            QDialogButtonBox.StandardButton.Save
+        ).setText("&Save && Exit")
+
+        buttons.button(
+            QDialogButtonBox.StandardButton.Cancel
+        ).setText("Close without saving")
+
         buttons.accepted.connect(self._save)
         buttons.rejected.connect(self.reject)
+        buttons.setStyleSheet("/* BASE STYLE (Pink) */\n"
+                              "QPushButton {\n"
+                              "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #96788f, stop:1 #80637a);\n"
+                              "    color: #f3eaf0;\n"
+                              "    border: 1px solid #736473;\n"
+                              "    border-radius: 7px;\n"
+                              "    padding: 3px 18px;\n"
+                              "}\n"
+                              "\n"
+                              "/* HOVER (Brighter Pink) */\n"
+                              "QPushButton:hover {\n"
+                              "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #a889a1, stop:1 #8e7188);\n"
+                              "    color: #ffffff;\n"
+                              "    border-color: #8d627d;\n"
+                              "}\n"
+                              "\n"
+                              "/* ON PRESSED (Dark gray) */\n"
+                              "QPushButton:pressed {\n"
+                              "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #5f6063, stop:1 #4f5052);\n"
+                              "    color: #d1c9cf;\n"
+                              "    border-color: #433841;\n"
+                              "}\n"
+                              "\n"
+                              "/* CHECKED (Gray) */\n"
+                              "QPushButton:checked {\n"
+                              "    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #66676b, stop:1 #57585a);\n"
+                              "    color: #e3dae0;\n"
+                              "    border-color: #4d424b;\n"
+                              "}") #QSS
 
         layout = QVBoxLayout(self)
-        layout.addWidget(self.editor)
+        layout.addWidget(self.editor_page)
+
         layout.addWidget(buttons)
 
     def _save(self):
         # validates TOML before saving
-        text = self.editor.toPlainText()
+        text = self.editor_page.toPlainText()
 
         try:
             tomlkit.parse(text)
         except Exception as e:
             QMessageBox.critical(
                 self,
-                "Invalid TOML",
-                f"The TOML file contains an error:\n\n{e}"
+                "Invalid Config TOML",
+                f"The Config TOML file contains an error:\n\n{e}"
             )
             return
 

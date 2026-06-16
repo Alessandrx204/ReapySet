@@ -1,5 +1,6 @@
 [general]
-boilerplates_folder = ""   # path boilerplates folder
+#soon
+
 
 [editors]
 pycharm_cmd       = "pycharm {path}"

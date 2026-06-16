@@ -126,9 +126,9 @@ class RsMainWindow(QMainWindow):
         TomlHandler.toml_edit(
             "global", "fav_editor",
             f"{self.w1_select_editor.currentText().lower()}"
-                             )# saves current editor on boot
+                             )# saves current editor_page on boot
         self.w1_select_editor.currentTextChanged.connect(
-            #saves in the toml common/toml_playground/toml_playground_cc.toml in the fav editor section .lower() for easy parsing
+            #saves in the toml common/toml_playground/toml_playground_cc.toml in the fav editor_page section .lower() for easy parsing
             lambda p_text: TomlHandler.toml_edit("global", "fav_editor", f"{p_text.lower()}")
         )
 

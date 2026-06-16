@@ -1,3 +1,5 @@
+from typing import cast
+
 from PySide6.QtCore import Qt, QSize, QRectF
 from PySide6.QtGui import QColor
 from PySide6.QtGui import QIcon
@@ -91,7 +93,7 @@ class SettingsButtonWidget(QPushButton):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setToolTip("Settings")
         self._set_icon(size)
-        self.clicked.connect(lambda : print("clicked"))
+        #self.clicked.connect(lambda : print("clicked"))
         self.clicked.connect(
             lambda: TomlEditorDialog(CONFIG_PATH, self).exec()
         )
@@ -111,7 +113,7 @@ class SettingsButtonWidget(QPushButton):
         """
 
         # Retrieve the current QApplication instance.
-        app = QApplication.instance()
+        app = cast(QApplication, QApplication.instance())
 
         # Get the primary screen in order to determine the device pixel ratio (DPR).
         # DPR > 1.0 is common on Retina/HiDPI displays.
