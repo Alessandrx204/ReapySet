@@ -159,12 +159,17 @@ class ConfirmButtonLogic:
             "python"
         ) # unbound interpreter
 
-        # for conda / mamba / pixi unbound version if any else specific path's version
+        # pm_python_ver: used by conda / mamba / pixi, which can download the interpreter themselves. they  need a string value son it have to be extracted first
+        # eitehr user gets fooled, by passint them a version extracted from the path so already installed, even if the versuin needs o be downlaoded
+        #   - passes a version string like "3.11" if available, otherwise None (they'll use their default).
         pm_python_ver: str | None = unb_interp_ver or interp_ver
-
-        # for uv unbound version if any else path
+        # uv on the otehr hanbd acceps a path or a specifice version (unboud indeed)
+        # uvs_python: used by uv, which accepts both a version string AND an absolute path.
+        #   - always has a value: prefers unbound version > bound version > interpreter path.
+        #   - the interpreter path is a valid fallback because uv knows how to handle it.
         uvs_python: str = unb_interp_ver or interp_ver or interp
 
+        Path(p_proj_path).mkdir(parents=True, exist_ok=True)
         match pm:
             case "PY:UV":
                 result = self._run_cmd(
@@ -174,45 +179,37 @@ class ConfirmButtonLogic:
                     self._warn_missing_popup("uv")
                     return
                 if result.returncode != 0:
-                    self._warn_missing_popup("uv: invalid interpretr version!",
-                                             p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
-                                             p_msg_txt="",
-                                             p_info_txt=result.stderr + ":( \nNote: make sure UV is installed and the project path is valid")
+                    self._warn_missing_popup(
+                        "uv: invalid interpreter version!",
+                        p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
+                        p_msg_txt="",
+                        p_info_txt=(
+                                result.stderr
+                                + ":( \nNote: make sure uv is installed and the project path is valid."
+                        )
+                    )
                     return
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
 
             case "PY:POETRY":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_poetry_icmd + [p_proj_path],
-                              env=self._get_sterile_env()
-
+                        env=self._get_sterile_env()
                     )
-                except Exception:
+                except FileNotFoundError:
                     self._warn_missing_popup("poetry")
                     return
 
             case "PY:PIXI":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
-
                 pixi_url = "https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project"
 
-                result = self._run_cmd(
-                    LcFg.PythonVars.py_pixi_icmd,
-                    cwd=p_proj_path
-                )
-
+                result = self._run_cmd(LcFg.PythonVars.py_pixi_icmd, cwd=p_proj_path)
                 if result is None:
-                    self._warn_missing_popup(
-                        "pixi",
-                        p_learn_more_url=pixi_url
-                    )
+                    self._warn_missing_popup("pixi", p_learn_more_url=pixi_url)
                     return
-
                 if result.returncode != 0:
                     self._warn_missing_popup(
-                        "Pixi: project initialisation failed!",
+                        "pixi: project initialisation failed!",
                         p_learn_more_url=pixi_url,
                         p_msg_txt="",
                         p_info_txt=(
@@ -227,17 +224,12 @@ class ConfirmButtonLogic:
                         [LcFg.PythonVars.py_pixi_path, "add", f"python={pm_python_ver}"],
                         cwd=p_proj_path
                     )
-
                     if result2 is None:
-                        self._warn_missing_popup(
-                            "pixi",
-                            p_learn_more_url=pixi_url
-                        )
+                        self._warn_missing_popup("pixi", p_learn_more_url=pixi_url)
                         return
-
                     if result2.returncode != 0:
                         self._warn_missing_popup(
-                            "Pixi: invalid interpreter version!",
+                            "pixi: invalid interpreter version!",
                             p_learn_more_url=pixi_url,
                             p_msg_txt="",
                             p_info_txt=(
@@ -248,130 +240,119 @@ class ConfirmButtonLogic:
                         return
 
             case "PY:GENERIC_CONDA":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
-
                 conda_url = (
                     "https://docs.conda.io/projects/conda/en/latest/"
                     "user-guide/tasks/manage-environments.html"
                 )
-
                 result = self._run_cmd(
                     LcFg.PythonVars.py_conda_icmd
                     + [str(Path(p_proj_path) / ".conda")]
                     + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                 )
-
                 if result is None:
-                    self._warn_missing_popup(
-                        "conda",
-                        p_learn_more_url=conda_url
-                    )
+                    self._warn_missing_popup("conda", p_learn_more_url=conda_url)
                     return
-
                 if result.returncode != 0:
                     self._warn_missing_popup(
-                        "Conda: invalid interpreter version!",
+                        "conda: invalid interpreter version!",
                         p_learn_more_url=conda_url,
                         p_msg_txt="",
                         p_info_txt=(
                                 result.stderr
-                                + ":( \nNote: Make sure you've entered "
-                                  "a valid Python interpreter version."
+                                + ":( \nNote: make sure you've entered a valid Python interpreter version."
                         )
                     )
                     return
 
             case "PY:MAMBA":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
-
-                mamba_url = (
-                    "https://mamba.readthedocs.io/en/latest/user_guide/mamba.html"
-                )
-
+                mamba_url = "https://mamba.readthedocs.io/en/latest/user_guide/mamba.html"
                 result = self._run_cmd(
                     LcFg.PythonVars.py_mamba_icmd
                     + [str(Path(p_proj_path) / ".mamba")]
                     + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                 )
-
                 if result is None:
-                    self._warn_missing_popup(
-                        "mamba",
-                        p_learn_more_url=mamba_url
-                    )
+                    self._warn_missing_popup("mamba", p_learn_more_url=mamba_url)
                     return
-
                 if result.returncode != 0:
                     self._warn_missing_popup(
-                        "Mamba: invalid interpreter version!",
+                        "mamba: invalid interpreter version!",
                         p_learn_more_url=mamba_url,
                         p_msg_txt="",
                         p_info_txt=(
                                 result.stderr
-                                + ":( \nNote: Make sure you've entered "
-                                  "a valid Python interpreter version."
+                                + ":( \nNote: make sure you've entered a valid Python interpreter version."
                         )
                     )
                     return
 
             case "PY:HATCH":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
-                        LcFg.PythonVars.py_hatch_icmd + [p_proj_path],env=self._get_sterile_env()
+                        LcFg.PythonVars.py_hatch_icmd + [p_proj_path],
+                        env=self._get_sterile_env()
                     )
-                except Exception:
-                    self._warn_missing_popup("hatch",
-                                             p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization")
+                except FileNotFoundError:
+                    self._warn_missing_popup(
+                        "hatch",
+                        p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization"
+                    )
                     return
 
             case "PY:VENV":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         [interp, "-m", "venv", ".venv"],
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except Exception:
-                    self._warn_missing_popup("pip", p_learn_more_url="https://docs.python.org/3/library/venv.html")
+                except FileNotFoundError:
+                    self._warn_missing_popup(
+                        "venv",  # era "pip", corretto
+                        p_learn_more_url="https://docs.python.org/3/library/venv.html"
+                    )
                     return
 
             case "PY:PDM":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_pdm_icmd + ["--python", interp],
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except Exception:
-                    self._warn_missing_popup("pdm", p_learn_more_url="//pdm-project.org/en/latest/usage/project/")
+                except FileNotFoundError:
+                    self._warn_missing_popup(
+                        "pdm",
+                        p_learn_more_url="https://pdm-project.org/en/latest/usage/project/"  # era mancante https:
+                    )
                     return
 
             case "PY:PIPENV":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         LcFg.PythonVars.py_pipenv_icmd + ["--python", interp],
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except Exception:
-                    self._warn_missing_popup("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/")
+                except FileNotFoundError:
+                    self._warn_missing_popup(
+                        "pipenv",
+                        p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/"
+                    )
                     return
 
             case "PY:VIRTUALENV":
-                Path(p_proj_path).mkdir(parents=True, exist_ok=True)
                 try:
                     subprocess.Popen(
                         [LcFg.PythonVars.py_virtualenv_path, "-p", interp, ".venv"],
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except Exception:
-                    self._warn_missing_popup("virtualenv",
-                                             p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html")
+                except FileNotFoundError:
+                    self._warn_missing_popup(
+                        "virtualenv",
+                        p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html"
+                    )
                     return
 
         self._openin_editor(p_editor, p_proj_path)
