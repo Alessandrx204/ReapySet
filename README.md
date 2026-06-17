@@ -74,10 +74,15 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 
 ## development Screenshots
 
-<img width="882" height="790" alt="Screenshot 2026-06-05 at 16 46 04" src="https://github.com/user-attachments/assets/49f8e7d4-1630-414e-9d32-575f7b219288" /> to 05/06/2026
+<img width="882" height="790" alt="Screenshot 2026-06-05 at 16 46 04" src="https://github.com/user-attachments/assets/49f8e7d4-1630-414e-9d32-575f7b219288" /> 
+
+to 05/06/26
 
 
+<img width="1705" height="970" alt="Screenshot 2026-06-17 at 15 50 10" src="https://github.com/user-attachments/assets/67850eb0-0b2d-420c-bad2-2f522630ce0d" />
 
+<img width="882" height="790" alt="Screenshot 2026-06-05 at 16 46 04" src="https://github.com/user-attachments/assets/9c5a2a8b-ab3d-4ee1-b84f-a81933cfaadc" />
+17/06/26
 
 ---
 
