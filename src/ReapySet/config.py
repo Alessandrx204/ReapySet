@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
 
-
+import tomlkit
 from PySide6.QtCore import QEasingCurve
 from common.toml_handler import TomlHandler, CONFIG_PATH
 
@@ -103,11 +103,16 @@ class MwConfig:
         select_editor_Combobox_top_label: str = ""
 
         # plain class variable — accessible directly on the class without instantiation
-        select_editor_Combobox_entry = [
+        select_editor_Combobox_entry: list[str] = field(
+            default_factory=lambda: LogicVariables.EditorCmd.get_all_editors())
+        #select_editor_Combobox_entry = LogicVariables.EditorCmd.get_all_editors()
+
+
+        """[
             "VSCode", "Pycharm", "Godot",
             "Intellij IDEA", "Clion", "Zed",
             "Sublime Text", "Notepad++", "nVim"
-                                        ]
+                                        ]"""
 
     @dataclass
     class LangBtnWidget:
@@ -375,9 +380,38 @@ class LogicVariables:
     class EditorCmd:
         @staticmethod
         def get_cmd(editor: str) -> str:
-            """reads from cinfig.toml"""
+            """reads from config.toml reading th openin command for each editor"""
             key = editor.lower().replace(" ", "_") + "_cmd"
             return TomlHandler.toml_get(CONFIG_PATH, "editors", key) or ""
+
+        @staticmethod
+        def get_all_editors() -> list[str]:
+            """
+                Reads available editors from the [editors] section of config.toml.
+                Only reads keys ending in '_cmd' (e.g. 'vscode_cmd', 'nvim_cmd').
+                For each editor, looks for an optional '_display' key for the human-readable name
+                (e.g. 'nvim_display = "nVim"'). If not found, falls back to .title() on the base name.
+                Adding a new editor only requires a new '_cmd' line in the TOML — no code changes needed.
+                :rtype: list[str]
+                :return:
+
+            """
+            try:
+                with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+                    data = tomlkit.load(f)
+                editors = data.get("editors", {})
+                result: list[str] = []
+                for key in editors:
+                    if not key.endswith("_cmd"):
+                        continue
+                    base = key.removesuffix("_cmd")
+                    display_name = TomlHandler.toml_get(CONFIG_PATH, "editors", f"{base}_display") or base.replace("_",
+                                                                                                                   " ").title()
+                    result.append(display_name)
+                return result
+            except FileNotFoundError:
+                return []
+
 
     class PythonVars:
         py_uv_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "uv_path") or shutil.which("uv") or "" # noqa "" avoids crashes or None by returning an empy string which is falsy

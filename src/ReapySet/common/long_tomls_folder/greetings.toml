@@ -1,0 +1,87 @@
+[time_window]
+"02:00-05:00" = [
+  "Vai a dormire, {name}. (Ma su cosa stiamo lavorando?)",
+  "La città dorme, ma {name} lavora."
+]
+"07:00-08:30" = [
+  "Serve un espresso doppio, {name}?"
+]
+"17:50-18:00" = [
+  "Ci siamo quasi, {name}. Weekend in caricamento..."
+]
+
+
+# ==============================================================================
+# ENGLISH (en)
+# ==============================================================================
+[en.splashscreens.topics.greetings]
+morning = [
+  "Good morning, {name}!",
+  "Welcome, {name}!",
+  "Hey there, {name}!",
+  "Coffee and Code time?",
+  "Happy Monday, {name}!",
+  "Happy Tuesday, {name}!",
+  "Happy Wednesday, {name}!",
+  "Happy Thursday, {name}!",
+  "Happy Friday, {name}!",
+  "That Friday feeling, {name}!",
+  "Welcome to the weekend, {name}!",
+  "Happy Saturday, {name}!",
+  "Happy Sunday, {name}!",
+  "Sunday session, {name}?",
+  "What’s on your mind, {name}?"
+]
+afternoon = [
+  "Good afternoon, {name}",
+  "Hi {name}, how are you?",
+  "What’s new, {name}?",
+  "Back at it, {name}"
+]
+evening = [
+  "\n{name} returns!\n",
+  "Good evening, {name}",
+  "Evening, {name}",
+  "How was your day, {name}?"
+]
+night = [
+  "How’s it going, {name}?",
+  "What’s on your mind tonight, {name}?",
+  "Hello, night owl"
+]
+
+[en.holidays.europe]
+"01_01" = "One currency, one shared journey. Happy Euro Day, {name}. | Happy Euro anniversary, {name}. Making history since 2002."
+"25_03" = "Happy Independence Day to Greece 🇬🇷 \n From the cradle of democracy, welcome back {name}."
+"09_05" = "United in diversity, {name}. Happy Europe Day! 🇪🇺 | Building the future together, {name}."
+"02_06" = "Buona Festa della Repubblica, {name}."
+"14_06" = "A continent without borders. Happy Schengen Day, {name}. | Free to move, free to be, {name}."
+"14_07" = "Liberté, égalité, fraternité. Happy 14th of July, {name} 🇫🇷"
+"21_07" = "Happy National Day to Belgium, {name} 🇧🇪"
+"26_09" = "One continent, many voices. Welcome back, {name}. | Celebrating cultural diversity today, {name}."
+"12_10" = "¡Feliz Día de la Fiesta Nacional, {name}! 🇪🇸 | Greetings on this royal day, {name}."
+"09_11" = "Tearing down walls, building bridges, {name}."
+
+[en.holidays.lgbt]
+"01_02" = "Thanks to the woman who shaped the digital future. Happy birthday, Lynn Conway 🏳️‍⚧️ | Honoring Lynn Conway today: a pioneer of modern silicon microchips, free to be herself."
+"01_04" = "Celebrating marriage equality in Europe, {name}."
+"17_05" = "Free to love, everywhere. Happy IDAHOBIT, {name}. | United against discrimination, {name}. 🇪🇺🏳️‍🌈 | Love is love, {name}. Always."
+"01_06" = "Welcome to June! The Pride month begins, {name}."
+"23_06" = "Remembering Alan Turing today. The father of modern computing, a true visionary. | Honoring Alan Turing's legacy: logic, courage, and a mind that changed the world."
+"11_10" = "Live your truth, {name}. Happy Coming Out Day."
+
+[en.anniversari.tech]
+"01_02" = "Celebrating JetBrains today. Coding better, crafted in Prague 🇨🇿🇪🇺"
+"14_02" = "Happy anniversary to Godot Engine. The open-source powerhouse for creators."
+"20_02" = "Python was born today in 1991. What a journey, uh, {name}? | Happy birthday, Python. Simple, elegant, powerful."
+"01_04" = "Happy anniversary to ASML. Shaping the world, one nanometer at a time 🇳🇱🇪🇺"
+"15_05" = "Happy Rust Day to all Rustaceans. Are you one of them by any chance, {name}?"
+"25_08" = "The first version of the Linux kernel was released today in 1991. Do you use Arch btw, {name}?"
+"29_09" = "Where science meets collaboration,European researchers night is Today!, {name}."
+"04_12" = "JavaScript was released to the world today in 1995... yay... | Happy birthday, JavaScript. Making the web interactive (and unpredictable) since 1995."
+
+[en.holidays.history]
+"27_01" = "Remembering the past to protect our future, {name}."
+"25_04" = "Buona Festa della Liberazione, {name} 🇮🇹 | Celebrating freedom today, {name}."
+"27_04" = "Fijne Koningsdag, {name}! Ready for some orange? 🇳🇱 | Happy King’s Day, {name}."
+"15_06" = "To the generation that blurred borders. Happy Erasmus Day, {name}."

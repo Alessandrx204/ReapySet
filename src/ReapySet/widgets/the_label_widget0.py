@@ -1,9 +1,10 @@
 import sys
-the_label_txt: str = ("Lorem ipsum dolor sit amet, consectetur "
+the_label_txt: str = "\nΚαλημέρα, σας! ☀️\n"
+
+"""Lorem ipsum dolor sit amet, consectetur "
                       "adipiscing elit.\n Donec placerat tortor elit, quis "
                       "lacinia augue cursus sed.\n Nullam eu quam in libero "
-                      "laoreet vulputate🏳️‍⚧️!?.").capitalize()
-
+                      "laoreet vulputate🏳️‍⚧️!?."""
 
 def get_label_stylesheet() -> str:
     if sys.platform == "darwin":  # macOS
@@ -20,7 +21,6 @@ def get_label_stylesheet() -> str:
         QLabel {{ 
             font-family: "Times New Roman", "{serif_fallback}", "{emoji_font}";
             letter-spacing: 1.5px; 
-            font-style: italic; 
             font-weight: 100;
             font-size: 25pt;
             qproperty-alignment: AlignCenter; 

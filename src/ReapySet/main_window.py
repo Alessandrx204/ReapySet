@@ -9,15 +9,11 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, Q
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
 
 import logic_mainwindow
-from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
-from common.confirm_button_logic import ConfirmButtonLogic
-from config import MwConfig as Mwc
 import widgets.widget1.sample_picker as sample_picker
+from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
 from common.toml_handler import TomlHandler
+from config import MwConfig as Mwc, LogicVariables
 from widgets.MwFuctions import MwFuncs as Mwf
-
-
-
 
 
 #mainwindow
@@ -122,7 +118,8 @@ class RsMainWindow(QMainWindow):
 
         self.w1_select_editor: QComboBox = QComboBox()
         self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_select_editor))
-        self.w1_select_editor.addItems(Mwc.Widget1.select_editor_Combobox_entry)
+        # deprecated: self.w1_select_editor.addItems(Mwc.Widget1.select_editor_Combobox_entry)
+        self.w1_select_editor.addItems(LogicVariables.EditorCmd.get_all_editors())
         TomlHandler.toml_edit(
             "global", "fav_editor",
             f"{self.w1_select_editor.currentText().lower()}"
