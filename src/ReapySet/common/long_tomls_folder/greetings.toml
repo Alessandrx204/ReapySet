@@ -140,3 +140,119 @@ late_night = [
 "27_04" = ["Fijne Koningsdag, {name}! Ready for some orange? 🇳🇱", "Happy King’s Day, {name}.\n"]
 "15_06" = "To the generation that blurred borders.\nHappy Erasmus Day, {name}."
 "25_12" = "Merry christmas, {name}!\n we wish you bug free holydays."
+
+
+# ==============================================================================
+# ITALIANO (it)
+# ==============================================================================
+[it.weekdays]
+
+monday = []
+
+tuesday = []
+
+wednesday = []
+
+thursday = []
+
+friday = []
+
+saturday = []
+
+sunday = [
+  "\nDomenica tranquilla, {name}.\n",
+  "\nRicarica completata quasi al 100%.\n",
+  "\nUna domenica serena.\n",
+  "\nUltimo giorno prima del lunedì.\n",
+  "\nModalità relax attiva.\n",
+  "\nOggi si va con calma.\n",
+  "\nPianificare oggi aiuta domani.\n",
+  "\nLe idee migliori arrivano la domenica.\n"
+]
+
+[it.memes]
+
+developer_humor = [
+  "\"Giuro che ieri funzionava.\" 🤔\n",
+  "\nHai provato a spegnere e riaccendere?\n",
+  "\n99 piccoli bug nel codice...\n",
+  "\nNon c'è posto come localhost.\n",
+  "\nDa me funziona.\n",
+  "\nUn bug corretto, due nuovi scoperti.\n",
+  "\nI punti e virgola salvano vite.\n",
+  "\nComportamento indefinito rilevato.\n",
+  "\nGit ricorda tutto, {name}.\n",
+  "\nStack Overflow sa cosa hai fatto.\n",
+  "\nCompila al primo tentativo? Sospetto.\n"
+]
+
+generics = [
+  "\"Inserire frase memorabile qui...\"\nVa bene, ciao {name}! 😉\n",
+  "\nLorem ipsum... aspetta.\nCiao {name}!\n",
+  "\nNessuna frase brillante trovata.\nBenvenuto, {name}.\n"
+]
+
+[it.splashscreens.topics.greetings]
+
+morning = [
+  "\nBuongiorno, {name}!\n",
+  "\nBuona giornata, {name}!\n",
+  "\nInizia una nuova giornata.\n",
+  "\nPronto a partire?\n",
+  "\nCaffè e Codice.\n",
+  "\nNuovo giorno, nuove opportunità.\n",
+  "\nPiccoli passi, grandi risultati.\n",
+  "\nOggi si costruisce qualcosa.\n",
+  "\nIl giorno ti aspetta.\n",
+  "\nSi comincia.\n"
+]
+
+afternoon = [
+  "\nBuon pomeriggio, {name}.\n",
+  "\nDi nuovo all'opera.\n",
+  "\nCome procede?\n",
+  "\nUn'attività alla volta.\n",
+  "\nContinua così.\n",
+  "\nC'è ancora tempo per fare progressi.\n",
+  "\nLa costanza batte la motivazione.\n",
+  "\nMantieni il ritmo.\n",
+  "\nConcentrazione e avanti.\n",
+  "\nChiudiamo bene la giornata.\n"
+]
+
+evening = [
+  "\nBuonasera, {name}.\n",
+  "\nBentornato.\n",
+  "\nCom'è andata oggi?\n",
+  "\nNon sarà tempo di rallentare?\n",
+  "\nTi auguro Una serata tranquilla {name}.\n",
+  "\nAncora qualche obiettivo da raggiungere?\n",
+  "\nLa giornata non è finita.\n",
+  "\nUn altro capitolo completato.\n",
+  "\nSpero sia stata una buona giornata.\n"
+]
+
+night = [
+  "\nCiao, {name} ancora sveglia?.\n",
+  "\nSono arrivate le ore tranquille.\n",
+  "\nModalità notte attivata.\n",
+  "\nOttimo momento per riflettere.\n",
+  "\nIl mondo è più silenzioso adesso.\n",
+  "\nDi notte si pensa meglio.\n",
+  "\nTu e le tue idee, mentre il mondo dorme\n",
+  "\nPensieri chiari e poche distrazioni.\n",
+  "\nLa sera ha il suo fascino non trovi?.\n"
+]
+
+late_night = [
+  "Ancora sveglia, {name}?\n",#g
+  "Solo un'ultima cosa, vero?\n",
+  "I più ostinati sono ancora online.\n",
+  "\nI bug non dormono mai.\n",
+  "\nTecnicamente è già domani.\n",
+  "Produttività o procrastinazione?\nQuesto è il dilemma\n",
+  "\nDormire è una buona feature\nDovresi provarla.\n",
+  "\nSolo un ultimo commit... forse.\n",
+  "\nLa tastiera sembra più rumorosa a quest'ora.\n",
+  "\nObiettivo sviluppatrice nottambula sbloccato.\n" #g
+]
