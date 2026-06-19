@@ -32,9 +32,13 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 ## Current Features
 
 ### Project Setup
-- Create projects in a chosen location
-- Editor integration (currently VSCode, pycharm, clion, intellij idea, notepad++, godot's editor, sublime text)
+- Default Location: Projects are created by default in user/projects/....
+-	Dynamic Directory Creation: Any missing nested directories will be created on the fly. Please note that creating deeply nested structures may slightly increase initial setup time.
+- Editor integration (currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
 - Optional boilerplates support *(WIP)*
+**Editor Integration**
+- Out-of-the-Box Support: A wide range of editors are enabled by default, Currently PyCharm, VS Code, Zed, CLion, IntelliJ IDEA, Notepad++, Godot, Neovim, and Sublime Text.
+- Customisation: You can easily add, remove, or modify the startup commands for any editor via the configuration file. Please ensure you follow the specific instructions provided within the file.
 
 ### Multi-language support *(planned / partial)*
 | Feature | Status |
@@ -42,7 +46,8 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 | python | ⚠️ In progress |
 | rust | 🚧 Planned |
 | .NET | 🚧 Planned |
-| Typescript/Javascript |  TBD  |
+| Typescript/Javascript/TSX/JSX | 📝 Considered  |
+| Mojo | 📝 Considered  |
 | Kotlin/java |  TBD  |
 | C/C++ |  TBD  |
 | lua |  TBD  |
@@ -69,10 +74,16 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 
 ## development Screenshots
 
-<img width="882" height="790" alt="Screenshot 2026-06-05 at 16 46 04" src="https://github.com/user-attachments/assets/49f8e7d4-1630-414e-9d32-575f7b219288" /> to 05/06/2026
+<img width="882" height="790" alt="Screenshot 2026-06-05 at 16 46 04" src="https://github.com/user-attachments/assets/49f8e7d4-1630-414e-9d32-575f7b219288" /> 
+
+to 05/06/26
 
 
+<img width="1705" height="970" alt="Screenshot 2026-06-17 at 15 50 10" src="https://github.com/user-attachments/assets/67850eb0-0b2d-420c-bad2-2f522630ce0d" />
 
+<img width="882" height="790" alt="Screenshot 2026-06-17 at 15 44 42" src="https://github.com/user-attachments/assets/16cf70d1-8e58-4a51-b825-4e7e40a8b126" />
+
+17/06/26
 
 ---
 
