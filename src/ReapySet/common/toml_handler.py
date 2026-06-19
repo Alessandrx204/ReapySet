@@ -11,6 +11,7 @@ _BASE: Path = Path(__file__).resolve().parent
 SRC_PATH: Path  = _BASE / "_rpsproj.toml"
 DEST_PATH: Path = _BASE / "toml_playground" / "toml_project_cc.toml"
 CONFIG_PATH: Path = _BASE / "toml_playground" / "config.toml"
+GREETINGS_PATH: Path = _BASE / "long_tomls_folder" / "greetings.toml"
 class TomlHandler:
     @staticmethod
     def initialise_sandbox():

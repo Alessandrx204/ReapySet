@@ -10,13 +10,15 @@ grammatical_gender = "F"
 # NOTE: Certain localised strings may still exhibit minor grammatical mismatches.
 
 language = "en" # defaults to enUK/Ca
+enabled_greetings = true
+
 
 
 [editors]
-pycharm_cmd          = "pycharm {path}"
-pycharm_display      = "PyCharm"
 vscode_cmd           = "code {path}"
 vscode_display       = "VSCode"
+pycharm_cmd          = "pycharm {path}"
+pycharm_display      = "PyCharm"
 clion_cmd            = "clion {path}"
 clion_display        = "CLion"
 rider_cmd            = "rider {path}"
@@ -35,7 +37,7 @@ godot_display        = "Godot's editor"
 # {editor_name}_cmd     = "your command here, remember to include {path}"
 # {editor_name}_display = "A nice display name for it" (optional!)
 # Just keep the {editor_name} part EXACTLY the same for both. It can literally be 'pineapplepizza'
-# even if your editor is Eclipse — it’s just a variable, after all ! :) But I'd recommend keeping it
+# even if your editor is Eclipse. it’s just a variable, after all ! :) But I'd recommend keeping it
 # clear, or it gets confusing fast (trust me on this one!). Happy coding! x
 
 

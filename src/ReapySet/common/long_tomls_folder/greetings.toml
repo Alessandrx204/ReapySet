@@ -1,87 +1,142 @@
-[time_window]
-"02:00-05:00" = [
-  "Vai a dormire, {name}. (Ma su cosa stiamo lavorando?)",
-  "La città dorme, ma {name} lavora."
-]
-"07:00-08:30" = [
-  "Serve un espresso doppio, {name}?"
-]
-"17:50-18:00" = [
-  "Ci siamo quasi, {name}. Weekend in caricamento..."
-]
-
-
 # ==============================================================================
 # ENGLISH (en)
 # ==============================================================================
-[en.splashscreens.topics.greetings]
-morning = [
-  "Good morning, {name}!",
-  "Welcome, {name}!",
-  "Hey there, {name}!",
-  "Coffee and Code time?",
-  "Happy Monday, {name}!",
-  "Happy Tuesday, {name}!",
-  "Happy Wednesday, {name}!",
-  "Happy Thursday, {name}!",
-  "Happy Friday, {name}!",
-  "That Friday feeling, {name}!",
-  "Welcome to the weekend, {name}!",
-  "Happy Saturday, {name}!",
-  "Happy Sunday, {name}!",
-  "Sunday session, {name}?",
-  "What’s on your mind, {name}?"
+[en.weekdays]
+monday = []
+tuesday = []
+wednesday = []
+thursday = []
+friday = []
+saturday = []
+sunday = [
+  "Easy Sunday, {name}.\n",
+  "Sunday reset in progress, {name}.\n",
+  "A quiet Sunday, a clear mind.\n",
+  "One more day before Monday, {name}.\n",
+  "Sunday mood: relaxed but dangerous.\n",
+  "Taking it slow today, {name}?\n",
+  "A little planning goes a long way.\n",
+  "Sunday is for ideas.\n"
 ]
-afternoon = [
-  "Good afternoon, {name}",
-  "Hi {name}, how are you?",
-  "What’s new, {name}?",
-  "Back at it, {name}"
+[en.memes]
+developer_humor = [
+    "\"I swear It worked yesterday.\" uh?\n",
+    "\nHave you tried turning it off and on again?\n",
+    "\n99 little bugs in the code...\n",
+    "\nThere is no place like localhost.\n",
+    "\nWorks on my machine.\n",
+    "\nOne bug fixed, two discovered.\n",
+    "\nSemicolons save lives.\n",
+    "\nUndefined behaviour detected.\n",
+    "\nGit remembers everything, {name}.\n"
 ]
-evening = [
-  "\n{name} returns!\n",
-  "Good evening, {name}",
-  "Evening, {name}",
-  "How was your day, {name}?"
-]
-night = [
-  "How’s it going, {name}?",
-  "What’s on your mind tonight, {name}?",
-  "Hello, night owl"
+generics = [
+    "\"Insert catchphrase here...\"\n Alright, let's do a classic: Hi {name}! 😉\n",
+    "\nLorem ipsum sit... Wait, no. Hi {name},\n we almost forgot about you!"
 ]
 
+
+
+[en.splashscreens.topics.greetings]
+
+morning = [
+  "\nGood morning, {name}!\n",
+  "\nGood morning, Sunshine! 😉\n",
+  "\nRise and shine, {name}!\n",
+  "\nA new day begins, {name}.\n",
+  "\nReady for today's challenges, {name}?\n",
+  "\nFresh coffee, fresh start.\n",
+  "\nNew morning, new opportunities.\n",
+  "\nLet's make today count, {name}.\n",
+  "\nThe day won't wait, {name}.\n",
+  "\nSmall steps, big results.\n",
+  "\nTime to build something great.\n"
+]
+
+afternoon = [
+    "\nGood afternoon, {name}.\n",
+    "\nBack in action, {name}.\n",
+    "\nMaking progress, {name}?\n",
+    "\nOne task at a time.\n",
+    "\nKeep moving forward, {name}.\n",
+    "\nThe day is still young.\n",
+    "\nFocus beats motivation.\n",
+    "\nYou're doing better than you think.\n",
+    "\nMomentum is everything.\n",
+    "\nLet's finish strong.\n",
+
+]
+
+evening = [
+    "\nGood evening, {name}.\n",
+    "\nWelcome back, {name}.\n",
+    "\nHow did today treat you?\n",
+    "\nTime to slow down... or speed up.\n",
+    "\nA calm evening can do wonders.\n",
+    "\nStill chasing goals, {name}?\n",
+    "\nThe day isn't over yet.\n",
+    "\nAnother day, another chapter.\n",
+    "\nHope today was productive.\n"
+]
+
+night = [
+    "\nHello, {name}.\n",
+    "\nThe quiet hours have arrived.\n",
+    "\nNight mode activated.\n",
+    "\nA good time to think.\n",
+    "\nThe world is quieter now.\n",
+    "\nFocus comes easier at night.\n",
+    "\nJust you and your ideas, {name}.\n",
+    "\nThe stars are out, and so are you.\n",
+    "\nLate hours, clear thoughts.\n"
+]
+
+late_night = [
+    "Still awake, {name}?\n",
+    "Just one more thing, right?\n",
+    "Only the dedicated remain online.\n",
+    "\nThe bugs never sleep.\n",
+    "It's technically tomorrow already.\n",
+    "Productivity or procrastination?\n",
+    "Sleep is a feature, not a bug.\n",
+    "One last commit... probably.\n",
+    "The keyboard is louder at this hour.\n",
+    "Night Owl achievement unlocked.\n"
+]
 [en.holidays.europe]
-"01_01" = "One currency, one shared journey. Happy Euro Day, {name}. | Happy Euro anniversary, {name}. Making history since 2002."
-"25_03" = "Happy Independence Day to Greece 🇬🇷 \n From the cradle of democracy, welcome back {name}."
-"09_05" = "United in diversity, {name}. Happy Europe Day! 🇪🇺 | Building the future together, {name}."
-"02_06" = "Buona Festa della Repubblica, {name}."
-"14_06" = "A continent without borders. Happy Schengen Day, {name}. | Free to move, free to be, {name}."
-"14_07" = "Liberté, égalité, fraternité. Happy 14th of July, {name} 🇫🇷"
-"21_07" = "Happy National Day to Belgium, {name} 🇧🇪"
-"26_09" = "One continent, many voices. Welcome back, {name}. | Celebrating cultural diversity today, {name}."
-"12_10" = "¡Feliz Día de la Fiesta Nacional, {name}! 🇪🇸 | Greetings on this royal day, {name}."
+"01_01" = ["One currency, one shared journey.\nHappy Euro Day, {name}.", "Happy Euro anniversary, {name}.\nMaking history since 2002."]
+"25_03" = "Γεια σας Ελλαδα!\nHappy Independence Day to Greece 🇬🇷\nF rom the cradle of democracy, welcome back {name}."
+"09_05" = ["United in diversity.\nHappy Europe Day! {name}🇪🇺, Building the future together, {name}.\n"]
+"02_06" = "Buona Festa della Repubblica, {name}.\n"
+"14_06" = ["A continent without borders!.\nHappy Schengen Day, {name}.", "Free to move, free to be, Happy Schengen Day, {name}\n"]
+"14_07" = "\nLiberté, égalité, fraternité.\nHappy 14th of July, {name} 🇫🇷"
+"21_07" = "Happy National Day to Belgium, {name} 🇧🇪\n"
+"26_09" = ["One continent, many voices. Welcome back, {name}.", "Celebrating cultural diversity today, {name}."]
+"12_10" = ["¡Feliz Día de la Fiesta Nacional, {name}! 🇪🇸,Greetings on this royal day, {name}.\n"]
 "09_11" = "Tearing down walls, building bridges, {name}."
 
 [en.holidays.lgbt]
-"01_02" = "Thanks to the woman who shaped the digital future. Happy birthday, Lynn Conway 🏳️‍⚧️ | Honoring Lynn Conway today: a pioneer of modern silicon microchips, free to be herself."
+"01_02" = ["Thanks to the woman who shaped the digital future.\nHappy birthday, Lynn Conway 🏳️‍⚧️", "Honoring Lynn Conway today: a pioneer of modern\nsilicon microchips, free to be herself. 🏳️‍⚧️"]
 "01_04" = "Celebrating marriage equality in Europe, {name}."
-"17_05" = "Free to love, everywhere. Happy IDAHOBIT, {name}. | United against discrimination, {name}. 🇪🇺🏳️‍🌈 | Love is love, {name}. Always."
+"17_05" = ["Free to love, everywhere. Happy IDAHOBIT, {name}\n(International Day Against Homophobia, Biphobia, and Transphobia).",
+    "United against discrimination, {name}. 🇪🇺🏳️‍🌈", "Love is love, {name}. Always.\n"]
 "01_06" = "Welcome to June! The Pride month begins, {name}."
-"23_06" = "Remembering Alan Turing today. The father of modern computing, a true visionary. | Honoring Alan Turing's legacy: logic, courage, and a mind that changed the world."
+"23_06" = ["Remembering Alan Turing today.\nThe father of modern computing, a true visionary.", "Honoring Alan Turing's legacy: logic, courage,\nand a mind that changed the world."]
 "11_10" = "Live your truth, {name}. Happy Coming Out Day."
 
-[en.anniversari.tech]
-"01_02" = "Celebrating JetBrains today. Coding better, crafted in Prague 🇨🇿🇪🇺"
-"14_02" = "Happy anniversary to Godot Engine. The open-source powerhouse for creators."
-"20_02" = "Python was born today in 1991. What a journey, uh, {name}? | Happy birthday, Python. Simple, elegant, powerful."
-"01_04" = "Happy anniversary to ASML. Shaping the world, one nanometer at a time 🇳🇱🇪🇺"
-"15_05" = "Happy Rust Day to all Rustaceans. Are you one of them by any chance, {name}?"
-"25_08" = "The first version of the Linux kernel was released today in 1991. Do you use Arch btw, {name}?"
-"29_09" = "Where science meets collaboration,European researchers night is Today!, {name}."
-"04_12" = "JavaScript was released to the world today in 1995... yay... | Happy birthday, JavaScript. Making the web interactive (and unpredictable) since 1995."
+[en.anniversaries.tech]
+"01_02" = "Celebrating JetBrains™ today.\nCoding better, crafted in Prague 🇨🇿🇪🇺"
+"14_02" = "Happy anniversary to Godot Engine.\nThe open-source powerhouse for creators."
+"20_02" = ["Python was born today in 1991.\nWhat a journey, uh, {name}?", "Happy birthday, Python. Simple, elegant, powerful.\n(even if a bit slow)"]
+"01_04" = "Happy anniversary to ASML. Shaping the world,\none nanometer at a time 🇳🇱🇪🇺"
+"15_05" = "Happy Rust Day to all Rustaceans.\nAre you one of them by any chance, {name}? 👀"
+"25_08" = "The first version of the Linux kernel\nwas released today in 1991.\nDo you use Arch btw, {name}? 👀"
+"29_09" = "Where science meets collaboration,\nEuropean researchers night is Today, {name}!."
+"04_12" = ["JavaScript was released to the world\ntoday in 1995... yay...", "Happy birthday, JavaScript. Making the web\ninteractive (and unpredictable) since 1995."]
 
 [en.holidays.history]
 "27_01" = "Remembering the past to protect our future, {name}."
-"25_04" = "Buona Festa della Liberazione, {name} 🇮🇹 | Celebrating freedom today, {name}."
-"27_04" = "Fijne Koningsdag, {name}! Ready for some orange? 🇳🇱 | Happy King’s Day, {name}."
-"15_06" = "To the generation that blurred borders. Happy Erasmus Day, {name}."
+"25_04" = ["Buona Festa della Liberazione, {name} 🇮🇹", "Celebrating freedom today, {name}.\n"]
+"27_04" = ["Fijne Koningsdag, {name}! Ready for some orange? 🇳🇱", "Happy King’s Day, {name}.\n"]
+"15_06" = "To the generation that blurred borders.\nHappy Erasmus Day, {name}."
+"25_12" = "Merry christmas, {name}!\n we wish you bug free holydays."
