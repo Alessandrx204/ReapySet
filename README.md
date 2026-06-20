@@ -34,10 +34,11 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 ### Project Setup
 - Default Location: Projects are created by default in user/projects/....
 -	Dynamic Directory Creation: Any missing nested directories will be created on the fly. Please note that creating deeply nested structures may slightly increase initial setup time.
-- Editor integration (currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
-- Optional boilerplates support *(WIP)*
 **Editor Integration**
-- Out-of-the-Box Support: A wide range of editors are enabled by default, Currently PyCharm, VS Code, Zed, CLion, IntelliJ IDEA, Notepad++, Godot, Neovim, and Sublime Text.
+-(currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
+
+- Optional boilerplates support *(WIP)*
+
 - Customisation: You can easily add, remove, or modify the startup commands for any editor via the configuration file. Please ensure you follow the specific instructions provided within the file.
 
 ### Multi-language support *(planned / partial)*
