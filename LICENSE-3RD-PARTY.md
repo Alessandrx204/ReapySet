@@ -82,7 +82,7 @@ No affiliation, sponsorship, endorsement, certification, or partnership with any
 
 ### Inspirations & Tributes
 
-This software features celebratory visual elements, graphics, or tribute screens paying homage to JetBrains and its anniversary milestones. 
+This software features visual elements, graphics, or tribute screens paying homage to JetBrains and its anniversary milestones. 
 
 JetBrains™ is a registered trademark of JetBrains s.r.o. Any use of trademarked names, logos, or brand aesthetics within this software is purely for artistic tribute, educational recognition, and community celebration purposes. 
 
