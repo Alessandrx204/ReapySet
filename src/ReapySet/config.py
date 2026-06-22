@@ -432,8 +432,9 @@ class LogicVariables:
         py_pdm_icmd: list[str] = [py_pdm_path, "init"]  # pdm init (cdw=proj_path)
         py_pipenv_icmd: list[str] = [py_pipenv_path, "install"]  # pipenv install (cdw=proj_path)
         py_virtualenv_icmd: list[str] = [py_virtualenv_path, ".venv"]  # virtualenv .venv (cdw=proj_path)
-        py_conda_icmd: list[str] = [py_conda_path, "create", "-p"]  # conda create -p <proj_path>
-        py_mamba_icmd: list[str] = [py_mamba_path, "create", "-p"]  # mamba create -p <proj_path>
+        py_conda_icmd: list[str] = [py_conda_path, "create", "-y", "-p"]  # conda create -p <proj_path>
+        py_mamba_icmd: list[str] = [py_mamba_path, "create", "-y", "-p"]  # mamba create -p <proj_path>
+
         py_pixi_icmd: list[str] = [py_pixi_path, "init"]  # pixi init <proj_path>
 
 

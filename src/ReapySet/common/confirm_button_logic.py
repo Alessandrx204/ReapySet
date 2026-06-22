@@ -9,10 +9,11 @@ from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QMessageBox
 
 from ReapySet.config import LogicVariables as LcFg
-from common.toml_handler import TomlHandler, DEST_PATH
+from common.toml_handler import TomlHandler, DEST_PATH, CONFIG_PATH
 
 #common/confirm_button.py
 TomlHandler.toml_get(DEST_PATH, "languages", "interpreter_version", "python")
+
 
 class SetupWorker(QThread):
     finished = Signal()
@@ -23,9 +24,9 @@ class SetupWorker(QThread):
         self.proj_path = p_proj_path
         self.editor_cmd = p_editor_cmd
 
-    def run(self):
+    def _run(self):
         subprocess.run(self.cmds)
-        subprocess.Popen(self.editor_cmd.split())
+        subprocess.Popen(shlex.split(self.editor_cmd))
         self.finished.emit()
 class ConfirmButtonLogic:
     ...
@@ -65,7 +66,7 @@ class ConfirmButtonLogic:
             self._warn_missing_popup(p_editor)
             return False
 
-        executable = cmd.split()[0]
+        executable = shlex.split(cmd)[0]
 
         resolved = (
                 shutil.which(executable) # noqa it'll never run on 3.12
@@ -131,10 +132,44 @@ class ConfirmButtonLogic:
 
     def _run_cmd(self, cmd: list[str], cwd: str | None = None) -> subprocess.CompletedProcess | None:
         try:
-            return subprocess.run(cmd, capture_output=True, text=True, cwd=cwd, env=self._get_sterile_env())
-        except (FileNotFoundError, PermissionError):
+            return subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                cwd=cwd,
+                env=self._get_sterile_env()
+            )
+        except OSError:
             return None
 
+    def _run_cmd_list(self, cmd_list: list[list[str]], p_proj_path: str) -> bool:
+        """ Execute each command in order and stop at the first failure.
+
+         The first command runs without a working directory because it may be
+
+         responsible for creating or initialising the project path itself.
+
+         All following commands run inside the project directory.
+
+         A command is considered failed if _run_cmd() returns None or if the
+
+         process exits with a non-zero return code."""
+        for i, cmd in enumerate(cmd_list):
+
+            if i == 0:
+                cwd = None
+            else:
+                cwd = p_proj_path
+
+            result = self._run_cmd(cmd, cwd=cwd)
+
+            if result is None:
+                return False
+
+            if result.returncode != 0:
+                return False
+
+        return True
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
         import os
         for env_var in ["VIRTUAL_ENV", "PYTHONHOME", "PYTHONPATH", "CONDA_PREFIX"]:
@@ -144,6 +179,13 @@ class ConfirmButtonLogic:
             # post conditional mkdir
         pm: str = p_py_config["package_manager"]
         interp: str = p_py_config["interpreter_path"]
+        disable_poetry_centralised_venvs: bool = bool(
+            TomlHandler.toml_get(
+                CONFIG_PATH,
+                "python",
+                "disable_poetry_centralised_venvs"
+            )
+        )
 
         interp_ver: str | None = TomlHandler.toml_get(
             DEST_PATH,
@@ -172,116 +214,131 @@ class ConfirmButtonLogic:
         Path(p_proj_path).mkdir(parents=True, exist_ok=True)
         match pm:
             case "PY:UV":
-                result = self._run_cmd(
-                    LcFg.PythonVars.py_uv_icmd + [p_proj_path, "--python", uvs_python]
+                uv_url = "https://docs.astral.sh/uv/guides/projects/"
+                uv_bin = LcFg.PythonVars.py_uv_path
+
+                ok = self._run_cmd_list(
+                    [
+                        LcFg.PythonVars.py_uv_icmd + [p_proj_path, "--python", uvs_python],
+                        [uv_bin, "sync"], # uv init and uv sync to make the venv
+                    ],
+                    p_proj_path
                 )
-                if result is None:
-                    self._warn_missing_popup("uv")
-                    return
-                if result.returncode != 0:
+
+                if not ok:
                     self._warn_missing_popup(
-                        "uv: invalid interpreter version!",
-                        p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
+                        "uv: project initialisation or sync failed!",
+                        p_learn_more_url=uv_url,
                         p_msg_txt="",
                         p_info_txt=(
-                                result.stderr
-                                + ":( \nNote: make sure uv is installed and the project path is valid."
+                            ":( \nNote: make sure uv is installed, the Python interpreter is valid "
+                            "and the project path is usable."
                         )
                     )
                     return
 
             case "PY:POETRY":
-                try:
-                    subprocess.Popen(
-                        LcFg.PythonVars.py_poetry_icmd + [p_proj_path],
-                        env=self._get_sterile_env()
+
+                poetry_url = "https://python-poetry.org/docs/configuration/"
+                poetry_bin = LcFg.PythonVars.py_poetry_path
+
+                poetry_cmds: list[list[str]] = [
+                    LcFg.PythonVars.py_poetry_icmd + [p_proj_path],
+                ]
+
+                if disable_poetry_centralised_venvs:
+                    poetry_cmds.append(
+                        [poetry_bin, "config", "virtualenvs.in-project", "true", "--local"]
                     )
-                except FileNotFoundError:
-                    self._warn_missing_popup("poetry")
+
+                poetry_cmds.append([poetry_bin, "env", "use", interp])
+
+                ok = self._run_cmd_list(poetry_cmds, p_proj_path)
+
+                if not ok:
+                    self._warn_missing_popup(
+                        "poetry: project initialisation failed!",
+                        p_learn_more_url=poetry_url,
+                        p_msg_txt="",
+                        p_info_txt=(
+                            ":( \nNote: make sure Poetry is installed, the Python interpreter is valid "
+                            "and the project path is usable."
+                        )
+                    )
                     return
 
             case "PY:PIXI":
-                pixi_url = "https://pixi.prefix.dev/latest/getting_started/#creating-a-new-project"
+                pixi_url = "https://pixi.prefix.dev/latest/getting_started/"
+                pixi_bin = LcFg.PythonVars.py_pixi_path
 
-                result = self._run_cmd(LcFg.PythonVars.py_pixi_icmd, cwd=p_proj_path)
-                if result is None:
-                    self._warn_missing_popup("pixi", p_learn_more_url=pixi_url)
-                    return
-                if result.returncode != 0:
+                pixi_cmds: list[list[str]] = [
+                    LcFg.PythonVars.py_pixi_icmd + [p_proj_path],
+                ]
+
+                if pm_python_ver:
+                    pixi_cmds.append([pixi_bin, "add", f"python={pm_python_ver}"])
+
+                ok = self._run_cmd_list(pixi_cmds, p_proj_path)
+
+                if not ok:
                     self._warn_missing_popup(
                         "pixi: project initialisation failed!",
                         p_learn_more_url=pixi_url,
                         p_msg_txt="",
                         p_info_txt=(
-                                result.stderr
-                                + ":( \nNote: make sure Pixi is installed and the project path is valid."
+                            ":( \nNote: make sure Pixi is installed and the Python version is valid "
+                            "and the project path is usable."
                         )
                     )
                     return
-
-                if pm_python_ver:
-                    result2 = self._run_cmd(
-                        [LcFg.PythonVars.py_pixi_path, "add", f"python={pm_python_ver}"],
-                        cwd=p_proj_path
-                    )
-                    if result2 is None:
-                        self._warn_missing_popup("pixi", p_learn_more_url=pixi_url)
-                        return
-                    if result2.returncode != 0:
-                        self._warn_missing_popup(
-                            "pixi: invalid interpreter version!",
-                            p_learn_more_url=pixi_url,
-                            p_msg_txt="",
-                            p_info_txt=(
-                                    result2.stderr
-                                    + ":( \nNote: make sure you've entered a valid Python interpreter version."
-                            )
-                        )
-                        return
 
             case "PY:GENERIC_CONDA":
                 conda_url = (
                     "https://docs.conda.io/projects/conda/en/latest/"
                     "user-guide/tasks/manage-environments.html"
                 )
-                result = self._run_cmd(
-                    LcFg.PythonVars.py_conda_icmd
-                    + [str(Path(p_proj_path) / ".conda")]
-                    + ([f"python={pm_python_ver}"] if pm_python_ver else [])
+
+                ok = self._run_cmd_list(
+                    [
+                        LcFg.PythonVars.py_conda_icmd
+                        + [str(Path(p_proj_path) / ".conda")]
+                        + ([f"python={pm_python_ver}"] if pm_python_ver else [])
+                    ],
+                    p_proj_path
                 )
-                if result is None:
-                    self._warn_missing_popup("conda", p_learn_more_url=conda_url)
-                    return
-                if result.returncode != 0:
+
+                if not ok:
                     self._warn_missing_popup(
-                        "conda: invalid interpreter version!",
+                        "conda: environment creation failed!",
                         p_learn_more_url=conda_url,
                         p_msg_txt="",
                         p_info_txt=(
-                                result.stderr
-                                + ":( \nNote: make sure you've entered a valid Python interpreter version."
+                            ":( \nNote: make sure conda is installed and you've entered "
+                            "a valid Python interpreter version."
                         )
                     )
                     return
 
             case "PY:MAMBA":
                 mamba_url = "https://mamba.readthedocs.io/en/latest/user_guide/mamba.html"
-                result = self._run_cmd(
-                    LcFg.PythonVars.py_mamba_icmd
-                    + [str(Path(p_proj_path) / ".mamba")]
-                    + ([f"python={pm_python_ver}"] if pm_python_ver else [])
+
+                ok = self._run_cmd_list(
+                    [
+                        LcFg.PythonVars.py_mamba_icmd
+                        + [str(Path(p_proj_path) / ".mamba")]
+                        + ([f"python={pm_python_ver}"] if pm_python_ver else [])
+                    ],
+                    p_proj_path
                 )
-                if result is None:
-                    self._warn_missing_popup("mamba", p_learn_more_url=mamba_url)
-                    return
-                if result.returncode != 0:
+
+                if not ok:
                     self._warn_missing_popup(
-                        "mamba: invalid interpreter version!",
+                        "mamba: environment creation failed!",
                         p_learn_more_url=mamba_url,
                         p_msg_txt="",
                         p_info_txt=(
-                                result.stderr
-                                + ":( \nNote: make sure you've entered a valid Python interpreter version."
+                            ":( \nNote: make sure mamba is installed and you've entered "
+                            "a valid Python interpreter version."
                         )
                     )
                     return
@@ -292,7 +349,7 @@ class ConfirmButtonLogic:
                         LcFg.PythonVars.py_hatch_icmd + [p_proj_path],
                         env=self._get_sterile_env()
                     )
-                except FileNotFoundError:
+                except OSError : # ex FileNotFoundError
                     self._warn_missing_popup(
                         "hatch",
                         p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization"
@@ -306,7 +363,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except FileNotFoundError:
+                except OSError:
                     self._warn_missing_popup(
                         "venv",  # era "pip", corretto
                         p_learn_more_url="https://docs.python.org/3/library/venv.html"
@@ -320,7 +377,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except FileNotFoundError:
+                except OSError:
                     self._warn_missing_popup(
                         "pdm",
                         p_learn_more_url="https://pdm-project.org/en/latest/usage/project/"  # era mancante https:
@@ -334,7 +391,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except FileNotFoundError:
+                except OSError:
                     self._warn_missing_popup(
                         "pipenv",
                         p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/"
@@ -348,7 +405,7 @@ class ConfirmButtonLogic:
                         cwd=p_proj_path,
                         env=self._get_sterile_env()
                     )
-                except FileNotFoundError:
+                except OSError:
                     self._warn_missing_popup(
                         "virtualenv",
                         p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html"
