@@ -79,3 +79,11 @@ This software may reference or display third-party programming languages, techno
 **Python**, **Rust**, **.NET**, **JavaScript**, and other third-party names, logos, technologies, and trademarks remain the property of their respective owners.
 
 No affiliation, sponsorship, endorsement, certification, or partnership with any third-party vendor is expressed or implied by this software.
+
+### Inspirations & Tributes
+
+This software features visual elements, graphics, or tribute screens paying homage to JetBrains and its anniversary milestones. 
+
+JetBrains™ is a registered trademark of JetBrains s.r.o. Any use of trademarked names, logos, or brand aesthetics within this software is purely for artistic tribute, educational recognition, and community celebration purposes. 
+
+This software is an independent project developed by an individual developer. It is not affiliated with, endorsed, sponsored, authorized, or in any way officially connected with JetBrains s.r.o. or any of its subsidiaries.
