@@ -121,7 +121,7 @@ late_night = [
 "17_05" = ["Free to love, everywhere. Happy IDAHOBIT, {name}\n(International Day Against Homophobia, Biphobia, and Transphobia).",
     "United against discrimination, {name}. 🇪🇺🏳️‍🌈", "Love is love, {name}. Always.\n"]
 "01_06" = "Welcome to June! The Pride month begins, {name}."
-"23_06" = ["Remembering Alan Turing today.\nThe father of modern computing, a true visionary.", "Honoring Alan Turing's legacy: logic, courage,\nand a mind that changed the world."]
+"23_06" = ["Remembering Alan Turing today.\nThe father of modern computing, a true visionary.\n", "Honoring Alan Turing's legacy: logic, courage,\nand a mind that changed the world.\n"]
 "11_10" = "Live your truth, {name}. Happy Coming Out Day."
 
 [en.anniversaries.tech]
