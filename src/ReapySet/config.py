@@ -423,7 +423,7 @@ class LogicVariables:
         py_virtualenv_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "virtualenv_path") or shutil.which("virtualenv") or ""# noqa
         py_conda_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "conda_path") or shutil.which("conda") or ""# noqa
         py_mamba_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "mamba_path") or shutil.which("mamba") or ""# noqa
-        py_pixi_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pixi_path") or shutil.which("pixi") or ""# noqa #todo have a look here before push
+        py_pixi_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pixi_path") or shutil.which("pixi") or ""# noqa
             #----- iCmd stands for Init(ialise) Command -----#
         py_venv_icmd: list[str] = ["python", "-m", "venv", ".venv"]  # python -m venv .venv (dentro proj_path)
         py_uv_icmd: list[str] = [py_uv_path, "init"]  # uv init <proj_path>
