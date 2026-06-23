@@ -42,11 +42,13 @@ godot_display        = "Godot's editor"
 
 
 [python]
-default_pm                      = "PY:VENV" # PY:UV PY:VENV PY:POETRY PY:HATCH PY:GENERIC_CONDA PY:PIXI PY:MAMBA PY:PIPENV PY:VIRTUALENV PY:PDM
-uv_path                         = ""
-poetry_path                     = ""
+#General
 disable_poetry_centralised_venvs = true
 
+# package managers
+default_pm                      = "PY:VENV" # PY:UV PY:VENV PY:POETRY PY:HATCH PY:CONDA PY:PIXI PY:MAMBA PY:PIPENV PY:VIRTUALENV PY:PDM
+uv_path                         = ""
+poetry_path                     = ""
 hatch_path                      = ""
 pdm_path                        = ""
 pipenv_path                     = ""

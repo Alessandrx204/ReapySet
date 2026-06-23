@@ -344,7 +344,7 @@ class MwConfig:
             ("PY:VENV", "Venv", "python_logo.png"),
             ("PY:POETRY", "poetry", "poetry_logo.png"),
             ("PY:HATCH", "Hatch", "pip_logo.png"),
-            ("PY:GENERIC_CONDA", "conda*", "conda_logo.png"),
+            ("PY:CONDA", "conda", "conda_logo.png"),
             ("PY:PIXI", "Pixi", "pixi_logo.png"),
             ("PY:MAMBA", "Mamba", "mamba_logo.png"),
             ("PY:PIPENV", "PipEnv", "pipenv_logo.png"),

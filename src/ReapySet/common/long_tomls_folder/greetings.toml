@@ -256,3 +256,105 @@ late_night = [
   "\nLa tastiera sembra più rumorosa a quest'ora.\n",
   "\nObiettivo sviluppatrice nottambula sbloccato.\n" #g
 ]
+
+[it.holidays.europe]
+"01_01" = [
+  "Una moneta, un cammino condiviso.\nBuon Euro Day, {name}.",
+  "Buon anniversario dell’euro, {name}.\nIn viaggio nella storia dal 2002."
+]
+
+"25_03" = "Γεια σας Ελλάδα!\nBuona Festa dell’Indipendenza alla Grecia 🇬🇷\nDalla culla della democrazia, bentornato {name}."
+
+"09_05" = [
+  "Uniti nella diversità.\nBuona Festa dell’Europa, {name} 🇪🇺",
+  "Costruiamo il futuro insieme, {name}.\nBuona Festa dell’Europa 🇪🇺"
+]
+
+"02_06" = "Buona Festa della Repubblica, {name}.\n"
+
+"14_06" = [
+  "Un continente senza confini.\nBuona Giornata Schengen, {name}.",
+  "Liberi di muoversi, liberi di essere.\nBuona Giornata Schengen, {name}.\n"
+]
+
+"14_07" = "\nLiberté, égalité, fraternité.\nBuon 14 luglio, {name} 🇫🇷"
+
+"21_07" = "Buona Festa Nazionale al Belgio, {name} 🇧🇪\n"
+
+"26_09" = [
+  "Un continente, molte voci.\nBentornato, {name}.",
+  "Oggi si celebra la diversità culturale, {name}."
+]
+
+"12_10" = [
+  "¡Feliz Día de la Fiesta Nacional, {name}! 🇪🇸",
+  "Auguri alla Spagna nel giorno della sua festa nazionale, {name}.\n"
+]
+
+"09_11" = "Abbattere muri, costruire ponti.\nBentornato, {name}."
+
+
+[it.holidays.lgbt]
+"01_02" = [
+  "Grazie alla donna che ha contribuito a plasmare\nil futuro digitale. Buon compleanno, Lynn Conway 🏳️‍⚧️",
+  "Oggi ricordiamo Lynn Conway:\npioniera dei microchip moderni, libera di essere sé stessa. 🏳️‍⚧️"
+]
+
+"01_04" = "Celebriamo l’uguaglianza matrimoniale in Europa, {name}."
+
+"17_05" = [
+  "Liberi di amare, ovunque.\nBuona IDAHOBIT, {name}\n(Giornata internazionale contro omofobia, bifobia e transfobia).",
+  "Uniti contro ogni discriminazione, {name}. 🇪🇺🏳️‍🌈",
+  "L’amore è amore, {name}. Sempre.\n"
+]
+
+"01_06" = "Benvenuto giugno!\nComincia il mese del Pride, {name}."
+
+"23_06" = [
+  "Oggi ricordiamo Alan Turing.\nPadre dell’informatica moderna, vero visionario.\n",
+  "Onoriamo l’eredità di Alan Turing:\nlogica, coraggio e una mente che ha cambiato il mondo.\n"
+]
+
+"11_10" = "Vivi la tua verità, {name}.\nBuon Coming Out Day."
+
+
+[it.anniversaries.tech]
+"01_02" = "Oggi celebriamo JetBrains™.\nCodice migliore, creato a Praga 🇨🇿🇪🇺"
+
+"14_02" = "Buon anniversario a Godot Engine.\nLa potenza open source al servizio dei creatori."
+
+"20_02" = [
+  "Python nasceva oggi, nel 1991.\nChe viaggio, eh, {name}?",
+  "Buon compleanno, Python.\nSemplice, elegante, potente.\n(anche se un po’ lento)"
+]
+
+"01_04" = "Buon anniversario ad ASML™.\nPlasma il mondo, un nanometro alla volta 🇳🇱🇪🇺"
+
+"15_05" = "Buon Rust Day a tutti i Rustacean.\nPer caso sei una di loro, {name}? 👀"#g
+
+"25_08" = "La prima versione del kernel Linux\nfu rilasciata oggi, nel 1991.\nUsi Arch, vero, {name}? 👀"
+
+"29_09" = "Dove la scienza incontra la collaborazione:\noggi è la Notte Europea dei Ricercatori, {name}!"
+
+"04_12" = [
+  "JavaScript venne rilasciato al mondo\noggi, nel 1995... evviva...",
+  "Buon compleanno a JavaScript.\n grazie per Rendere il web interattivo\n(e imprevedibile) dal 1995."
+]
+
+
+[it.holidays.history]
+"27_01" = "Ricordare il passato per proteggere il futuro, {name}."
+
+"25_04" = [
+  "Buona Festa della Liberazione, {name} 🇮🇹",
+  "Oggi si celebra la libertà, {name}.\n"
+]
+
+"27_04" = [
+  "Fijne Koningsdag, {name}!\nPronta per un po’ di arancione? 🇳🇱", #g
+  "Buona Festa del Re, {name}.\nFijne Koningsdag!\n"
+]
+
+"15_06" = "Alla generazione che ha sfumato i confini europei.\nBuon Erasmus Day, {name}."
+
+"25_12" = "Buon Natale, {name}!\nTi auguriamo feste senza bug."

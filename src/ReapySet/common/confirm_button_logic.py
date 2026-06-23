@@ -292,7 +292,7 @@ class ConfirmButtonLogic:
                     )
                     return
 
-            case "PY:GENERIC_CONDA":
+            case "PY:CONDA":
                 conda_url = (
                     "https://docs.conda.io/projects/conda/en/latest/"
                     "user-guide/tasks/manage-environments.html"
