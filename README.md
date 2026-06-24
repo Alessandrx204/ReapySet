@@ -120,7 +120,7 @@ pip install -r requirements.txt
 ### Run
 
 ```bash/zsh
-python main.py
+uv run main.py
 ```
 
 ---
