@@ -37,6 +37,7 @@ In accordance with the LGPL v3:
 
 4. **License Text**  
    The full text of the LGPL v3 license is included in the `LICENSES/LGPL-3.0.txt` file distributed with this software.
+   The full text of the GPL v3 license is included in the `LICENSES/GPL-3.0.txt` file distributed with this software.
 
 ---
 
@@ -72,7 +73,7 @@ In accordance with the LGPL v3:
 
 The above components are distributed under the **MIT License**.
 
-The full MIT license text is included in the `LICENSES/MIT.txt` file distributed with this software.
+The full text of the MIT License is included in `LICENSES/MIT.txt`.
 
 Original copyright notices and permissions remain the property of their respective authors.
 
