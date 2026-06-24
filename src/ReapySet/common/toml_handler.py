@@ -1,5 +1,6 @@
 import shutil
 from pathlib import Path
+from functools import cache
 
 import tomlkit
 from PySide6.QtCore import QRegularExpression
@@ -11,26 +12,33 @@ _BASE: Path = Path(__file__).resolve().parent
 SRC_PATH: Path  = _BASE / "_rpsproj.toml"
 DEST_PATH: Path = _BASE / "toml_playground" / "toml_project_cc.toml"
 CONFIG_PATH: Path = _BASE / "toml_playground" / "config.toml"
+BACKUP_CONFIG_PATH: Path = _BASE / "_config_backup.toml"
+
 GREETINGS_PATH: Path = _BASE / "long_tomls_folder" / "greetings.toml"
 class TomlHandler:
     @staticmethod
     def initialise_sandbox():
         DEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(SRC_PATH, DEST_PATH)
+        shutil.copy(SRC_PATH, DEST_PATH) # not copy2 as i dont need metadata
 
     @staticmethod
     def clear_sandbox():
         DEST_PATH.unlink(missing_ok=True)
 
     @staticmethod
-    def _toml_read(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
+    @cache
+    def _toml_load(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
         with open(p_doc_path, "r", encoding="utf-8") as f_:
             return tomlkit.load(f_)
+    @staticmethod
+    def _toml_read(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
+        return TomlHandler._toml_load(p_doc_path)
 
     @staticmethod
     def _toml_write( data: tomlkit.TOMLDocument,p_doc_path: Path = DEST_PATH) -> None:
         with open(p_doc_path, "w") as f:
             tomlkit.dump(data, f)
+        TomlHandler._toml_load.cache_clear()
 
     @staticmethod #edits the toml in a specific line in order to allow the file to be easily parsed
     def toml_edit(section: str, key: str, value, subsection: str|None = None) -> None:
@@ -50,19 +58,11 @@ class TomlHandler:
         """
         # uses 'rb' and decode to better manage encodings (recommended by the tomlkit doc)
         try:
-            with open(p_file, "r", encoding="utf-8") as f_:
-                data = tomlkit.load(f_)
+                data = TomlHandler._toml_load(p_file)
+                return data[section][subsection][key] if subsection else data[section][key]
 
-            if subsection:
-                val = data[section][subsection][key]
-            else:
-                val = data[section][key]
-
-
-            return val
-
-        except (KeyError, FileNotFoundError) as e:
-            print(f"Error reading file or a key: {e}")
+        except (FileNotFoundError, KeyError) as e:
+            print(f"Error reading file or key: {e}")
             return None
 
     @staticmethod
@@ -73,11 +73,18 @@ class TomlHandler:
         TomlHandler._toml_write(toml_line)
 
     @staticmethod
-    def set_disabled_all_langs() -> None:  # no need for p_lang
+    def set_disabled_all_langs() -> None:
         toml_line = TomlHandler._toml_read()
         for lang in toml_line["languages"]:
             toml_line["languages"][lang]["enabled"] = False
         TomlHandler._toml_write(toml_line)
+
+
+    @staticmethod
+    def reset_config() -> None:
+        shutil.copy(BACKUP_CONFIG_PATH, CONFIG_PATH)
+
+
 
 
 
