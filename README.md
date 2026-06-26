@@ -143,6 +143,7 @@ Current development state:
 ## Roadmap
 
 - [ ] Better UI and UX
+- [ ] keyboard navigation
 - [ ] GitHub project import
 - [ ] Boilerplates' repo (i hate writing those)
 - [ ] Per-language configuration presets
