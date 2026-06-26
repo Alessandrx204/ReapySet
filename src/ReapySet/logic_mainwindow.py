@@ -93,7 +93,6 @@ class LogicMainWindow(RsMainWindow):
 
         QTimer.singleShot(Mwc.mw_widget_enable_delay, self.show_lang_widget)
 
-        # Timer rimanenti per la dimensione minima e il pulsante di conferma
         QTimer.singleShot(Mwc.mw_expansion_time, lambda: self.setMinimumSize(Mwc.mw_width, Mwc.mw_expanded_height))
         QTimer.singleShot(Mwc.mw_expansion_time + 500, lambda: self._update_confirm_button())
 
