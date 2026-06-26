@@ -75,10 +75,6 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 
 ## development Screenshots
 
-<img width="882" height="790" alt="Screenshot 2026-06-05 at 16 46 04" src="https://github.com/user-attachments/assets/49f8e7d4-1630-414e-9d32-575f7b219288" /> 
-
-to 05/06/26
-
 
 <img width="1705" height="970" alt="Screenshot 2026-06-17 at 15 50 10" src="https://github.com/user-attachments/assets/67850eb0-0b2d-420c-bad2-2f522630ce0d" />
 
@@ -106,18 +102,24 @@ cd reapyset
 ```
 
 ### Install dependencies
-
+using uv (recommended)
 ```bash/zsh
 uv sync
 ```
 
-or
+or using pip (make sure to activate your virtual environment first)
 
 ```bash/zsh
 pip install -r requirements.txt
 ```
 
 ### Run
+using uv (recommended)
+```bash/zsh
+uv run main.py
+```
+
+or
 
 ```bash/zsh
 python main.py
@@ -143,6 +145,7 @@ Current development state:
 ## Roadmap
 
 - [ ] Better UI and UX
+- [ ] keyboard navigation
 - [ ] GitHub project import
 - [ ] Boilerplates' repo (i hate writing those)
 - [ ] Per-language configuration presets
