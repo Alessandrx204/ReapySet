@@ -17,19 +17,24 @@ BACKUP_CONFIG_PATH: Path = _BASE / "_config_backup.toml"
 GREETINGS_PATH: Path = _BASE / "long_tomls_folder" / "greetings.toml"
 class TomlHandler:
     @staticmethod
-    def initialise_sandbox():
-        DEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(SRC_PATH, DEST_PATH) # not copy2 as i dont need metadata
-
-    @staticmethod
-    def clear_sandbox():
-        DEST_PATH.unlink(missing_ok=True)
-
-    @staticmethod
     @cache
     def _toml_load(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
         with open(p_doc_path, "r", encoding="utf-8") as f_:
             return tomlkit.load(f_)
+
+        
+    @staticmethod
+    def initialise_sandbox():
+        DEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(SRC_PATH, DEST_PATH)
+        TomlHandler._toml_load.cache_clear()  # il file è cambiato sotto i piedi della cache
+
+    @staticmethod
+    def clear_sandbox():
+        DEST_PATH.unlink(missing_ok=True)
+        TomlHandler._toml_load.cache_clear()
+
+
     @staticmethod
     def _toml_read(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
         return TomlHandler._toml_load(p_doc_path)

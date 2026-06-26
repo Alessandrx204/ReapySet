@@ -19,8 +19,8 @@ class LogicMainWindow(RsMainWindow):
         super().__init__()
         self.anim = QPropertyAnimation(self, b"geometry") #type: ignore
         self.original_geometry = self.geometry()
-        self.python_gen_widget = SW3.PythonGenWidget(self)
-        self.python_gen_widget.hide()
+        #self.python_gen_widget = SW3.PythonGenWidget(self)
+        #self.python_gen_widget.hide()
         self.lang_btn_cfg = Mwc.LangBtnWidget()
         self._lang_widget = None
         self.confirm_logic = ConfirmButtonLogic()
@@ -46,7 +46,7 @@ class LogicMainWindow(RsMainWindow):
                     "languages",
                     "unb_interpreter_version",
                     "python",
-                    p_regex_validation= r"^\d+\.\d+\.?\d*$" #avoids injection of unnecessary characters to avoid malicious code injection only 1234567890 and "." basically
+                    p_regex_validation= r"^\d+\.\d+(\.\d+)?$" #avoids injection of unnecessary characters to avoid malicious code injection only 1234567890 and "." basically
 
                 )
             case "RUST":
@@ -91,20 +91,22 @@ class LogicMainWindow(RsMainWindow):
         self.anim.setEasingCurve(Mwc.mw_expand_curve)
         self.anim.start()
 
-        QTimer.singleShot(Mwc.mw_widget_enable_delay, lambda: self.widget3_stacked.setEnabled(True))
-        QTimer.singleShot(Mwc.mw_widget_enable_delay, lambda: (
-            self.widget3_stacked.insertWidget(1, self._lang_widget),  # ← use _lang_widget
-            self.widget3_stacked.updateGeometry()
-        ))
+        QTimer.singleShot(Mwc.mw_widget_enable_delay, self.show_lang_widget)
 
+        # Timer rimanenti per la dimensione minima e il pulsante di conferma
         QTimer.singleShot(Mwc.mw_expansion_time, lambda: self.setMinimumSize(Mwc.mw_width, Mwc.mw_expanded_height))
-        QTimer.singleShot(Mwc.mw_expansion_time+ 500, lambda: self._update_confirm_button())
+        QTimer.singleShot(Mwc.mw_expansion_time + 500, lambda: self._update_confirm_button())
 
 
 
 
 
     #------------------------------------------------------------------------------------------------------------------#
+    def show_lang_widget(self):
+        """Manages the insertion and updating of the language widget when the delay expires."""
+        self.widget3_stacked.setEnabled(True)
+        self.widget3_stacked.insertWidget(1, self._lang_widget)
+        self.widget3_stacked.updateGeometry()
 
 
     def collapse_window(self):

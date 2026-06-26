@@ -12,7 +12,6 @@ from ReapySet.config import LogicVariables as LcFg
 from common.toml_handler import TomlHandler, DEST_PATH, CONFIG_PATH
 
 #common/confirm_button.py
-TomlHandler.toml_get(DEST_PATH, "languages", "interpreter_version", "python")
 
 
 class SetupWorker(QThread):

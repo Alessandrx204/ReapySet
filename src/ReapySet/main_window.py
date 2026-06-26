@@ -134,7 +134,7 @@ class RsMainWindow(QMainWindow):
         outer_layout.addWidget(self.central_widget2, 0)
         outer_layout.addWidget(self.widget3_stacked, 1)
         self.widget3_stacked.setStyleSheet(Mwc.Widget3.widget3_qss)
-        self.widget3_stacked.setEnabled(True)
+        self.widget3_stacked.setVisible(True)
         self.setCentralWidget(wrapper)
 
         # ------------------------ END TOP WIDGET --------------------------#
