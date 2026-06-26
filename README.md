@@ -106,21 +106,27 @@ cd reapyset
 ```
 
 ### Install dependencies
-
+using uv (recommended)
 ```bash/zsh
 uv sync
 ```
 
-or
+or using pip (make sure to activate your virtual environment first)
 
 ```bash/zsh
 pip install -r requirements.txt
 ```
 
 ### Run
-
+using uv (recommended)
 ```bash/zsh
 uv run main.py
+```
+
+or
+
+```bash/zsh
+python main.py
 ```
 
 ---
