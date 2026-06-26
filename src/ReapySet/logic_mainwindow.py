@@ -19,6 +19,9 @@ class LogicMainWindow(RsMainWindow):
         super().__init__()
         self.anim = QPropertyAnimation(self, b"geometry") #type: ignore
         self.original_geometry = self.geometry()
+        self.og_height = self.height()
+        self.og_width = self.width()
+
         #self.python_gen_widget = SW3.PythonGenWidget(self)
         #self.python_gen_widget.hide()
         self.lang_btn_cfg = Mwc.LangBtnWidget()
@@ -39,7 +42,7 @@ class LogicMainWindow(RsMainWindow):
 
         if self._lang_widget is not None:
             return
-        self.original_geometry = self.geometry()
+
         lang_id = p_language  # "PY" it's already the id
 
         match lang_id:
@@ -115,25 +118,37 @@ class LogicMainWindow(RsMainWindow):
         self.widget3_stacked.updateGeometry()
         self.widget3_stacked.setEnabled(True)
 
-
     def collapse_window(self):
         if self._lang_widget:
             self.widget3_stacked.removeWidget(self._lang_widget)
-            self._lang_widget.deleteLater() # qt method to delete sa
+            self._lang_widget.deleteLater()
             self._lang_widget = None
             self.confirm_button.setEnabled(False)
 
-
-
         self.setMinimumSize(Mwc.mw_width, Mwc.mw_height)
-        #self.setMaximumSize(Mwc.mw_width, Mwc.mw_expanded_height)  # a bit more free
 
         QTimer.singleShot(Mwc.mw_widget_enable_delay, lambda: self.widget3_stacked.setEnabled(False))
+
         self.anim = QPropertyAnimation(self, b"geometry")
         self.anim.setDuration(Mwc.mw_collapse_time)
         self.anim.setStartValue(self.geometry())
-        self.anim.setEndValue(self.original_geometry)
-        self.anim.setEasingCurve(Mwc.mw_collapse_curve)  # <----- ANIMATION STYLE
+
+
+        # Compensate for the native window frame offset.
+        # QWidget.geometry() refers to the client area, while frameGeometry()
+        # includes the platform window decorations, such as the title bar.
+        # Without this correction, repeated geometry animations may cause a small
+        # vertical drift on some window managers, especially on macOS.
+        frame_offset_y: int = self.geometry().y() - self.frameGeometry().y()
+        end_geometry: QRect = QRect(
+            self.x(),
+            self.y() + frame_offset_y,
+            self.width(),
+            self.og_height
+        )
+        self.anim.setEndValue(end_geometry)
+
+        self.anim.setEasingCurve(Mwc.mw_collapse_curve)
         self.anim.start()
 
 
