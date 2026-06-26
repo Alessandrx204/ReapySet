@@ -8,7 +8,6 @@ from PySide6.QtGui import QIcon, QFontMetrics, QPainterPath, QRegion, QCursor
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
 
-import logic_mainwindow
 import widgets.widget1.sample_picker as sample_picker
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
 from common.toml_handler import TomlHandler
@@ -20,7 +19,7 @@ from widgets.MwFunctions import MwFuncs as Mwf
 class RsMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self._language_buttons = None
+        self._language_buttons: list[QPushButton] = []
         self.setWindowTitle(Mwc.mw_title)
 
 
@@ -162,15 +161,7 @@ class RsMainWindow(QMainWindow):
         self.confirm_button.setEnabled(False)
         #self.cancel_button.setEnabled(False)
         # noinspection PyStatementEffect
-        self.back_button.clicked.connect(
-            lambda: (
-                logic_mainwindow.LogicMainWindow.handle_back_button(self), #type: ignore (since pyright
-                                                                        # doesnt catch up on inheritance)
-                TomlHandler.set_disabled_all_langs(),  # noqa linter complains it doesnt return anything
-                                                                            # but that's the whole point,
-                                                                        # no need to return anything there
-            )
-        )
+
 
         #self.button_box.accepted.connect(lambda : ConfirmButtonLogic().on_confirm_clicked())
         #self.confirm_button.clicked.connect(self.handle_confirm_clicked)

@@ -25,6 +25,7 @@ class LogicMainWindow(RsMainWindow):
         self._lang_widget = None
         self.confirm_logic = ConfirmButtonLogic()
         self.confirm_busy = False
+        self.back_button.clicked.connect(self.handle_back_button)
         #----Widgets on top -----#
         self.additions = MwAdditions(self)
         self.additions.add_trans_flag(size=20)
@@ -34,7 +35,11 @@ class LogicMainWindow(RsMainWindow):
         super().resizeEvent(event)
         self.additions.reposition_all()
         # ----Widgets on top -----#
-    def expand_window(self, p_language: str):
+    def expand_window(self, p_language: str) -> None:
+
+        if self._lang_widget is not None:
+            return
+        self.original_geometry = self.geometry()
         lang_id = p_language  # "PY" it's already the id
 
         match lang_id:
@@ -46,7 +51,7 @@ class LogicMainWindow(RsMainWindow):
                     "languages",
                     "unb_interpreter_version",
                     "python",
-                    p_regex_validation= r"^\d+\.\d+(\.\d+)?$" #avoids injection of unnecessary characters to avoid malicious code injection only 1234567890 and "." basically
+                    p_regex_validation= r"^\d+\.\d+(\.\d+)?$" ## Prevents unsupported characters from being saved as a Python version. allowing only 1234567890 and "." basically
 
                 )
             case "RUST":
@@ -103,35 +108,44 @@ class LogicMainWindow(RsMainWindow):
     #------------------------------------------------------------------------------------------------------------------#
     def show_lang_widget(self):
         """Manages the insertion and updating of the language widget when the delay expires."""
-        self.widget3_stacked.setEnabled(True)
+        if self._lang_widget is None:
+            return
         self.widget3_stacked.insertWidget(1, self._lang_widget)
+        self.widget3_stacked.setCurrentWidget(self._lang_widget)
         self.widget3_stacked.updateGeometry()
+        self.widget3_stacked.setEnabled(True)
 
 
     def collapse_window(self):
         if self._lang_widget:
             self.widget3_stacked.removeWidget(self._lang_widget)
-            self._lang_widget.deleteLater() # qt method
+            self._lang_widget.deleteLater() # qt method to delete sa
             self._lang_widget = None
             self.confirm_button.setEnabled(False)
+
 
 
         self.setMinimumSize(Mwc.mw_width, Mwc.mw_height)
         #self.setMaximumSize(Mwc.mw_width, Mwc.mw_expanded_height)  # a bit more free
 
         QTimer.singleShot(Mwc.mw_widget_enable_delay, lambda: self.widget3_stacked.setEnabled(False))
+        self.anim = QPropertyAnimation(self, b"geometry")
         self.anim.setDuration(Mwc.mw_collapse_time)
         self.anim.setStartValue(self.geometry())
         self.anim.setEndValue(self.original_geometry)
         self.anim.setEasingCurve(Mwc.mw_collapse_curve)  # <----- ANIMATION STYLE
         self.anim.start()
 
-        QTimer.singleShot(Mwc.mw_fix_size_delay, lambda: self.setFixedSize(Mwc.mw_width, Mwc.mw_height))
+
+        QTimer.singleShot(
+            Mwc.mw_collapse_time,
+            lambda: self.setFixedSize(Mwc.mw_width, Mwc.mw_height)
+        )
         # Enable only buttons whose index appears in _enabled_buttons
         for i, btn in enumerate(self._language_buttons):
             btn.setEnabled(i in self._enabled_buttons)
 
-    def handle_event(self, button_label_txt: str):
+    def handle_event(self, button_label_txt: str) -> None:
         for btn in self._language_buttons:
             btn.setProperty("selected", btn.property("lang_id") == button_label_txt)
 
@@ -142,13 +156,12 @@ class LogicMainWindow(RsMainWindow):
         print(button_label_txt)
 
 
-        ...
 
     #------------------------------------------------------------------------------------------------------------------#
 
-
-    def handle_back_button(self):
+    def handle_back_button(self) -> None:
         self.back_button.setEnabled(False)
+        TomlHandler.set_disabled_all_langs()
         self.collapse_window()
 
     @staticmethod
@@ -159,10 +172,10 @@ class LogicMainWindow(RsMainWindow):
         data = TomlHandler._toml_read()
         path_ok = bool(data["global"]["project_path"].strip())
         lang_ok = any(data["languages"][i]["enabled"] for i in data["languages"])
-        self.confirm_button.setEnabled(path_ok and lang_ok)
+        self.confirm_button.setEnabled(path_ok and lang_ok) # path not null and a lang is enabled
 
     def handle_confirm_clicked(self) -> None:
-        if self.confirm_busy:
+        if self.confirm_busy: #if is busy lets it finish
             return
         self.confirm_busy = True
         self.confirm_button.setEnabled(False)

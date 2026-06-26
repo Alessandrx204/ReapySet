@@ -1,10 +1,10 @@
-import sys
+
 
 
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon, QPixmap, Qt
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
+    QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
 )
 
 from widgets.MwFunctions import MwFuncs as Mwf
@@ -34,8 +34,8 @@ class PythonGenWidget(QWidget):
         self.python_label = QLabel(Mwc.Widget3.py_qlabel_txt)
         self.python_label.setStyleSheet(Mwc.Widget3.py_qlabel_qss)
 
-
         self.bg_image_path = str(Mwc.Images().python_wallpaper)
+        self.bg_pixmap = QPixmap(self.bg_image_path)
         self.bg_label = QLabel(self)
         self.bg_label.lower()
 
@@ -145,24 +145,30 @@ class PythonGenWidget(QWidget):
             if i == len(entries) - 1:
                 btn.setEnabled(False) #disables mojo
 
-
-
-
-
-        self.group.buttonClicked.connect(
-            lambda b: TomlHandler.toml_edit("languages", "package_manager", f"{b.property('key')}", subsection="python"))
+        self.group.buttonClicked.connect(self.on_package_manager_changed)
 
 
 
         self.main_layout.addWidget(pm_widget, row_offset, col_offset)
 
+    @staticmethod
+    def on_package_manager_changed(button: QRadioButton) -> None:
+        key = button.property("key")
+        TomlHandler.toml_edit(
+            "languages",
+            "package_manager",
+            str(key),
+            subsection="python"
+        )
+
     def resizeEvent(self, event) -> None:
-        pixmap = QPixmap(self.bg_image_path)
-        self.bg_label.setPixmap(pixmap.scaled(
-            self.size(),
-            Qt.AspectRatioMode.IgnoreAspectRatio,
-            Qt.TransformationMode.SmoothTransformation
-        ))
+        self.bg_label.setPixmap(
+            self.bg_pixmap.scaled(
+                self.size(),
+                Qt.AspectRatioMode.IgnoreAspectRatio,
+                Qt.TransformationMode.SmoothTransformation
+            )
+        )
         self.bg_label.setGeometry(self.rect())
         super().resizeEvent(event)
 
@@ -179,8 +185,3 @@ class PythonGenWidget(QWidget):
 
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    w = PythonGenWidget()
-    w.show()
-    sys.exit(app.exec())
