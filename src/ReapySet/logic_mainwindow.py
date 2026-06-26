@@ -4,8 +4,8 @@ from PySide6.QtGui import QResizeEvent
 from main_window import RsMainWindow
 
 from config import MwConfig as Mwc
-from widgets.MwFuctions import MwFuncs as Mwf
-import widgets.widgets3.widget31_python.stacked_widget3 as SW3 #noqa
+from widgets.MwFunctions import MwFuncs as Mwf
+import widgets.widgets3.widget31_python.stacked_widget3 as SW3 # noqa
 from common.toml_handler import TomlHandler
 from common.confirm_button_logic import ConfirmButtonLogic
 from widgets.floating_widgets import MwAdditions

@@ -13,7 +13,7 @@ import widgets.widget1.sample_picker as sample_picker
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
 from common.toml_handler import TomlHandler
 from config import MwConfig as Mwc, LogicVariables
-from widgets.MwFuctions import MwFuncs as Mwf
+from widgets.MwFunctions import MwFuncs as Mwf
 
 
 #mainwindow
