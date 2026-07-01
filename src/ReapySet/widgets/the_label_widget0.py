@@ -3,8 +3,7 @@ import sys
 import random
 from typing import Any
 
-from common.toml_handler import TomlHandler, GREETINGS_PATH, CONFIG_PATH
-
+from ReapySet.common.toml_handler import TomlHandler, GREETINGS_PATH, CONFIG_PATH
 
 
 
@@ -92,7 +91,8 @@ class GreetingsGetter:
         name: str = TomlHandler.toml_get(CONFIG_PATH, "personal", "profile_name") or "User"
 
         lang: str = TomlHandler.toml_get(CONFIG_PATH, "personal", "language") or "en"
-        is_greetings_enabled: bool = TomlHandler.toml_get(CONFIG_PATH, "personal", "enabled_greetings")
+        is_greetings_enabled = TomlHandler.toml_get(CONFIG_PATH, "personal", "enabled_greetings") is True
+
         if not is_greetings_enabled:
             print(is_greetings_enabled)
             return "\nReadySet\n"

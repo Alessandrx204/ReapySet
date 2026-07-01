@@ -1,4 +1,6 @@
+from __future__ import annotations
 import shutil
+import tempfile
 from pathlib import Path
 from functools import cache
 
@@ -7,61 +9,133 @@ from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QSyntaxHighlighter, QTextCharFormat, QColor, QFont
 from PySide6.QtWidgets import (
     QPlainTextEdit, QDialogButtonBox, QDialog, QVBoxLayout, QMessageBox, )
+from importlib import resources
 
-_BASE: Path = Path(__file__).resolve().parent
-SRC_PATH: Path  = _BASE / "_rpsproj.toml"
-DEST_PATH: Path = _BASE / "toml_playground" / "toml_project_cc.toml"
-CONFIG_PATH: Path = _BASE / "toml_playground" / "config.toml"
-BACKUP_CONFIG_PATH: Path = _BASE / "_config_backup.toml"
+from platformdirs import PlatformDirs
 
-GREETINGS_PATH: Path = _BASE / "long_tomls_folder" / "greetings.toml"
+from importlib.abc import Traversable
+from typing import Any
+import traceback
+
+TomlReadable = Path | Traversable
+
+TomlWritable = Path #types
+# Persistent user config directory
+_dirs = PlatformDirs(appname="ReapySet")
+
+_cfg_dir = Path(_dirs.user_config_dir)
+
+_cfg_dir.mkdir(parents=True, exist_ok=True)
+
+CONFIG_PATH = _cfg_dir / "config.toml"
+SRC_PATH: Traversable = resources.files("ReapySet.common") / "_rpsproj.toml"
+
+BACKUP_CONFIG_PATH: Traversable = resources.files("ReapySet.common") / "_config_backup.toml"
+# ---------------------------------------------------------------------#
+# Bundled resources
+# These are Traversable objects, NOT guaranteed real pathlib.Path objects.
+# ---------------------------------------------------------------------#
+
+SRC_RESOURCE: Traversable = resources.files("ReapySet.common") / "_rpsproj.toml"
+
+BACKUP_CONFIG_RESOURCE: Traversable = resources.files("ReapySet.common") / "_config_backup.toml"
+
+GREETINGS_PATH: Traversable = (
+    resources.files("ReapySet.common.long_tomls_folder") / "greetings.toml"
+)
 class TomlHandler:
+    _temp_dir: Path | None = None
+    DEST_PATH: Path | None = None
+
+    @staticmethod
+    def _dest_path() -> Path:
+
+        if TomlHandler.DEST_PATH is None:
+            raise RuntimeError("Project TOML sandbox has not been initialised.")
+        return TomlHandler.DEST_PATH
+
     @staticmethod
     @cache
-    def _toml_load(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
-        with open(p_doc_path, "r", encoding="utf-8") as f_:
-            return tomlkit.load(f_)
+    def _toml_load(p_doc_path: TomlReadable | None = None) -> tomlkit.TOMLDocument:
+        """
+        Loads a TOML document.
+        - If p_doc_path is None, reads the current temporary project TOML.
+        - If p_doc_path is Path, reads a real filesystem file.
+        - If p_doc_path is Traversable, reads a bundled importlib resource.
+        """
+        doc = p_doc_path or TomlHandler._dest_path()
+        with doc.open("r", encoding="utf-8") as f:
+            return tomlkit.load(f)
 
-        
     @staticmethod
-    def initialise_sandbox():
-        DEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(SRC_PATH, DEST_PATH)
+    def initialise_sandbox() -> None:
+        """
+        Creates a real editable TOML file from the bundled _rpsproj.toml template.
+        SRC_PATH is bundled inside the package / Nuitka executable and must stay
+        read-only. The GUI must only edit DEST_PATH, which is a real file inside
+        a manually managed temporary directory.
+        """
+        TomlHandler.clear_sandbox()
+
+        temp_dir = Path(tempfile.mkdtemp(prefix="reapyset_"))
+        dest_path = temp_dir / "_rpsproj.toml"
+        TomlHandler._temp_dir = temp_dir # Keep the temp directory path for manual cleanup.
+        TomlHandler.DEST_PATH = dest_path #Editable copy used by the GUI.
+
+        with resources.as_file(SRC_PATH) as src:
+            shutil.copy(src, dest_path)
         TomlHandler._toml_load.cache_clear()
 
     @staticmethod
-    def clear_sandbox():
-        DEST_PATH.unlink(missing_ok=True)
-        TomlHandler._toml_load.cache_clear()
+    def clear_sandbox() -> None:
 
+        TomlHandler._toml_load.cache_clear()
+        if TomlHandler._temp_dir is not None:
+
+            shutil.rmtree(TomlHandler._temp_dir, ignore_errors=False)
+
+        TomlHandler._temp_dir = None
+        TomlHandler.DEST_PATH = None
 
     @staticmethod
-    def _toml_read(p_doc_path: Path = DEST_PATH) -> tomlkit.TOMLDocument:
+    def _toml_read(p_doc_path: TomlReadable | None = None) -> tomlkit.TOMLDocument:
         return TomlHandler._toml_load(p_doc_path)
 
     @staticmethod
-    def _toml_write( data: tomlkit.TOMLDocument,p_doc_path: Path = DEST_PATH) -> None:
-        with open(p_doc_path, "w") as f:
-            tomlkit.dump(data, f)
+    def _toml_write(
+        data: tomlkit.TOMLDocument,
+        p_doc_path: TomlWritable | None = None,
+    ) -> None:
+
+        path = p_doc_path or TomlHandler._dest_path()
+        with path.open("w", encoding="utf-8") as f_:
+            tomlkit.dump(data, f_)
         TomlHandler._toml_load.cache_clear()
 
     @staticmethod #edits the toml in a specific line in order to allow the file to be easily parsed
-    def toml_edit(section: str, key: str, value, subsection: str|None = None) -> None:
+    def toml_edit(section: str, key: str, value: Any, subsection: str | None = None, p_doc_path: TomlWritable | None = None) -> None:
+        path = p_doc_path or TomlHandler._dest_path()
+
+
         print(f"toml_edit called: {section}.{key} = {value}")
-        data = TomlHandler._toml_read()
+        traceback.print_stack(limit=5)
+        data = TomlHandler._toml_read(path)
         if subsection:
             data[section][subsection][key] = value
         else:
             data[section][key] = value
-        TomlHandler._toml_write(data)
+        TomlHandler._toml_write(data, path)
 
 
     @staticmethod
-    def toml_get(p_file: Path, section: str, key: str, subsection: str | None = None):
+    def toml_get(p_file: TomlReadable,
+                 section: str,
+                 key: str,
+                 subsection: str | None = None
+                 ) -> Any | None:
         """
        reads a specific value from a TOML.
         """
-        # uses 'rb' and decode to better manage encodings (recommended by the tomlkit doc)
         try:
                 data = TomlHandler._toml_load(p_file)
                 return data[section][subsection][key] if subsection else data[section][key]
@@ -87,7 +161,24 @@ class TomlHandler:
 
     @staticmethod
     def reset_config() -> None:
-        shutil.copy(BACKUP_CONFIG_PATH, CONFIG_PATH)
+        """
+        Restores the persistent user config from the bundled backup config.
+        """
+        CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with resources.as_file(BACKUP_CONFIG_PATH) as src:
+            shutil.copy(src, CONFIG_PATH)
+
+        TomlHandler._toml_load.cache_clear()
+
+    @staticmethod
+    def ensure_config_exists() -> None:
+        """
+        Creates the persistent config.toml if it does not exist yet.
+        """
+        if not CONFIG_PATH.exists():
+            TomlHandler.reset_config()
+
+
 
 
 
@@ -168,6 +259,8 @@ class TomlEditorDialog(QDialog):
         layout.addWidget(self.editor_page)
 
         layout.addWidget(buttons)
+
+
 
     def _save(self):
         # validates TOML before saving

@@ -1,6 +1,5 @@
 darkdetect==0.7.1
-pyobjc-core==12.1
-pyobjc-framework-cocoa==12.1
+platformdirs==4.10.0
 pyqtdarktheme==2.1.0
 pyside6==6.11.0
 pyside6-addons==6.11.0

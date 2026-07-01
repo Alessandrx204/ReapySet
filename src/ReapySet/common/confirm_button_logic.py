@@ -9,7 +9,7 @@ from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QMessageBox
 
 from ReapySet.config import LogicVariables as LcFg
-from common.toml_handler import TomlHandler, DEST_PATH, CONFIG_PATH
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
 #common/confirm_button.py
 
@@ -28,6 +28,7 @@ class SetupWorker(QThread):
         subprocess.Popen(shlex.split(self.editor_cmd))
         self.finished.emit()
 class ConfirmButtonLogic:
+
     ...
     #todo should execute the env creation,
     # reads from the toml_cc the temp configs
@@ -170,6 +171,7 @@ class ConfirmButtonLogic:
 
         return True
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
+        project_toml_path: Path = TomlHandler._dest_path()
         import os
         for env_var in ["VIRTUAL_ENV", "PYTHONHOME", "PYTHONPATH", "CONDA_PREFIX"]:
             os.environ.pop(env_var, None)
@@ -187,14 +189,14 @@ class ConfirmButtonLogic:
         )
 
         interp_ver: str | None = TomlHandler.toml_get(
-            DEST_PATH,
+            project_toml_path,
             "languages",
             "interpreter_version",
             "python"
         )
 
         unb_interp_ver: str | None = TomlHandler.toml_get(
-            DEST_PATH,
+            project_toml_path,
             "languages",
             "unb_interpreter_version",
             "python"

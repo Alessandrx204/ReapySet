@@ -11,12 +11,15 @@ start_time = time.perf_counter()
 import qdarktheme
 from PySide6.QtGui import QIcon, Qt
 from PySide6.QtWidgets import QApplication
-from logic_mainwindow import LogicMainWindow
 from config import MwConfig as Mwc
 from ReapySet.common.toml_handler import TomlHandler
 
 def main():
+    from logic_mainwindow import LogicMainWindow
+    TomlHandler.ensure_config_exists()
     TomlHandler.initialise_sandbox()
+    print("Sandbox temp dir:", TomlHandler._temp_dir)
+    print("Sandbox TOML:", TomlHandler._dest_path())
     app: QApplication = QApplication(sys.argv)
     app.setStyle("Fusion" if os.name == "nt" else "")
     app.styleHints().setColorScheme(Qt.ColorScheme.Dark) # ENFORCES MANDATORY DARK MODE

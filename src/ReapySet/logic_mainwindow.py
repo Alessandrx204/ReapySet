@@ -1,12 +1,12 @@
 from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
 from PySide6.QtGui import QResizeEvent
 
-from main_window import RsMainWindow
+from main_window import RpsMainWindow
 
 from config import MwConfig as Mwc
 from widgets.MwFunctions import MwFuncs as Mwf
 import widgets.widgets3.widget31_python.stacked_widget3 as SW3 # noqa
-from common.toml_handler import TomlHandler
+from ReapySet.common.toml_handler import TomlHandler
 from common.confirm_button_logic import ConfirmButtonLogic
 from widgets.floating_widgets import MwAdditions
 
@@ -14,7 +14,7 @@ from widgets.floating_widgets import MwAdditions
 def switch_stacked_widget():
     ...
 
-class LogicMainWindow(RsMainWindow):
+class LogicMainWindow(RpsMainWindow):
     def __init__(self):
         super().__init__()
         self.anim = QPropertyAnimation(self, b"geometry") #type: ignore

@@ -12,7 +12,7 @@ from widgets.MwFunctions import MwFuncs as Mwf
 
 from widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
 from config import MwConfig as Mwc
-from common.toml_handler import TomlHandler, CONFIG_PATH, DEST_PATH
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 # --- Data: (key, button txt, icon path) ---
 widget3_instance = Mwc.Widget3()
 ENTRIES = widget3_instance.py_RBTNS_ENTRIES
@@ -105,7 +105,7 @@ class PythonGenWidget(QWidget):
         pm_layout.setContentsMargins(0, 0, 0, 0)
         pm_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         project_pm = TomlHandler.toml_get(
-            p_file=DEST_PATH,
+            p_file=TomlHandler._dest_path(),
             section="languages",
             subsection="python",
             key="package_manager"

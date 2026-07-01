@@ -1,22 +1,22 @@
 #from PySide6.QtGui import QPalette, QColor, QFontDatabase
 import os
-import sys
 from pathlib import Path
+from typing import Any
 
-from PySide6.QtCore import QPoint, QSize, Qt, QRectF
-from PySide6.QtGui import QIcon, QFontMetrics, QPainterPath, QRegion, QCursor
+from PySide6.QtCore import QPoint, QSize, QRectF
+from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
 
 import widgets.widget1.sample_picker as sample_picker
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
-from common.toml_handler import TomlHandler
 from config import MwConfig as Mwc, LogicVariables
 from widgets.MwFunctions import MwFuncs as Mwf
 
 
 #mainwindow
-class RsMainWindow(QMainWindow):
+class RpsMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self._language_buttons: list[QPushButton] = []
@@ -88,15 +88,37 @@ class RsMainWindow(QMainWindow):
         self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
         self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
 
-        text_ = str(Path.home() / "Projects/")
+        raw_default_path: Any | None = TomlHandler.toml_get(
+            CONFIG_PATH,
+            "general",
+            "default_project_path",
+        )
+        projects_folder_name: str | None = TomlHandler.toml_get(
+            CONFIG_PATH,
+            "general",
+            "default_projects_folder"
+        )
 
-        metrics = QFontMetrics(self.w1_path_input.font())
-        elided = metrics.elidedText(text_, Qt.TextElideMode.ElideLeft, self.w1_path_input.width())
+        if isinstance(raw_default_path, str) and raw_default_path.strip():
 
-        self.w1_path_input.setText(
-            elided + "/" if not sys.platform.startswith("win") else elided + "\\")  #text that scorlls on the left
-        TomlHandler.toml_edit("global", "project_path", self.w1_path_input.text())
-        self.w1_path_input.setTextMargins(0, 0, 50, 0)  # adds a white space
+            project_path = Path(raw_default_path).expanduser() # converts ~ to the user's home directory .
+
+        else:
+
+            project_path = Path.home() / (projects_folder_name if projects_folder_name else "")
+        project_path_txt: str = str(project_path) + os.sep
+        # if you see a double call dont worry its normal
+
+        self.w1_path_input.setText(project_path_txt)
+        self.w1_path_input.setTextMargins(0, 0, 50, 0)  # adds a white space on the right
+        self.w1_path_input.setCursorPosition(len(project_path_txt))
+        self.w1_path_input.setToolTip(project_path_txt)
+        TomlHandler.toml_edit("global", "project_path", project_path_txt)
+
+        self.w1_path_input.mouseDoubleClickEvent = (
+            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_path_input)
+        )
+
 
         self.w1_boilerplates_box = QLineEdit()
         self.w1_boilerplates_box.setEnabled(False)  # boilerplates enabled y/n?
@@ -176,8 +198,7 @@ class RsMainWindow(QMainWindow):
         # ------------------- END TOOLBAR / STATUSBAR BUTTONS ------------------#
         Mwf.connect_qlineedit(self.w1_path_input, "global", "project_path")
 
-
-        #TODO: decide if this is worth keeping or not (most likely not)
+        # TODO: decide if this is worth keeping or not (most likely not)
         self.w1_path_input.textChanged.connect(
             lambda text: TomlHandler.toml_edit("global",
                                                "folder_name",

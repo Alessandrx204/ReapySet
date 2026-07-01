@@ -1,7 +1,7 @@
 
 from PySide6.QtWidgets import QFileDialog, QMessageBox, QWidget
 from pathlib import Path
-from common.toml_handler import TomlHandler
+from ReapySet.common.toml_handler import TomlHandler
 PATH_SAMPLE_DEFAULT: Path = Path("rps_samples")
 
 def pick_folder(parent: QWidget = None) -> str:

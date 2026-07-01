@@ -1,10 +1,27 @@
 [general]
-#soon
+# Optional full override for the default project folder.
+# macOS:
+# default_project_path = "/Users/your_name/Projects"
+# default_project_path = "/Volumes/ExternalSSD/Code"
+
+# Linux:
+# default_project_path = "/home/your_name/Projects"
+# default_project_path = "/mnt/data/Code"
+
+# Windows:
+# is Preferred to write using forward slashes("/" the one Linux & macOS use):
+#like "C:/Users/your_name/Projects" or "D:/Code"
+# you mayuse single quotes if you want Windows backslashes: default_project_path = 'C:\Users\your_name\Projects'
+# default_project_path = "~/Projects" is ok too "~" will be evalueted
+default_project_path = "" # Leave empty to use: ~/default_projects_folder
+
+# Folder name appended to the user's home directory when default_project_path is empty.
+default_projects_folder = "Projects" # it means ~/Projects/. Empty means ~/. leave blank for None
 
 
 [personal]
 profile_name = "User"
-grammatical_gender = "F"
+grammatical_gender = "F" # soon
 # Grammatical gender for localisation. Supported values: "F", "M", "X".
 # Default fallback is "F". Used for basic string agreement instead of full pronoun mapping.
 # NOTE: Certain localised strings may still exhibit minor grammatical mismatches.

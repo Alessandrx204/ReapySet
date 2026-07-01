@@ -8,7 +8,7 @@ from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import QLabel, QPushButton, QApplication
 
-from common.toml_handler import CONFIG_PATH, TomlEditorDialog
+from ReapySet.common.toml_handler import CONFIG_PATH, TomlEditorDialog, TomlHandler
 
 
 class TransFlagWidget(QLabel):
@@ -95,7 +95,10 @@ class SettingsButtonWidget(QPushButton):
         self._set_icon(size)
         #self.clicked.connect(lambda : print("clicked"))
         self.clicked.connect(
-            lambda: TomlEditorDialog(CONFIG_PATH, self).exec()
+            lambda: (
+                TomlHandler.ensure_config_exists(),
+                TomlEditorDialog(CONFIG_PATH, self).exec()
+            )
         )
         self.setStyleSheet("QPushButton { border: none; background: transparent; outline: none; }")
 

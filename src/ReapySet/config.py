@@ -7,7 +7,7 @@ from pathlib import Path
 
 import tomlkit
 from PySide6.QtCore import QEasingCurve
-from common.toml_handler import TomlHandler, CONFIG_PATH
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
 
 def _get_root() -> Path:
@@ -93,11 +93,11 @@ class MwConfig:
         }
         """
         QlineTopTextQSS: str            = "font-size:10px; margin-top:0px; margin-bottom:6px;"
-        github_box_top_label: str       = "Import a project from GitHub"
+        github_box_top_label: str       = "\nImport a project from GitHub"
         github_box_placeholder_txt: str = "COMING SOON " #insert a repo URL
-        path_box_top_label: str         = "Project Location:"
+        path_box_top_label: str         = "Project Location:\n(Double-click to browse)"
         path_box_placeholder_txt: str   = "Project Path...?"
-        sample_box_top_label: str       = "Boilerplates:"
+        sample_box_top_label: str       = "\nBoilerplates:"
         boilerplates_box_placeholder_txt: str = "COMING SOON"
         browse_button_text: str         = "Browse"
         select_editor_Combobox_top_label: str = ""
