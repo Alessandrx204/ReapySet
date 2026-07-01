@@ -27,7 +27,7 @@ class TomlHandler:
     def initialise_sandbox():
         DEST_PATH.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(SRC_PATH, DEST_PATH)
-        TomlHandler._toml_load.cache_clear()  # il file è cambiato sotto i piedi della cache
+        TomlHandler._toml_load.cache_clear()
 
     @staticmethod
     def clear_sandbox():
