@@ -175,5 +175,6 @@ feel free to submit a pr,
 
 ## License
 source code is all right reserved/Qt binaries are available in concordance to Qt's LGPLv3 License
+but you're free to build yourself from source for non commercial usage :)
 
 
