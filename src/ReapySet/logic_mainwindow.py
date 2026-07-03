@@ -194,6 +194,8 @@ class LogicMainWindow(RpsMainWindow):
             return
         self.confirm_busy = True
         self.confirm_button.setEnabled(False)
+        self.confirm_shortcut.setEnabled(False)
+        self.confirm_shortcut_numpad.setEnabled(False)
 
         try:
             self.confirm_logic.on_confirm_clicked()
@@ -206,5 +208,7 @@ class LogicMainWindow(RpsMainWindow):
 
 
     def _unlock_confirm_btn(self) -> None:
-        self.confirm_busy = False
+        self.confirm_busy = False # re enables the button no longer busy
+        self.confirm_shortcut.setEnabled(True)
+        self.confirm_shortcut_numpad.setEnabled(True) # re enables the shortcut
         self._update_confirm_button()

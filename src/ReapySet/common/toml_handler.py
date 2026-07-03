@@ -6,7 +6,7 @@ from functools import cache
 
 import tomlkit
 from PySide6.QtCore import QRegularExpression
-from PySide6.QtGui import QSyntaxHighlighter, QTextCharFormat, QColor, QFont
+from PySide6.QtGui import QSyntaxHighlighter, QTextCharFormat, QColor, QFont, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QPlainTextEdit, QDialogButtonBox, QDialog, QVBoxLayout, QMessageBox, )
 from importlib import resources
@@ -117,8 +117,8 @@ class TomlHandler:
         path = p_doc_path or TomlHandler._dest_path()
 
 
-        print(f"toml_edit called: {section}.{key} = {value}")
-        traceback.print_stack(limit=5)
+        """print(f"toml_edit called: {section}.{key} = {value}")
+        traceback.print_stack(limit=5)"""
         data = TomlHandler._toml_read(path)
         if subsection:
             data[section][subsection][key] = value
@@ -200,9 +200,13 @@ class TomlHandler:
 class TomlEditorDialog(QDialog):
     def __init__(self, config_path: Path, parent=None):
         super().__init__(parent)
+        self.save_shortcut = QShortcut(QKeySequence.StandardKey.Save, self)
+        self.save_shortcut.activated.connect(self._save)
+        self.save_shortcut = QShortcut(QKeySequence.StandardKey.Close, self)
+        self.save_shortcut.activated.connect(self.reject)
 
         self.path = config_path
-        self.setWindowTitle("Settings TOML")
+        self.setWindowTitle("Settings")
         self.resize(700, 600)
 
         self.editor_page = QPlainTextEdit()

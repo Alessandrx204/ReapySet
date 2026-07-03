@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import QPoint, QSize, QRectF
-from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor
+from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor, QShortcut, QKeySequence, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
 
@@ -54,6 +54,10 @@ class RpsMainWindow(QMainWindow):
         # ----------------- END-PALETTE --------------------------#
 
 
+
+
+
+
         #----------------------------------------------------------------#
         #self._button_labels_list: list[str] = Mwc.LangBtnWidget.button_list
         self.button_labels_dict: dict[str, list] = Mwc.LangBtnWidget().button_dict
@@ -84,7 +88,11 @@ class RpsMainWindow(QMainWindow):
         self.w1_github_input.setPlaceholderText(Mwc.Widget1.github_box_placeholder_txt)
         self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
         self.w1_path_input = QLineEdit()
-        self.widget1Layout.addWidget(Mwf.labeled_field(f"{Mwc.Widget1.path_box_top_label}", self.w1_path_input))
+        path_field = Mwf.labeled_field(
+            f"{Mwc.Widget1.path_box_top_label}",
+            self.w1_path_input
+        )
+        self.widget1Layout.addWidget(path_field)
         self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
         self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
 
@@ -116,6 +124,9 @@ class RpsMainWindow(QMainWindow):
         TomlHandler.toml_edit("global", "project_path", project_path_txt)
 
         self.w1_path_input.mouseDoubleClickEvent = (
+            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_path_input)
+        )# 2 click to open finder / file explorer
+        path_field.mouseDoubleClickEvent = (
             lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_path_input)
         )
 
@@ -172,9 +183,19 @@ class RpsMainWindow(QMainWindow):
         self.confirm_button.setText("Confirm")
         self.confirm_button.clicked.connect(
 
-            self.handle_confirm_clicked
+            self.handle_confirm_clicked # it will be called in confirm_button_logic.py
 
         )
+
+        self.confirm_shortcut = QShortcut(QKeySequence("Ctrl+Return"), self)
+        self.confirm_shortcut.setContext(Qt.ShortcutContext.ApplicationShortcut)
+        self.confirm_shortcut.activated.connect(self.handle_confirm_clicked) # noqa
+        self.confirm_shortcut_numpad = QShortcut(QKeySequence("Ctrl+Enter"), self)
+        self.confirm_shortcut_numpad.setContext(Qt.ShortcutContext.ApplicationShortcut)
+        self.confirm_shortcut_numpad.activated.connect(self.handle_confirm_clicked) # noqa
+
+
+        # it may be useful someday
         #self.cancel_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Cancel)
 
         self.back_button: QPushButton = QPushButton("Back")

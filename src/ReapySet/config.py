@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 import shutil
 import sys
@@ -117,7 +118,7 @@ class MwConfig:
     @dataclass
     class LangBtnWidget:
         """Widget 2: language selector buttons"""
-        images: "MwConfig.Images" = field(default_factory=lambda: MwConfig.Images())
+        images: MwConfig.Images = field(default_factory=lambda: MwConfig.Images()) # aving future i can usw MwConfig.Images
         enabled_btns: list[int]   = field(default_factory=lambda: [0])
         cw_height:     int = 120
         max_btn_x_row: int = 3 #ex 5
