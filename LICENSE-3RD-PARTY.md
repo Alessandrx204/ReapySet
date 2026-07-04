@@ -81,7 +81,7 @@ Original copyright notices and permissions remain the property of their respecti
 
 # Third-Party Names & Trademarks
 
-This software may reference or display third-party programming languages, technologies, package managers, development tools, or related names for identification, interoperability, and compatibility purposes.
+This software may reference or display third-party programming languages, technologies, package managers, development tools, or related names or logos for identification, interoperability, and compatibility purposes.
 
 **Python**, **Rust**, **.NET**, **JavaScript**, **Qt**, **JetBrains**, and other third-party names, logos, technologies, and trademarks remain the property of their respective owners.
 
