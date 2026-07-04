@@ -67,6 +67,13 @@ In accordance with the LGPL v3:
 - **License:** MIT License
 - **Source:** https://github.com/python-poetry/tomlkit
 
+## platformdirs
+
+- **Copyright:** © The platformdirs developers
+- **License:** MIT License
+- **Source:** https://github.com/tox-dev/platformdirs
+
+
 ---
 
 ## MIT License Notice
