@@ -175,14 +175,14 @@ feel free to submit a pr,
 
 ## License & Commercial Usage
 
-ReadySet is a **source-available** project. 
+ReapySet is a **source-available** project. 
 
 * **Non-Commercial Use:** You are free to view, modify, and compile the software from source for personal, educational, or non-commercial purposes.
-* **Commercial Use:** If you are using ReadySet within a company, for commercial projects, or to generate revenue, you are required to purchase a commercial license.
+* **Commercial Use:** If you are using ReapySet within a company, for commercial projects, or to generate revenue, you are required to purchase a commercial license.
 
 Pre-compiled binaries are available for a symbolic price to support the development and maintenance of the project.
 
 * ~~[Buy a Pre-compiled Binary / Commercial License here]~~ (not yet)
 
-*Note on Qt:* ReadySet is built using PySide6. The source code of ReadySet is distributed under a proprietary source-available license, while the PySide6/Qt binaries adhere to the **LGPLv3** license.
+*Note on Qt:* ReadySet is built using PySide6. The source code of ReapySet is distributed under a proprietary source-available license, while the PySide6/Qt binaries adhere to the **LGPLv3** license.
 
