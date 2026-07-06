@@ -37,7 +37,7 @@ class LogicMainWindow(RpsMainWindow):
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
         self.additions.reposition_all()
-        # ----Widgets on top -----##
+        # ----Widgets on top -----#
     def expand_window(self, p_language: str) -> None:
 
         if self._lang_widget is not None:
