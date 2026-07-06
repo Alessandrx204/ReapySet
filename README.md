@@ -169,12 +169,41 @@ ReapySet tries to stay:
 
 ## Contributing
 
-feel free to submit a pr,
+ReapySet is my first major project, and as a beginner/junior developer, I know there is always room for optimization, refactoring, and improvements. The code isn't perfect, but it works, and I'm proud of it 
+
+If you see something that can be improved, written better, or optimized:
+* Feel free to open an Issue to discuss it.
+* Submit a PR!❤️ I’m highly open to feedback, code reviews, and learning from more experienced developers. (@ _ @)ゝ
+
 
 ---
 
-## License
-source code is all right reserved/Qt binaries are available in concordance to Qt's LGPLv3 License
-but you're free to build yourself from source for non commercial usage :)
+## License & Commercial Usage
 
+ReapySet is a **source-available** project. 
+
+* **Non-Commercial Use:** You are free to view, modify, and compile the software from source for personal, educational, or non-commercial purposes.
+* **Commercial Use:** If you are using ReapySet within a company, for commercial projects, or to generate revenue, you are required to purchase a commercial license.
+
+Pre-compiled binaries are available for a symbolic price to support the development and maintenance of the project.
+
+* ~~[Buy a Pre-compiled Binary / Commercial License here]~~ (not yet)
+
+*Note on Qt:* ReadySet is built using PySide6. The source code of ReapySet is distributed under a proprietary source-available license, while the PySide6/Qt binaries adhere to the **LGPLv3** license.
+---
+
+## Why Source-Available and not fully Open Source? (FAQ)
+
+**TL;DR:** I’m testing if software development can become my full-time career, or if I should go back to medical school. Buying a license directly supports this journey.
+
+Here is the long story:
+ReadySet is my first major, serious software project. I poured time and passion into crafting this tool  
+
+Instead of going the traditional FOSS (Free and Open Source) route, I chose a **source-available / paid binary model** for two main reasons:
+
+1. **Sustainability & Career Pivot:** I want to see if independent software development can be a viable career path for me. If this experiment fails, I’ll likely have to pivot back to medical school -_-.
+ Charging a symbolic price helps me measure the actual market value of my work and maybe sustain development❤️.
+2. **Transparency:** If you just want to review the code, learn from it, or use it for your personal indie projects, you can compile it from source for free. But if you use it to make your commercial workflow faster, contributing a small fee keeps the project alive.
+
+I believe developers should be compensated for building good tools. If you share this vision, thank you for supporting an independent EU developer!
 
