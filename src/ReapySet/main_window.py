@@ -141,7 +141,7 @@ class RpsMainWindow(QMainWindow):
 
         self.w1_browse_bplates_button = QPushButton(Mwc.Widget1.browse_button_text)
         self.w1_browse_bplates_button.setEnabled(False)
-        self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_browse_bplates_button))  #moves down a bit the button by gioving it a null text in a QVBox
+        #self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_browse_bplates_button))  #moves down a bit the button by gioving it a null text in a QVBox
         self.w1_browse_bplates_button.clicked.connect(
             lambda: self._on_folder_selected(sample_picker.pick_folder(self))
         )

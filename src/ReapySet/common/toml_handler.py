@@ -15,15 +15,14 @@ from platformdirs import PlatformDirs
 
 from importlib.abc import Traversable
 from typing import Any
-import traceback
 
 TomlReadable = Path | Traversable
 
 TomlWritable = Path #types
 # Persistent user config directory
-_dirs = PlatformDirs(appname="ReapySet")
+_platform_data_dirs = PlatformDirs(appname="ReapySet")
 
-_cfg_dir = Path(_dirs.user_config_dir)
+_cfg_dir = Path(_platform_data_dirs.user_config_dir)
 
 _cfg_dir.mkdir(parents=True, exist_ok=True)
 
@@ -117,8 +116,7 @@ class TomlHandler:
         path = p_doc_path or TomlHandler._dest_path()
 
 
-        """print(f"toml_edit called: {section}.{key} = {value}")
-        traceback.print_stack(limit=5)"""
+        """print(f"toml_edit called: {section}.{key} = {value}")"""
         data = TomlHandler._toml_read(path)
         if subsection:
             data[section][subsection][key] = value

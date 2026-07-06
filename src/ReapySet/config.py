@@ -8,8 +8,8 @@ from pathlib import Path
 
 import tomlkit
 from PySide6.QtCore import QEasingCurve
-from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
 def _get_root() -> Path:
     if hasattr(sys, "frozen"):
@@ -20,6 +20,7 @@ def _get_root() -> Path:
 @dataclass
 class MwConfig:
     """Main Window configs"""
+
     mw_title: str = "ReapySet"
 
     mw_width: int = 770
@@ -48,8 +49,12 @@ class MwConfig:
         def res(self) -> Path:
             return self.root / "resources"
 
+
+
         @property
         def icon_path(self)       -> Path: return self.res / "icon.png"
+        @property
+        def cc_logo_path(self) -> Path: return self.res / "cookiecutter-logo.svg"
         @property
         def python_logo(self)     -> Path: return self.res / "python_logo.svg"
         @property
@@ -98,8 +103,8 @@ class MwConfig:
         github_box_placeholder_txt: str = "COMING SOON " #insert a repo URL
         path_box_top_label: str         = "Project Location:\n(Double-click to browse)"
         path_box_placeholder_txt: str   = "Project Path...?"
-        sample_box_top_label: str       = "\nBoilerplates:"
-        boilerplates_box_placeholder_txt: str = "COMING SOON"
+        sample_box_top_label: str       = "\n🍪 CookieCutter:"#\nInsert a path or Double-click to browse
+        boilerplates_box_placeholder_txt: str = "COMING SOON" #cc/paths/ex (proj name if any)
         browse_button_text: str         = "Browse"
         select_editor_Combobox_top_label: str = ""
 
