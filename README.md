@@ -82,6 +82,9 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 
 17/06/26
 
+<img width="882" height="510" alt="Screenshot 2026-07-06 at 20 48 24" src="https://github.com/user-attachments/assets/9720e487-dbf1-4191-8e09-03104efb31ed" />
+06/07(2026
+
 ---
 
 ## Installation
