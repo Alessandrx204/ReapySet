@@ -93,7 +93,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 
 - Python 3.13.5+
 - PySide6
-- pyobjc on OS X
+- pyobjc on OS X (on legacy versions)
 - qtdarktheme
 - tomlkit
 
