@@ -171,9 +171,10 @@ class TomlHandler:
     @staticmethod
     def ensure_config_exists() -> None:
         """
-        Creates the persistent config.toml if it does not exist yet.
+        Creates or restores the persistent config.toml if it does not exist
+        or if it exists but is empty.
         """
-        if not CONFIG_PATH.exists():
+        if not CONFIG_PATH.exists() or CONFIG_PATH.stat().st_size == 0:
             TomlHandler.reset_config()
 
 

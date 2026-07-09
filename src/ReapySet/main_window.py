@@ -3,13 +3,13 @@ import os
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import QPoint, QSize, QRectF
-from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor, QShortcut, QKeySequence, Qt
+from PySide6.QtCore import QPoint, QSize, QRectF, QUrl
+from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor, QShortcut, QKeySequence, Qt, QAction, QDesktopServices
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
-    QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox
+    QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox, QMenuBar, QMessageBox
 
 import widgets.widget1.sample_picker as sample_picker
-from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH, TomlEditorDialog
 from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
 from config import MwConfig as Mwc, LogicVariables
 from widgets.MwFunctions import MwFuncs as Mwf
@@ -35,13 +35,7 @@ class RpsMainWindow(QMainWindow):
             screen = QApplication.primaryScreen()  # fallback
         print(f"Screen: {screen.name()}, geometry: {screen.availableGeometry()}")
         print(f"Cursor pos: {QCursor.pos()}")
-        centre = screen.availableGeometry().center()
-        frame.moveCenter(centre)
-
-        top_left: QPoint = frame.topLeft()
-        top_left.setY(top_left.y() + Mwc.mw_y_offset)  #offsets 150 px to Y - is up + is down
-
-        self.move(top_left)
+        self.centre_mwindow()
         # ----------------- PALETTE --------------------------#
         """Disabled due inability to work on os theme changes"""
 
@@ -51,13 +45,82 @@ class RpsMainWindow(QMainWindow):
         #self.setPalette(std_palette)
 
         #self.setAutoFillBackground(True)
-        # ----------------- END-PALETTE --------------------------#
+        # -------------------- END-PALETTE -----------------------------#
+        # ---------------------- MENUBAR -------------------------------#
+        mw_menubar: QMenuBar = self.menuBar()
+        mw_menubar.setNativeMenuBar(True)
 
+        # Main menus
+        app_menu = mw_menubar.addMenu("&ReapySet")
+        edit_menu = mw_menubar.addMenu("&Edit")
+        view_menu = mw_menubar.addMenu("&View")
+        help_menu = mw_menubar.addMenu("&Help")
 
+        # ---------------------- APP / SETTINGS ------------------------#
 
+        open_settings_action = QAction("&Settings...", self)
+        open_settings_action.setShortcut(QKeySequence.StandardKey.Preferences)
+        open_settings_action.setMenuRole(QAction.MenuRole.PreferencesRole)
+        open_settings_action.triggered.connect(lambda: (
+                TomlHandler.ensure_config_exists(),
+                TomlEditorDialog(CONFIG_PATH, self).exec()
+            ))
 
+        quit_action = QAction("&Quit ReapySet", self)
+        quit_action.setShortcut(QKeySequence.StandardKey.Quit)
+        quit_action.triggered.connect(self.close)
+        quit_action.setMenuRole(QAction.MenuRole.QuitRole)
 
+        app_menu.addAction(open_settings_action)
+        app_menu.addSeparator()
+        app_menu.addAction(quit_action)
 
+        # ---------------------- EDIT ----------------------------------#
+        edit_menu.addAction(QAction("Cu&t", self))
+        edit_menu.addAction(QAction("&Copy", self))
+        edit_menu.addAction(QAction("&Paste", self))
+        edit_menu.addSeparator()
+        edit_menu.addAction(QAction("Select &All", self))
+
+        # ---------------------- VIEW ----------------------------------#
+        reset_window_pos_action = QAction("&Reset Window Pos", self)
+        reset_window_pos_action.triggered.connect(self.centre_mwindow)
+
+        view_menu.addAction(reset_window_pos_action) # todo bug puts i too hig if reposed when expaned
+
+        # ----------------- HELP & LEGAL STUFFS ------------------------#
+        github_action = QAction("&GitHub Repository", self)
+        github_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl("https://github.com/Alessandrx204/ReapySet")
+            )
+        )
+
+        license_action = QAction("&ReapySet License", self)
+        license_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl("https://github.com/Alessandrx204/ReapySet/blob/Master/LICENSE")
+            )
+        )
+
+        third_party_licenses_action = QAction("&Open Source Licenses", self)
+        third_party_licenses_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(
+                QUrl("https://github.com/Alessandrx204/ReapySet/blob/Master/LICENSE-3RD-PARTY.md")
+            )
+        )
+
+        about_action = QAction("&About ReapySet", self)
+        about_action.setMenuRole(QAction.MenuRole.AboutRole)
+        about_action.triggered.connect(self.show_about_dialog)
+
+        help_menu.addAction(github_action)
+        help_menu.addSeparator()
+        help_menu.addAction(license_action)
+        help_menu.addAction(third_party_licenses_action)
+        help_menu.addSeparator()
+        help_menu.addAction(about_action)
+        # -------------------- END-MENUBAR ------------------------------#
         #----------------------------------------------------------------#
         #self._button_labels_list: list[str] = Mwc.LangBtnWidget.button_list
         self.button_labels_dict: dict[str, list] = Mwc.LangBtnWidget().button_dict
@@ -232,6 +295,22 @@ class RpsMainWindow(QMainWindow):
 
 
     #---------------- INIT END ---------------------#
+    def centre_mwindow(self) -> None:
+        screen = QApplication.screenAt(QCursor.pos())
+
+        if screen is None:
+            screen = QApplication.primaryScreen()
+
+        if screen is None:
+            return
+
+        frame = self.frameGeometry()
+        frame.moveCenter(screen.availableGeometry().center())
+
+        top_left: QPoint = frame.topLeft()
+        top_left.setY(top_left.y() + Mwc.mw_y_offset)  #offsets 150 px to Y - is up + is down
+
+        self.move(top_left)
 
 
     def _on_sample_input_changed(self, text: str):
@@ -295,6 +374,19 @@ class RpsMainWindow(QMainWindow):
             self.w1_boilerplates_box.setText(folder)
 
     #_connect_qlineedit replaced with Mwf.connect_qlineedit
+
+    def show_about_dialog(self) -> None:
+        QMessageBox.about(
+            self,
+            "About ReapySet",
+            (
+                "<h3>ReapySet</h3>"
+                "<p>Version: beta 5.0</p>"
+                "<p>Project setup and environment launcher.</p>"
+                "<p>Powered by Open source software</p>"
+                "<p>Copyright © Alessandra 2026</p>"
+            )
+        )
 
 
 

@@ -59,7 +59,7 @@ class LogicMainWindow(RpsMainWindow):
                     p_regex_validation= r"^\d+\.\d+(\.\d+)?$" ## Prevents unsupported characters from being saved as a Python version. allowing only 1234567890 and "." basically
 
                 )
-                specific_h_expansion+=0
+                specific_h_expansion+=100
 
             case "RUST":
                 print("testing rust")
@@ -88,10 +88,10 @@ class LogicMainWindow(RpsMainWindow):
             case _:
                 print("unknown language")
                 return
-
+        expanded_height = Mwc.mw_height + specific_h_expansion
         for btn in self._language_buttons:
             btn.setEnabled(False)
-        self.setMaximumSize(Mwc.mw_width, Mwc.mw_expanded_height)
+        self.setMaximumSize(Mwc.mw_width, expanded_height)
 
         current: QRect = self.geometry()
         expanded: QRect = QRect(current.x(), current.y(), current.width(), current.height() + specific_h_expansion)
@@ -105,7 +105,7 @@ class LogicMainWindow(RpsMainWindow):
 
         QTimer.singleShot(Mwc.mw_widget_enable_delay, self.show_lang_widget)
 
-        QTimer.singleShot(Mwc.mw_expansion_time, lambda: self.setMinimumSize(Mwc.mw_width, (specific_h_expansion + Mwc.mw_height_expansion)))
+        QTimer.singleShot(Mwc.mw_expansion_time,lambda: self.setMinimumSize(Mwc.mw_width, expanded_height))
         QTimer.singleShot(Mwc.mw_expansion_time + 500, lambda: self._update_confirm_button())
 
 

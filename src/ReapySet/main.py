@@ -21,6 +21,9 @@ def main():
     print("Sandbox temp dir:", TomlHandler._temp_dir)
     print("Sandbox TOML:", TomlHandler._dest_path())
     app: QApplication = QApplication(sys.argv)
+    app.setApplicationName("ReapySet")
+    app.setApplicationVersion("beta: 5.0")
+    app.setOrganizationName("Alessandrx's ReapySet")
     app.setStyle("Fusion" if os.name == "nt" else "")
     app.styleHints().setColorScheme(Qt.ColorScheme.Dark) # ENFORCES MANDATORY DARK MODE
     app.setPalette(
