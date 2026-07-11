@@ -40,7 +40,7 @@ class LogicMainWindow(RpsMainWindow):
         # ----Widgets on top -----#
     def expand_window(self, p_language: str) -> None:
 
-        if self._lang_widget is not None:
+        if self._lang_widget is not None:# if exists
             return
 
         lang_id = p_language  # "PY" it's already the id
@@ -88,7 +88,7 @@ class LogicMainWindow(RpsMainWindow):
             case _:
                 print("unknown language")
                 return
-        expanded_height = Mwc.mw_height + specific_h_expansion
+        expanded_height = Mwc.mw_height() + specific_h_expansion
         for btn in self._language_buttons:
             btn.setEnabled(False)
         self.setMaximumSize(Mwc.mw_width, expanded_height)

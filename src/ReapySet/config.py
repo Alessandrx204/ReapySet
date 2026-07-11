@@ -24,10 +24,17 @@ class MwConfig:
     mw_title: str = "ReapySet"
 
     mw_width: int = 770
-    mw_height: int = 370
-
+    _mw_height: int = 380 # cos ill be get ftom config
     mw_height_expansion: int = 280
-    mw_expanded_height: int = mw_height + mw_height_expansion  # 580
+
+    @classmethod
+    def mw_height(cls) -> int:
+        return TomlHandler.toml_get(CONFIG_PATH, "advanced", "main_window_height") or cls._mw_height
+
+    @classmethod
+    def mw_expanded_height(cls) -> int:
+        return cls.mw_height() + cls.mw_height_expansion
+
 
     mw_expansion_time: int = 600
     mw_collapse_time: int = 450

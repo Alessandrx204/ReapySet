@@ -4,7 +4,8 @@ from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import QPoint, QSize, QRectF, QUrl
-from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor, QShortcut, QKeySequence, Qt, QAction, QDesktopServices
+from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor, QShortcut, QKeySequence, Qt, QAction, QDesktopServices, \
+    QShowEvent
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
     QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox, QMenuBar, QMessageBox
 
@@ -21,21 +22,20 @@ class RpsMainWindow(QMainWindow):
         super().__init__()
         self._language_buttons: list[QPushButton] = []
         self.setWindowTitle(Mwc.mw_title)
+        self.initial_centre_pos = None
 
 
         #-----------------SIZE-AND-POS---------------------------
-        self.resize(Mwc.mw_width, Mwc.mw_height)
+        self.resize(Mwc.mw_width, Mwc.mw_height())
 
-        self.setMaximumSize(Mwc.mw_width, Mwc.mw_height)  # MAX SIZE
+        self.setMaximumSize(Mwc.mw_width, Mwc.mw_height())  # MAX SIZE
         self.status = self.statusBar()  # adds a status bar
 
-        frame = self.frameGeometry()
-        screen = QApplication.screenAt(QCursor.pos())  # schermo dove c'è il cursore
+        screen = QApplication.screenAt(QCursor.pos()) # screen where the cursor is at
         if screen is None:
             screen = QApplication.primaryScreen()  # fallback
         print(f"Screen: {screen.name()}, geometry: {screen.availableGeometry()}")
         print(f"Cursor pos: {QCursor.pos()}")
-        self.centre_mwindow()
         # ----------------- PALETTE --------------------------#
         """Disabled due inability to work on os theme changes"""
 
@@ -48,10 +48,12 @@ class RpsMainWindow(QMainWindow):
         # -------------------- END-PALETTE -----------------------------#
         # ---------------------- MENUBAR -------------------------------#
         mw_menubar: QMenuBar = self.menuBar()
-        mw_menubar.setNativeMenuBar(True)
+        attached_menubar: bool = not TomlHandler.toml_get(CONFIG_PATH, "advanced", "force_attached_menubar") # noqa
+        mw_menubar.setNativeMenuBar(attached_menubar)
 
         # Main menus
         app_menu = mw_menubar.addMenu("&ReapySet")
+
         edit_menu = mw_menubar.addMenu("&Edit")
         view_menu = mw_menubar.addMenu("&View")
         help_menu = mw_menubar.addMenu("&Help")
@@ -83,7 +85,7 @@ class RpsMainWindow(QMainWindow):
         edit_menu.addAction(QAction("Select &All", self))
 
         # ---------------------- VIEW ----------------------------------#
-        reset_window_pos_action = QAction("&Reset Window Pos", self)
+        reset_window_pos_action = QAction("&Reset Window Position", self)
         reset_window_pos_action.triggered.connect(self.centre_mwindow)
 
         view_menu.addAction(reset_window_pos_action) # todo bug puts i too hig if reposed when expaned
@@ -291,26 +293,32 @@ class RpsMainWindow(QMainWindow):
 
         Mwf.connect_qlineedit(self.w1_boilerplates_box, "global", "boilerplate_project_path")
         Mwf.connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
-        self.setMinimumSize(Mwc.mw_width, Mwc.mw_height)
+        self.setMinimumSize(Mwc.mw_width, Mwc.mw_height())
+
 
 
     #---------------- INIT END ---------------------#
     def centre_mwindow(self) -> None:
         screen = QApplication.screenAt(QCursor.pos())
-
+        # Tries the application's primary screen as a fallback.
         if screen is None:
             screen = QApplication.primaryScreen()
 
+        # If no screen is available even after the fallback, return.
         if screen is None:
             return
 
-        frame = self.frameGeometry()
-        frame.moveCenter(screen.availableGeometry().center())
+        if self.initial_centre_pos is None:
+            frame = self.frameGeometry()
 
-        top_left: QPoint = frame.topLeft()
-        top_left.setY(top_left.y() + Mwc.mw_y_offset)  #offsets 150 px to Y - is up + is down
+            frame.moveCenter(screen.availableGeometry().center())
 
-        self.move(top_left)
+            self.initial_centre_pos = frame.topLeft()
+
+        current_pos: QPoint = QPoint(self.initial_centre_pos)
+        current_pos.setY(current_pos.y() + Mwc.mw_y_offset)  #offsets 150 px to Y - is up + is down
+
+        self.move(current_pos)
 
 
     def _on_sample_input_changed(self, text: str):
@@ -326,9 +334,16 @@ class RpsMainWindow(QMainWindow):
         # it gets called automatically every time the window size changes.
         super().resizeEvent(event)
         path = QPainterPath()
-        path.addRoundedRect(QRectF(self.widget3_stacked.rect()), 10.0, 10.0)
+        path.addRoundedRect(QRectF(self.widget3_stacked.rect()), 10.0, 10.0) # staked widget corners
         region = QRegion(path.toFillPolygon().toPolygon())
         self.widget3_stacked.setMask(region)
+
+    def showEvent(self, event: QShowEvent):
+        """ gets the centre before is expaned so it can always refer to the OG centre
+        instead of the actual centre which shift when the window is expanded."""
+        super().showEvent(event)
+        if self.initial_centre_pos is None:
+            self.centre_mwindow()
 
 
 
