@@ -194,7 +194,7 @@ Pre-compiled binaries are available for a symbolic price to support the developm
 
 * ~~[Buy a Pre-compiled Binary / Commercial License here]~~ (Coming Soon)
 
-*Note on Qt:* ReadySet is built using PySide6. The source code of ReapySet is distributed under a proprietary source-available license, while the PySide6/Qt binaries adhere to the **LGPLv3** license.
+*Note on Qt:* ReapySet is built using PySide6. The source code of ReapySet is distributed under a proprietary source-available license, while the PySide6/Qt binaries adhere to the **LGPLv3** license.
 ---
 
 ## Why Source-Available and not fully Open Source? (FAQ)
