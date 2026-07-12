@@ -188,9 +188,16 @@ ReapySet is a **source-available** project.
 * **Non-Commercial Use:** You are free to view, modify, and compile the software from source for personal, educational, or non-commercial purposes.
 * **Commercial Use:** If you are using ReapySet within a company, for commercial projects, or to generate revenue, you are required to purchase a commercial license.
 
-Pre-compiled binaries are available for a symbolic price to support the development and maintenance of the project.
 
-* ~~[Buy a Pre-compiled Binary / Commercial License here]~~ (not yet)
+* **Software Integrity & Visual Assets Protection:**
+All graphical user interface (GUI) elements, visual assets, brand identifiers, and hardcoded artistic or identity displays—including, but not limited to, the flag rendered via QPainter, or the icon are protected components of this software.
+ You are strictly prohibited from removing, hiding, obscuring, or altering these visual elements in any modification, fork, or compiled version of the software.
+ Any attempt to bypass, comment out, or disable the code responsible for rendering these assets will result in the immediate and automatic revocation of your license to use, view, or modify this software. Any subsequent use will be treated as an intentional copyright infringement and a violation of technical protection measures.
+
+
+Pre-compiled binaries are available for a symbolic price to support the development and maintenance of the project.:)
+
+* ~~[Buy a Pre-compiled Binary / Commercial License here]~~ (Coming Soon)
 
 *Note on Qt:* ReadySet is built using PySide6. The source code of ReapySet is distributed under a proprietary source-available license, while the PySide6/Qt binaries adhere to the **LGPLv3** license.
 ---
