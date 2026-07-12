@@ -45,10 +45,11 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 | Feature | Status |
 |----------|--------|
 | python | ⚠️ In progress |
-| rust | 🚧 Planned |
+| JavaScript/typescript | ⏳ Next|
 | .NET | 🚧 Planned |
-| Typescript/Javascript/TSX/JSX | 📝 Considered  |
+| rust | 🚧 Planned |
 | Mojo | 📝 Considered  |
+| Docker | 📝 Condidered |
 | Kotlin/java |  TBD  |
 | C/C++ |  TBD  |
 | lua |  TBD  |
@@ -134,26 +135,20 @@ python main.py
 
 Current development state:
 
-| Feature | Status |
-|----------|--------|
-| GUI foundation | ✅ |
-| Python setup | ⚠️ In progress |
-| Boilerplates | ⚠️ Partial |
-| Multi-language support | 🚧 Planned |
-| GitHub import | 🚧 Coming soon |
-| Cross-platform polish | 🚧 Ongoing |
 
 ---
 
 ## Roadmap
 
-- [ ] Better UI and UX
+- [X] Better UI and UX
+- [] Python frameworks support
 - [ ] keyboard navigation
-- [ ] GitHub project import
-- [ ] Boilerplates' repo (i hate writing those)
-- [ ] Per-language configuration presets
-- [ ] Better macOS / Windows native styling
-- [ ] Terminal Command line version
+- [ ] GitHub project import (It's surprisignly extremely harder than expected)
+- [ ] CookieCutter Boilerplates support (i hate writing those)
+- [X] Per-language configuration presets
+- [ ] JavaScript support
+- [ ] Better view on Linux / Windows 
+- [ ] Command line version
 
 ---
 
