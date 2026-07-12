@@ -141,7 +141,7 @@ Current development state:
 ## Roadmap
 
 - [X] Better UI and UX
-- [] Python frameworks support
+- [ ] Python frameworks support
 - [ ] keyboard navigation
 - [ ] GitHub project import (It's surprisignly extremely harder than expected)
 - [ ] CookieCutter Boilerplates support (i hate writing those)
