@@ -1,5 +1,5 @@
 [project]
-name = "readyset"
+name = "reapyset"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13,<3.14"
