@@ -10,7 +10,7 @@ start_time = time.perf_counter()
 
 import qdarktheme
 from PySide6.QtGui import QIcon, Qt
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMenuBar
 from config import MwConfig as Mwc
 from ReapySet.common.toml_handler import TomlHandler
 
@@ -42,7 +42,14 @@ def main():
     QTimer.singleShot(0, lambda: m_window.create_language_buttons(m_window.button_labels_dict,
                                      Mwc.LangBtnWidget.max_btn_x_row,
                                      m_window.main_layout))
+    widget_flag = getattr(m_window.additions, 'trans_flag', None)
 
+    if widget_flag is None:
+        print("Critical error: Widget 'trans_flag' does not exist. Closing app.")
+        TomlHandler.clear_sandbox()
+        sys.exit(1)
+    else:
+        pass
 
 
     icon: QIcon = QIcon(str(Mwc.Images().icon_path))
@@ -52,9 +59,13 @@ def main():
 
 
     m_window.show()
-
-
+    menubar: QMenuBar = m_window.menuBar()
+    if menubar and menubar.isVisible() and not menubar.isNativeMenuBar():
+        menubar_height: int = menubar.height()
+        m_window.setMaximumHeight(m_window.height() + menubar_height)
+        m_window.resize(m_window.width(), m_window.height() + menubar_height)
     m_window.original_geometry = m_window.geometry()
+    print(m_window.maximumHeight())
 
     # Calculate and print total startup time before entering the event loop
     end_time = time.perf_counter()

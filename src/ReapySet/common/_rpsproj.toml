@@ -9,6 +9,12 @@ fav_editor = ""  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot
 github_repo_link = ""
 
 # ==============================================================================
+# DO NOT CHANGE THIS FILE MANUALLY UNLESS YOU KNOW WHAT YOU ARE DOING.
+# IT IS USED INTERNALLY BY THE REAPYSET FRAMEWORK.
+# ==============================================================================
+[cookiecutter]
+template_path = ""
+# ==============================================================================
 # LANGUAGE SPECIFIC CONFIGURATIONS
 # ==============================================================================
 
@@ -18,6 +24,10 @@ interpreter_version = ""
 unb_interpreter_version = ""
 interpreter_path = ""
 package_manager = ""  # venv is the Default fallback
+
+[languages.javascript] # NOT IMPLEMENTED YET
+enabled = false
+selected_runtime_path = "/usr/bin/rustc"
 
 [languages.rust] # NOT IMPLEMENTED YET
 enabled = false

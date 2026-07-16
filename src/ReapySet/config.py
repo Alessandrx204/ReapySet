@@ -108,10 +108,10 @@ class MwConfig:
         QlineTopTextQSS: str            = "font-size:10px; margin-top:0px; margin-bottom:6px;"
         github_box_top_label: str       = "\nImport a project from GitHub"
         github_box_placeholder_txt: str = "COMING SOON " #insert a repo URL
-        path_box_top_label: str         = "Project Location:\n(Double-click to browse)"
-        path_box_placeholder_txt: str   = "Project Path...?"
-        sample_box_top_label: str       = "\n🍪 CookieCutter:"#\nInsert a path or Double-click to browse
-        boilerplates_box_placeholder_txt: str = "COMING SOON" #cc/paths/ex (proj name if any)
+        path_box_top_label: str         = "\nProject Location:\n(Double-click to browse)"
+        path_box_placeholder_txt: str   = "\nProject Path...?"
+        sample_box_top_label: str       = "🍪 CookieCutter:\n  Insert a path\n  (or Double-click to browse)"
+        boilerplates_box_placeholder_txt: str = "cctemplates/paths/example "
         browse_button_text: str         = "Browse"
         select_editor_Combobox_top_label: str = ""
 
@@ -253,10 +253,10 @@ class MwConfig:
             img = self.images
             self.button_dict = {
                 "Python":        ["PY",       img.python_logo],
+                "Ts/JavaScript (W.I.P.)": ["TSJS",     img.javascript_logo],
                 "Rust (W.I.P.)":          ["RUST",     img.rust_logo],
                 ".NET (W.I.P.)":          ["DOTNET",   img.dotnet_logo],
                 "Kotlin/Java (W.I.P.)":   ["KT",       img.kotlin_logo],
-                "Ts/JavaScript (W.I.P.)": ["TSJS",     img.javascript_logo],
             }
 
             """self.button_dict = {
@@ -390,11 +390,14 @@ class MwConfig:
 
 #@dataclass()
 class LogicVariables:
+    class ConstantUtils:
+        IS_POSIX: bool = sys.platform != "win32"
+
     class EditorCmd:
         @staticmethod
-        def get_cmd(editor: str) -> str:
+        def get_cmd(p_editor: str) -> str:
             """reads from config.toml reading th openin command for each editor"""
-            key = editor.lower().replace(" ", "_") + "_cmd"
+            key = p_editor.lower().replace(" ", "_") + "_cmd"
             return TomlHandler.toml_get(CONFIG_PATH, "editors", key) or ""
 
         @staticmethod

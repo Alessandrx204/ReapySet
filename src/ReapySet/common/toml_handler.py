@@ -184,7 +184,6 @@ class TomlHandler:
 
 
 
-
 # macOS + Qt/PySide6 note:
 # When using text widgets (QLineEdit/QPlainTextEdit) together with IME
 # input methods (Japanese, Chinese, etc.), macOS may print console warnings
@@ -196,15 +195,16 @@ class TomlHandler:
 # These are macOS InputMethodKit/Text Services Manager warnings and are
 # generally harmless if text input and IME composition work correctly.
 # No action required unless the app shows real input/focus issues.
+
 class TomlEditorDialog(QDialog):
     def __init__(self, config_path: Path, parent=None):
         super().__init__(parent)
         self.save_shortcut = QShortcut(QKeySequence.StandardKey.Save, self)
         self.save_shortcut.activated.connect(self._save)
-        self.save_shortcut = QShortcut(QKeySequence.StandardKey.Close, self)
-        self.save_shortcut.activated.connect(self.reject)
+        self.close_shortcut = QShortcut(QKeySequence.StandardKey.Close, self)
+        self.close_shortcut.activated.connect(self.reject)
 
-        self.path = config_path
+        self.path = config_path# qt is a  
         self.setWindowTitle("Settings")
         self.resize(700, 600)
 

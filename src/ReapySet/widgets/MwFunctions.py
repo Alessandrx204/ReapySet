@@ -1,4 +1,5 @@
 import os
+import pathlib
 from pathlib import Path
 from typing import Callable
 
@@ -65,15 +66,15 @@ class MwFuncs:
 
         _timer.timeout.connect(_on_timeout)
     @staticmethod
-    def choose_project_path_qldialogue(parent: QWidget, path_input: QLineEdit) -> None:
+    def choose_project_path_qldialogue(p_parent: QWidget, p_path_input: QLineEdit, start_folder: pathlib.Path | None = None, p_caption: str = "Choose default project folder") -> None:
         # Uses the currently displayed path as the starting folder for the picker.
-        current_path: str = path_input.text().strip() or str(Path.home())
+        current_path: str = p_path_input.text().strip() or str(Path.home())
 
         selected_dir = QFileDialog.getExistingDirectory(
 
-            parent,
+            p_parent,
 
-            "Choose default project folder",
+            p_caption,
 
             current_path,
 
@@ -85,11 +86,11 @@ class MwFuncs:
 
         project_path_txt = str(Path(selected_dir)) + os.sep
 
-        path_input.setText(project_path_txt)
+        p_path_input.setText(project_path_txt)
 
-        path_input.setCursorPosition(len(project_path_txt))
+        p_path_input.setCursorPosition(len(project_path_txt))
 
-        path_input.setToolTip(project_path_txt)
+        p_path_input.setToolTip(project_path_txt)
         # Updates DEST_PATH
         TomlHandler.toml_edit("global", "project_path", project_path_txt)
 

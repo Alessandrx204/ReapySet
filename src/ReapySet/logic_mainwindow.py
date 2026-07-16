@@ -129,7 +129,12 @@ class LogicMainWindow(RpsMainWindow):
             self._lang_widget = None
             self.confirm_button.setEnabled(False)
 
-        self.setMinimumSize(Mwc.mw_width, Mwc.mw_height)
+        menu_bar = self.menuBar()
+
+        mb_extra_h = menu_bar.height() if (
+                    menu_bar and menu_bar.isVisible() and not menu_bar.isNativeMenuBar()) else 0
+
+        self.setMinimumSize(Mwc.mw_width, Mwc.mw_height() + mb_extra_h)
 
         QTimer.singleShot(Mwc.mw_widget_enable_delay, lambda: self.widget3_stacked.setEnabled(False))
 
@@ -158,7 +163,7 @@ class LogicMainWindow(RpsMainWindow):
 
         QTimer.singleShot(
             Mwc.mw_collapse_time,
-            lambda: self.setFixedSize(Mwc.mw_width, Mwc.mw_height)
+            lambda: self.setFixedSize(Mwc.mw_width, Mwc.mw_height() + mb_extra_h)
         )
         # Enable only buttons whose index appears in _enabled_buttons
         for i, btn in enumerate(self._language_buttons):

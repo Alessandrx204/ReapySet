@@ -1,17 +1,47 @@
 #from PySide6.QtGui import QPalette, QColor, QFontDatabase
 import os
+import platform
+import subprocess
+
 from pathlib import Path
 from typing import Any
 
-from PySide6.QtCore import QPoint, QSize, QRectF, QUrl
-from PySide6.QtGui import QIcon, QPainterPath, QRegion, QCursor, QShortcut, QKeySequence, Qt, QAction, QDesktopServices, \
-    QShowEvent
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QDialogButtonBox, \
-    QVBoxLayout, QLabel, QStackedWidget, QHBoxLayout, QLineEdit, QComboBox, QMenuBar, QMessageBox
+from PySide6.QtCore import QPoint, QSize, QRectF, QUrl, Qt
+from PySide6.QtGui import (
+    QAction,
+    QCursor,
+    QDesktopServices,
+    QIcon,
+    QKeySequence,
+    QPainterPath,
+    QRegion,
+    QShortcut,
+    QShowEvent,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDialogButtonBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QMainWindow,
+    QMenuBar,
+    QMessageBox,
+    QPushButton,
+    QStackedWidget,
+    QVBoxLayout,
+    QWidget,
+)
 
-import widgets.widget1.sample_picker as sample_picker
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH, TomlEditorDialog
-from ReapySet.widgets.the_label_widget0 import the_label_txt, get_label_stylesheet
+
+
+from ReapySet.widgets.the_label_widget0 import (
+    the_label_txt,
+    get_label_stylesheet,
+)
 from config import MwConfig as Mwc, LogicVariables
 from widgets.MwFunctions import MwFuncs as Mwf
 
@@ -48,13 +78,13 @@ class RpsMainWindow(QMainWindow):
         # -------------------- END-PALETTE -----------------------------#
         # ---------------------- MENUBAR -------------------------------#
         mw_menubar: QMenuBar = self.menuBar()
-        attached_menubar: bool = not TomlHandler.toml_get(CONFIG_PATH, "advanced", "force_attached_menubar") # noqa
-        mw_menubar.setNativeMenuBar(attached_menubar)
-
+        isnative_menubar: bool = TomlHandler.toml_get(CONFIG_PATH, "advanced", "nativeMenubar") # noqa
+        mw_menubar.setNativeMenuBar(isnative_menubar)
         # Main menus
         app_menu = mw_menubar.addMenu("&ReapySet")
 
-        edit_menu = mw_menubar.addMenu("&Edit")
+        file_menu = mw_menubar.addMenu("&File")
+
         view_menu = mw_menubar.addMenu("&View")
         help_menu = mw_menubar.addMenu("&Help")
 
@@ -78,11 +108,24 @@ class RpsMainWindow(QMainWindow):
         app_menu.addAction(quit_action)
 
         # ---------------------- EDIT ----------------------------------#
-        edit_menu.addAction(QAction("Cu&t", self))
+        """file_menu.addAction(QAction("Cu&t", self))
         edit_menu.addAction(QAction("&Copy", self))
         edit_menu.addAction(QAction("&Paste", self))
         edit_menu.addSeparator()
-        edit_menu.addAction(QAction("Select &All", self))
+        edit_menu.addAction(QAction("Select &All", self))"""
+        file_menu.addSeparator()
+        locate_config_action = QAction("&Locate config.toml file", self)
+        locate_config_action.triggered.connect(
+            lambda: self.reveal_in_file_manager(CONFIG_PATH)
+        )
+        file_menu.addAction(locate_config_action)
+        find_socket_action = QAction("&Locate socket file", self)
+        find_socket_action.triggered.connect(
+            lambda: self.reveal_in_file_manager(TomlHandler._temp_dir)
+        )
+        file_menu.addAction(find_socket_action)
+
+
 
         # ---------------------- VIEW ----------------------------------#
         reset_window_pos_action = QAction("&Reset Window Position", self)
@@ -147,16 +190,41 @@ class RpsMainWindow(QMainWindow):
 
         self.widget1Layout = QHBoxLayout()
 
+        # ---------------- GitHub ----------------
         self.w1_github_input = QLineEdit()
-        self.w1_github_input.setEnabled(False) #GitHub enabled y/n?
-        self.widget1Layout.addWidget(Mwf.labeled_field(Mwc.Widget1.github_box_top_label, self.w1_github_input))
-        self.w1_github_input.setPlaceholderText(Mwc.Widget1.github_box_placeholder_txt)
-        self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
-        self.w1_path_input = QLineEdit()
-        path_field = Mwf.labeled_field(
-            f"{Mwc.Widget1.path_box_top_label}",
-            self.w1_path_input
+        self.w1_github_input.setEnabled(False)
+        self.w1_github_input.setPlaceholderText(
+            Mwc.Widget1.github_box_placeholder_txt
         )
+
+        self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
+        github_field = Mwf.labeled_field(
+            Mwc.Widget1.github_box_top_label,
+            self.w1_github_input,
+        )
+
+        self.widget1Layout.addWidget(github_field)
+
+        # ---------------- Project path ----------------
+
+        self.w1_path_input = QLineEdit()
+
+        self.w1_path_input.setPlaceholderText(
+
+            Mwc.Widget1.path_box_placeholder_txt
+
+        )
+
+        self.w1_path_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
+
+        path_field = Mwf.labeled_field(
+
+            Mwc.Widget1.path_box_top_label,
+
+            self.w1_path_input,
+
+        )
+
         self.widget1Layout.addWidget(path_field)
         self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
         self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
@@ -188,30 +256,46 @@ class RpsMainWindow(QMainWindow):
         self.w1_path_input.setToolTip(project_path_txt)
         TomlHandler.toml_edit("global", "project_path", project_path_txt)
 
+
+
+        # -------------------------------- Cookiecutter template ------------------------------------#
+
+        self.w1_cookiecutter_boilerplates_box = QLineEdit()
+        self.w1_cookiecutter_boilerplates_box.setEnabled(True)
+        self.w1_cookiecutter_boilerplates_box.setPlaceholderText(
+            Mwc.Widget1.boilerplates_box_placeholder_txt
+        )
+        self.w1_cookiecutter_boilerplates_box.setStyleSheet(
+            Mwc.Widget1.QlineEditQSS
+        )
+        cc_path_field = Mwf.labeled_field(
+            Mwc.Widget1.sample_box_top_label,
+            self.w1_cookiecutter_boilerplates_box,
+        )
+        self.widget1Layout.addWidget(cc_path_field)
+
+
+
+        #--- doubleclick actions ------#
         self.w1_path_input.mouseDoubleClickEvent = (
             lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_path_input)
-        )# 2 click to open finder / file explorer
+        )
+
         path_field.mouseDoubleClickEvent = (
             lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_path_input)
         )
 
-
-        self.w1_boilerplates_box = QLineEdit()
-        self.w1_boilerplates_box.setEnabled(False)  # boilerplates enabled y/n?
-        self.w1_boilerplates_box.setPlaceholderText(Mwc.Widget1.boilerplates_box_placeholder_txt)
-
-        self.widget1Layout.addWidget(Mwf.labeled_field(Mwc.Widget1.sample_box_top_label, self.w1_boilerplates_box))
-
-        self.w1_boilerplates_box.setStyleSheet(Mwc.Widget1.QlineEditQSS)
-
-        self.w1_browse_bplates_button = QPushButton(Mwc.Widget1.browse_button_text)
-        self.w1_browse_bplates_button.setEnabled(False)
-        #self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_browse_bplates_button))  #moves down a bit the button by gioving it a null text in a QVBox
-        self.w1_browse_bplates_button.clicked.connect(
-            lambda: self._on_folder_selected(sample_picker.pick_folder(self))
+        self.w1_cookiecutter_boilerplates_box.mouseDoubleClickEvent = (
+            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_cookiecutter_boilerplates_box)
         )
 
-        self.w1_boilerplates_box.textChanged.connect(self._on_sample_input_changed)
+        cc_path_field.mouseDoubleClickEvent = (
+            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_cookiecutter_boilerplates_box)
+        )
+        #------------ end doubleclick actions -----------------#
+
+
+        self.w1_cookiecutter_boilerplates_box.textChanged.connect(self._on_sample_input_changed)
 
         self.w1_select_editor: QComboBox = QComboBox()
         self.widget1Layout.addWidget(Mwf.labeled_field("", self.w1_select_editor))
@@ -222,8 +306,8 @@ class RpsMainWindow(QMainWindow):
             f"{self.w1_select_editor.currentText().lower()}"
                              )# saves current editor_page on boot
         self.w1_select_editor.currentTextChanged.connect(
-            #saves in the toml common/toml_playground/toml_playground_cc.toml in the fav editor_page section .lower() for easy parsing
-            lambda p_text: TomlHandler.toml_edit("global", "fav_editor", f"{p_text.lower()}")
+            #saves in the toml common/toml_playground/toml_playground_cc.toml in the fav editor_page section for easy parsing
+            lambda p_text: TomlHandler.toml_edit("global", "fav_editor", f"{p_text}")
         )
 
         self.widget1.setLayout(self.widget1Layout)
@@ -252,10 +336,10 @@ class RpsMainWindow(QMainWindow):
 
         )
 
-        self.confirm_shortcut = QShortcut(QKeySequence("Ctrl+Return"), self)
+        self.confirm_shortcut: QShortcut = QShortcut(QKeySequence("Ctrl+Return"), self)
         self.confirm_shortcut.setContext(Qt.ShortcutContext.ApplicationShortcut)
         self.confirm_shortcut.activated.connect(self.handle_confirm_clicked) # noqa
-        self.confirm_shortcut_numpad = QShortcut(QKeySequence("Ctrl+Enter"), self)
+        self.confirm_shortcut_numpad: QShortcut = QShortcut(QKeySequence("Ctrl+Enter"), self)
         self.confirm_shortcut_numpad.setContext(Qt.ShortcutContext.ApplicationShortcut)
         self.confirm_shortcut_numpad.activated.connect(self.handle_confirm_clicked) # noqa
 
@@ -267,6 +351,9 @@ class RpsMainWindow(QMainWindow):
         self.back_button.setEnabled(False)
 
         self.confirm_button.setEnabled(False)
+        self.confirm_button.setToolTip(self.confirm_shortcut
+                                       .key().toString(QKeySequence.SequenceFormat.NativeText)+"\n(if enabled)"
+                                       ) #displays the right shortcut
         #self.cancel_button.setEnabled(False)
         # noinspection PyStatementEffect
 
@@ -291,7 +378,7 @@ class RpsMainWindow(QMainWindow):
                                                os.path.basename(os.path.normpath(text)))
         )
 
-        Mwf.connect_qlineedit(self.w1_boilerplates_box, "global", "boilerplate_project_path")
+        Mwf.connect_qlineedit(self.w1_cookiecutter_boilerplates_box, "cookiecutter", "template_path")
         Mwf.connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
         self.setMinimumSize(Mwc.mw_width, Mwc.mw_height())
 
@@ -320,15 +407,41 @@ class RpsMainWindow(QMainWindow):
 
         self.move(current_pos)
 
+    def reveal_in_file_manager(self, target_path):
+        path = Path(target_path).resolve()
 
-    def _on_sample_input_changed(self, text: str):
-        if text:
-            self.w1_boilerplates_box.setTextMargins(0, 0, 50, 0)
+        if not path.exists():
+            msg = QMessageBox(self)
+
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setWindowTitle("File not found")
+            msg.setText("Impossible to find the file or directory.")
+            msg.setInformativeText(f"the path:\n{path}\n  doesnt seem to exist")
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+
+            msg.exec()
+            return
+
+        sys_ = platform.system()
+
+        if sys_ == "Windows":
+            subprocess.run(["explorer", "/select,", str(path)])
+        elif sys_ == "Darwin":  # macOS
+            subprocess.run(["open", "-R", str(path)])
+        else:  # Linux
+            subprocess.run(["xdg-open", str(path.parent)])
+
+        #------------------ END MENU BAR UTILS ---------------------------#
+
+
+    def _on_sample_input_changed(self, p_text: str):
+        if p_text:
+            self.w1_cookiecutter_boilerplates_box.setTextMargins(0, 0, 50, 0)
+
         else:
-            self.w1_boilerplates_box.setTextMargins(0, 0, 0, 0)  # dynamic padding
+            self.w1_cookiecutter_boilerplates_box.setTextMargins(0, 0, 0, 0)  # dynamic padding
         # ------------------- END BUTTONS -------------------
 
-        #self.setCentralWidget(self.central_widget2)  # <-- not just setLayout() directly
 
     def resizeEvent(self, event):  #resizeEvent is a special method of Qt:
         # it gets called automatically every time the window size changes.
@@ -386,7 +499,7 @@ class RpsMainWindow(QMainWindow):
     def _on_folder_selected(self, folder: str):
         if folder:
             self.usr_selected_folder = folder
-            self.w1_boilerplates_box.setText(folder)
+            self.w1_cookiecutter_boilerplates_box.setText(folder)
 
     #_connect_qlineedit replaced with Mwf.connect_qlineedit
 

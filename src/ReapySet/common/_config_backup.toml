@@ -51,6 +51,8 @@ notepadpp_cmd        = "notepad++ {path}"
 notepadpp_display    = "Notepad++"
 godot_cmd            = "godot --path {path} -e"
 godot_display        = "Godot's editor"
+none_cmd             = "NOEDITOR"
+none_display         = "None "
 # To make yourself at home and add your own editors, just pop your details in like this:
 # {editor_name}_cmd     = "your command here, remember to include {path}"
 # {editor_name}_display = "A nice display name for it" (optional!)
@@ -104,5 +106,5 @@ lua_path        = ""   # placeholder
 
 
 [advanced] # Avoid if you dont want to mess up with the Application
-force_attached_menubar = false # only Macos and some Linux DEs
+nativeMenubar = true # only Macos and some Linux DEs
 main_window_height = 380 # on some linux distros or older windows versions or if you enable force_attached_menubar on macos and gnome the window will get a bit clunky, i reccoment tweaking this value if you mess up with the menu bar or if your oprating system is very customised or not well detected by ReapySet

@@ -4,12 +4,15 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from cookiecutter.main import cookiecutter
 from PySide6.QtCore import QThread, Signal, QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QMessageBox
+from cookiecutter.exceptions import CookiecutterException
 
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
+NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 
 #common/confirm_button.py
 
@@ -25,7 +28,7 @@ class SetupWorker(QThread):
 
     def _run(self):
         subprocess.run(self.cmds)
-        subprocess.Popen(shlex.split(self.editor_cmd))
+        subprocess.Popen(shlex.split(self.editor_cmd, posix=NTV_POSIX))
         self.finished.emit()
 class ConfirmButtonLogic:
 
@@ -43,6 +46,10 @@ class ConfirmButtonLogic:
                            p_msg_txt: str = "not found or not installed.",
                            p_info_txt: str = "Make sure it is installed and the path is correct in config.toml"
                            ) -> None:
+        """
+
+        :rtype: None
+        """
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Critical)
         msg.setWindowTitle(p_window_title)
@@ -62,11 +69,13 @@ class ConfirmButtonLogic:
     def _check_editor(self, p_editor: str) -> bool:
         cmd = LcFg.EditorCmd.get_cmd(p_editor)
 
-        if not cmd:
+        if cmd == "NOEDITOR":
+            return True
+        elif not cmd:
             self._warn_missing_popup(p_editor)
             return False
 
-        executable = shlex.split(cmd)[0]
+        executable = shlex.split(cmd, posix=NTV_POSIX)[0]
 
         resolved = (
                 shutil.which(executable) # noqa it'll never run on 3.12
@@ -82,6 +91,8 @@ class ConfirmButtonLogic:
     def _openin_editor(self, p_editor: str, p_proj_path: str) -> None:
 
         cmd = LcFg.EditorCmd.get_cmd(p_editor)
+        if cmd.upper() == "NOEDITOR":
+            return
 
         editor_openin_cmd = cmd.format(path=p_proj_path)
 
@@ -89,9 +100,9 @@ class ConfirmButtonLogic:
 
             subprocess.Popen(
 
-                shlex.split(editor_openin_cmd),
+                shlex.split(editor_openin_cmd, posix=NTV_POSIX),
 
-                env=self._get_sterile_env()
+                env=self._clean_term_env()
 
             )
 
@@ -99,7 +110,45 @@ class ConfirmButtonLogic:
 
             self._warn_missing_popup(p_editor)
 
-    def _get_sterile_env(self) -> dict[str, str]:
+    def setup_cookiecutter(self, p_template_path: str, p_output_dir_path: str) -> str | None:
+        """
+        Generates a project from a Cookiecutter template
+        Returns the generated project path, or None if generation fails.
+        """
+        template_path = Path(p_template_path).expanduser()
+        output_dir_path = Path(p_output_dir_path).expanduser()
+
+        if not template_path.is_dir():
+            self._warn_missing_popup("Cookiecutter template not found",
+                                     p_msg_txt="Cookiecutter template was not found",
+                                     p_info_txt=f"invalid template path: \n{template_path}"
+                                     )
+            return None
+        if not (template_path / 'cookiecutter.json').is_file():
+            self._warn_missing_popup("Cookiecutter.json",
+                                     p_msg_txt="Template is invalid :(",
+                                     p_info_txt="it looks like the selected directory does not contain any cookiecutter.json.",
+                                     )
+            return None
+        output_dir_path.mkdir(parents=True, exist_ok=True)
+
+        try:
+            raw_proj_path = cookiecutter(
+                template = str(template_path),
+                output_dir = str(output_dir_path),
+                no_input=True,
+                overwrite_if_exists=False,
+
+            )
+        except (CookiecutterException, OSError) as e:
+            self._warn_missing_popup("cookiecutter",
+                                     p_msg_txt="Project generation failed :(",
+                                     p_info_txt=str(e))
+            return None
+        return str(raw_proj_path)
+
+    """@python"""
+    def _clean_term_env(self) -> dict[str, str]:
 
         import os
 
@@ -137,29 +186,25 @@ class ConfirmButtonLogic:
                 capture_output=True,
                 text=True,
                 cwd=cwd,
-                env=self._get_sterile_env()
+                env=self._clean_term_env()
             )
         except OSError:
             return None
 
-    def _run_cmd_list(self, cmd_list: list[list[str]], p_proj_path: str) -> bool:
+    def _run_cmd_list(self, cmd_list: list[list[str]],
+                      p_proj_path: str,
+                      *, #mandates al following params are called by name
+                      p_first_cmd_outside_project: bool = True) -> bool:
         """ Execute each command in order and stop at the first failure.
+        If p_first_cmd_outside_project is True, the first command runs without
+        a working directory because it is expected to create the project.
 
-         The first command runs without a working directory because it may be
-
-         responsible for creating or initialising the project path itself.
-
-         All following commands run inside the project directory.
-
-         A command is considered failed if _run_cmd() returns None or if the
-
-         process exits with a non-zero return code."""
+        Otherwise, every command runs inside the existing project directory."""
         for i, cmd in enumerate(cmd_list):
+            first_cmd_outside_project: bool = (i == 0 and p_first_cmd_outside_project)
 
-            if i == 0:
-                cwd = None
-            else:
-                cwd = p_proj_path
+
+            cwd = None if first_cmd_outside_project else p_proj_path
 
             result = self._run_cmd(cmd, cwd=cwd)
 
@@ -170,11 +215,10 @@ class ConfirmButtonLogic:
                 return False
 
         return True
-    def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str) -> None:
+
+    def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, p_editor: str, *, p_project_already: bool = False) -> None:
         project_toml_path: Path = TomlHandler._dest_path()
-        import os
-        for env_var in ["VIRTUAL_ENV", "PYTHONHOME", "PYTHONPATH", "CONDA_PREFIX"]:
-            os.environ.pop(env_var, None)
+
         if not self._check_editor(p_editor):
             return  # if editor_page is not to be found or cli is not functioning it doesnt even create the venv
             # post conditional mkdir
@@ -218,13 +262,23 @@ class ConfirmButtonLogic:
                 uv_url = "https://docs.astral.sh/uv/guides/projects/"
                 uv_bin = LcFg.PythonVars.py_uv_path
 
-                ok = self._run_cmd_list(
+                uv_cmds: list[list[str]] = (
                     [
-                        LcFg.PythonVars.py_uv_icmd + [p_proj_path, "--python", uvs_python],
-                        [uv_bin, "sync"], # uv init and uv sync to make the venv
-                    ],
-                    p_proj_path
+                        LcFg.PythonVars.py_uv_icmd
+                        + [p_proj_path, "--python", uvs_python],
+                        [uv_bin, "sync"],
+                    ]
+                    if not p_project_already
+                    else [
+                        [uv_bin, "sync"],
+                    ]
                 )
+
+                ok = self._run_cmd_list(
+                    uv_cmds,
+                    p_proj_path,
+                    p_first_cmd_outside_project=not p_project_already,
+                ) # uv init and uv sync to make the venv if
 
                 if not ok:
                     self._warn_missing_popup(
@@ -239,22 +293,40 @@ class ConfirmButtonLogic:
                     return
 
             case "PY:POETRY":
-
                 poetry_url = "https://python-poetry.org/docs/configuration/"
                 poetry_bin = LcFg.PythonVars.py_poetry_path
 
-                poetry_cmds: list[list[str]] = [
-                    LcFg.PythonVars.py_poetry_icmd + [p_proj_path],
-                ]
+                poetry_cmds: list[list[str]] = []
+                if not p_project_already:
+                    poetry_cmds.append(
+                        LcFg.PythonVars.py_poetry_icmd + [p_proj_path]
+                    )
 
                 if disable_poetry_centralised_venvs:
                     poetry_cmds.append(
-                        [poetry_bin, "config", "virtualenvs.in-project", "true", "--local"]
+                        [
+                            poetry_bin,
+                            "config",
+                            "virtualenvs.in-project",
+                            "true",
+                            "--local",
+                        ]
                     )
 
-                poetry_cmds.append([poetry_bin, "env", "use", interp])
+                poetry_cmds.append(
+                    [poetry_bin, "env", "use", interp]
+                )
 
-                ok = self._run_cmd_list(poetry_cmds, p_proj_path)
+                if p_project_already:
+                    poetry_cmds.append(
+                        [poetry_bin, "install"]
+                    )
+
+                ok = self._run_cmd_list(
+                    poetry_cmds,
+                    p_proj_path,
+                    p_first_cmd_outside_project=not p_project_already,
+                )
 
                 if not ok:
                     self._warn_missing_popup(
@@ -269,17 +341,27 @@ class ConfirmButtonLogic:
                     return
 
             case "PY:PIXI":
-                pixi_url = "https://pixi.prefix.dev/latest/getting_started/"
+                pixi_url = "https://pixi.sh/latest/getting_started/"
                 pixi_bin = LcFg.PythonVars.py_pixi_path
 
-                pixi_cmds: list[list[str]] = [
-                    LcFg.PythonVars.py_pixi_icmd + [p_proj_path],
-                ]
+                if p_project_already:
+                    pixi_cmds: list[list[str]] = [
+                        [pixi_bin, "install"],
+                    ]
+                else:
+                    pixi_cmds = [
+                        LcFg.PythonVars.py_pixi_icmd + [p_proj_path],
+                    ]
 
-                if pm_python_ver:
-                    pixi_cmds.append([pixi_bin, "add", f"python={pm_python_ver}"])
-
-                ok = self._run_cmd_list(pixi_cmds, p_proj_path)
+                    if pm_python_ver:
+                        pixi_cmds.append(
+                            [pixi_bin, "add", f"python={pm_python_ver}"]
+                        )
+                ok = self._run_cmd_list(
+                    pixi_cmds,
+                    p_proj_path,
+                    p_first_cmd_outside_project=not p_project_already,
+                )
 
                 if not ok:
                     self._warn_missing_popup(
@@ -305,7 +387,8 @@ class ConfirmButtonLogic:
                         + [str(Path(p_proj_path) / ".conda")]
                         + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                     ],
-                    p_proj_path
+                    p_proj_path,
+                    p_first_cmd_outside_project=False
                 )
 
                 if not ok:
@@ -329,7 +412,9 @@ class ConfirmButtonLogic:
                         + [str(Path(p_proj_path) / ".mamba")]
                         + ([f"python={pm_python_ver}"] if pm_python_ver else [])
                     ],
-                    p_proj_path
+                    p_proj_path,
+                    p_first_cmd_outside_project=False
+
                 )
 
                 if not ok:
@@ -345,90 +430,149 @@ class ConfirmButtonLogic:
                     return
 
             case "PY:HATCH":
-                try:
-                    subprocess.Popen(
+                hatch_bin = LcFg.PythonVars.py_hatch_path
+                hatch_cmds: list[list[str]] = (
+                    [
                         LcFg.PythonVars.py_hatch_icmd + [p_proj_path],
-                        env=self._get_sterile_env()
-                    )
-                except OSError : # ex FileNotFoundError
+                    ]
+                    if not p_project_already
+                    else [
+                        [hatch_bin, "env", "create"],
+                    ]
+                )
+                ok = self._run_cmd_list(
+                    hatch_cmds,
+                    p_proj_path,
+                    p_first_cmd_outside_project=not p_project_already,
+                )
+
+                if not ok:
                     self._warn_missing_popup(
                         "hatch",
-                        p_learn_more_url="https://hatch.pypa.io/latest/intro/#initialization"
+                        p_learn_more_url=(
+                            "https://hatch.pypa.io/latest/environment/"
+                        ),
                     )
                     return
 
             case "PY:VENV":
-                try:
-                    subprocess.Popen(
-                        [interp, "-m", "venv", ".venv"],
-                        cwd=p_proj_path,
-                        env=self._get_sterile_env()
-                    )
-                except OSError:
+                result = self._run_cmd(
+                    [interp, "-m", "venv", ".venv"],
+                    cwd=p_proj_path,
+                )
+
+                if result is None or result.returncode != 0:
                     self._warn_missing_popup(
-                        "venv",  # era "pip", corretto
+                        "venv",
                         p_learn_more_url="https://docs.python.org/3/library/venv.html"
                     )
                     return
 
             case "PY:PDM":
-                try:
-                    subprocess.Popen(
-                        LcFg.PythonVars.py_pdm_icmd + ["--python", interp],
-                        cwd=p_proj_path,
-                        env=self._get_sterile_env()
-                    )
-                except OSError:
+                pdm_bin = LcFg.PythonVars.py_pdm_path
+
+                pdm_cmds: list[list[str]] = (
+                    [
+                        LcFg.PythonVars.py_pdm_icmd
+                        + ["--python", interp],
+                    ]
+                    if not p_project_already
+                    else [
+                        [pdm_bin, "install"],
+                    ]
+                )
+
+                ok = self._run_cmd_list(
+                    pdm_cmds,
+                    p_proj_path,
+                    p_first_cmd_outside_project=False,
+                )
+
+                if not ok:
                     self._warn_missing_popup(
                         "pdm",
-                        p_learn_more_url="https://pdm-project.org/en/latest/usage/project/"  # era mancante https:
+                        p_learn_more_url=(
+                            "https://pdm-project.org/en/latest/usage/project/"
+                        ),
                     )
                     return
 
             case "PY:PIPENV":
-                try:
-                    subprocess.Popen(
-                        LcFg.PythonVars.py_pipenv_icmd + ["--python", interp],
-                        cwd=p_proj_path,
-                        env=self._get_sterile_env()
-                    )
-                except OSError:
+                result = self._run_cmd(
+                    LcFg.PythonVars.py_pipenv_icmd + ["--python", interp],
+                    cwd=p_proj_path,
+                )
+
+                if result is None or result.returncode != 0:
                     self._warn_missing_popup(
                         "pipenv",
-                        p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/"
+                        p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/",
                     )
                     return
 
             case "PY:VIRTUALENV":
-                try:
-                    subprocess.Popen(
-                        [LcFg.PythonVars.py_virtualenv_path, "-p", interp, ".venv"],
-                        cwd=p_proj_path,
-                        env=self._get_sterile_env()
-                    )
-                except OSError:
+                result = self._run_cmd(
+                    [
+                        LcFg.PythonVars.py_virtualenv_path,
+                        "-p",
+                        interp,
+                        ".venv",
+                    ],
+                    cwd=p_proj_path,
+                )
+
+                if result is None or result.returncode != 0:
                     self._warn_missing_popup(
                         "virtualenv",
-                        p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html"
+                        p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html",
                     )
                     return
 
-        self._openin_editor(p_editor, p_proj_path)
-    def setup_rust(self, p_rs_config: dict[str, Any], p_proj_path: str, p_editor:str) -> None:
+        if p_editor != "None":
+            self._openin_editor(p_editor, p_proj_path)
+    def setup_javascript(self, p_js_config: dict[str, Any], p_proj_path: str, p_editor:str, *, p_project_already: bool = False) -> None:
         ...
-    def setup_dotnet(self, p_dnet_config: dict[str, Any], p_proj_path: str, p_editor:str) -> None:
+    def setup_dotnet(self, p_dnet_config: dict[str, Any], p_proj_path: str, p_editor:str, *, p_project_already: bool = False) -> None:
         ...
 
     def on_confirm_clicked(self) -> None:
+        data = TomlHandler._toml_read()  # noqa
 
-        data = TomlHandler._toml_read() # noqa
-        proj_path = data["global"]["project_path"]
-        editor = data["global"]["fav_editor"]
+        project_path: str = data["global"]["project_path"]
+        editor: str = data["global"]["fav_editor"]
+
+        project_already: bool = False
+
+        cookiecutter_config = data.get("cookiecutter", {})
+        template_path = cookiecutter_config.get("template_path")
+
+        if template_path:
+            generated_path = self.setup_cookiecutter(
+                p_template_path=template_path,
+                p_output_dir_path=project_path,
+            )
+
+            if generated_path is None:
+                return
+
+            project_path = generated_path
+            project_already = True
 
         if data["languages"]["python"]["enabled"]:
-            self.setup_python(data["languages"]["python"], proj_path, editor)
-        elif data["languages"]["rust"]["enabled"]:
-            self.setup_rust(data["languages"]["rust"], proj_path, editor)
-        elif data["languages"]["dotnet"]["enabled"]:
-            self.setup_dotnet(data["languages"]["dotnet"], proj_path, editor)
+            self.setup_python(data["languages"]["python"], project_path, editor, p_project_already=project_already)
 
+        elif data["languages"]["javascript"]["enabled"]:
+            self.setup_javascript(
+                data["languages"]["javascript"],
+                project_path,
+                editor,
+                p_project_already=project_already,
+            )
+
+        elif data["languages"]["dotnet"]["enabled"]:
+            self.setup_dotnet(
+                data["languages"]["dotnet"],
+                project_path,
+                editor,
+                p_project_already=project_already,
+            )
