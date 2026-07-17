@@ -287,6 +287,7 @@ class MwConfig:
         py_interp_qcbox_top_txt: str = "locally installed interpreters"
         py_unb_interp_qlinedit_top_txt: str = "exact Interp. version\n(only uv & conda dervivatives)"
         py_unb_interp_qlinedit_inner_txt: str = "e.g. 3.13.5"
+        py_frameworks_sep_label_txt: str = f" (W.I.P.) Python Frameworks & Teamplates :3  "
 
         py_qlabel_qss: str = (
             ""
@@ -352,7 +353,7 @@ class MwConfig:
             "}"
         )
         py_MAX_RBTNS_PER_ROW: int = 4
-        py_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
+        py_PM_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
             ("PY:UV", "uv", "uv_logo.png"),
             ("PY:VENV", "Venv", "python_logo.png"),
             ("PY:POETRY", "poetry", "poetry_logo.png"),
@@ -365,8 +366,18 @@ class MwConfig:
             ("PY:PDM", "PDM", "pdm_logo.png"),
             ("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png"),
                                                          ])
+        py_FMK_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
+            ("PY:DJANGO", "Django", "django_logo.png"),
+            ("PY:FLASK", "Flask", "flask_logo.png"),
+            ("PY:FASTAPI", "FastAPI", "fastapi_logo.png"),
+            ("PY:PYSIDE6", "PySide6", "pyside6_logo.png"),
+            ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png"),
+        ])
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
+        py_frameworks_sep_label_coords: tuple[int, int] = (4, 0)
+        py_fmk_rbtns_coords: tuple[int, int] = (5, 0)
+
         py_interpreter_qcombobox_coords: tuple[int, int] = (0, 4)
         py_unb_interpreter_box_coords: tuple[int, int] = (4, 4)
         py_pkg_manager_rbtns_spacing: int = 4

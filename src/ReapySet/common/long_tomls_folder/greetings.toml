@@ -47,7 +47,7 @@ morning = [
   "\nReady for today's challenges, {name}?\n",
   "\nFresh coffee, fresh start.\n",
   "\nNew morning, new opportunities.\n",
-  "\nLet's make today count, {name}.\n",
+  "\nLet's make today matter, {name}.\n",
   "\nThe day won't wait, {name}.\n",
   "\nSmall steps, big results.\n",
   "\nTime to build something great.\n"
@@ -188,8 +188,8 @@ developer_humor = [
 
 generics = [
   "\"Inserire frase memorabile qui...\"\nVa bene, ciao {name}! 😉\n",
-  "\nLorem ipsum... aspetta.\nCiao {name}!\n",
-  "\nNessuna frase brillante trovata.\nBenvenuto, {name}.\n"
+  "\nLorem ipsum sit... aspetta.\nCiao {name}!\n",
+  "\nNessuna frase brillante trovata.\nBenvenuta, {name}.\n"
 ]
 
 [it.splashscreens.topics.greetings]

@@ -286,11 +286,11 @@ class RpsMainWindow(QMainWindow):
         )
 
         self.w1_cookiecutter_boilerplates_box.mouseDoubleClickEvent = (
-            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_cookiecutter_boilerplates_box)
+            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_cookiecutter_boilerplates_box, p_caption="Choose a Valid Coockiecutter template folder")
         )
 
         cc_path_field.mouseDoubleClickEvent = (
-            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_cookiecutter_boilerplates_box)
+            lambda event: Mwf.choose_project_path_qldialogue(self, self.w1_cookiecutter_boilerplates_box,  p_caption="Choose a Valid Coockiecutter template folder")
         )
         #------------ end doubleclick actions -----------------#
 
@@ -354,7 +354,7 @@ class RpsMainWindow(QMainWindow):
         self.confirm_button.setToolTip(self.confirm_shortcut
                                        .key().toString(QKeySequence.SequenceFormat.NativeText)+"\n(if enabled)"
                                        ) #displays the right shortcut
-        #self.cancel_button.setEnabled(False)
+        #self.cancel_button.setEnable d(False)
         # noinspection PyStatementEffect
 
 

@@ -24,6 +24,7 @@ interpreter_version = ""
 unb_interpreter_version = ""
 interpreter_path = ""
 package_manager = ""  # venv is the Default fallback
+selected_framework = "" # PY:DJANGO PY:FASTAPI PY:PYSIDE6 PY:JUPYTER PY:FLASK
 
 [languages.javascript] # NOT IMPLEMENTED YET
 enabled = false
