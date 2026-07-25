@@ -59,8 +59,8 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 ### Python Workspace Configuration
 **available python package managers**
 
-- `venv`
 - `uv`
+- `pip`
 - `poetry`
 - `hatch`
 - `pixi`
