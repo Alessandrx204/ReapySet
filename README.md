@@ -97,6 +97,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - pyobjc on OS X (on legacy versions)
 - qtdarktheme
 - tomlkit
+- cookiecutter
 
 ### Clone the project
 
