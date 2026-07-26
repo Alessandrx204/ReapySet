@@ -1,0 +1,22 @@
+import sys
+from PySide6.QtWidgets import QApplication
+
+
+from app.config import APP_NAME, STYLESHEET_PATH
+from app.main_window import MainWindow
+
+def main() -> int:
+    # Initialise application instance
+    app = QApplication(sys.argv)
+    app.setApplicationName(APP_NAME)
+    # Applies the global stylesheet if any
+    if STYLESHEET_PATH.exists():
+        app.setStyleSheet(STYLESHEET_PATH.read_text(encoding="utf-8"))
+
+    window = MainWindow()
+    window.show()
+    # Starts the event loop
+    return app.exec()
+
+if __name__ == "__main__":
+    raise SystemExit(main())

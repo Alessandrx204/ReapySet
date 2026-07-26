@@ -78,7 +78,7 @@ class TomlHandler:
 
         temp_dir = Path(tempfile.mkdtemp(prefix="reapyset_"))
         dest_path = temp_dir / "_rpsproj.toml"
-        TomlHandler._temp_dir = temp_dir # Keep the temp directory path for manual cleanup.
+        TomlHandler._temp_dir = temp_dir # Keep the temp directory path for manual clean-up.
         TomlHandler.DEST_PATH = dest_path #Editable copy used by the GUI.
 
         with resources.as_file(SRC_PATH) as src:

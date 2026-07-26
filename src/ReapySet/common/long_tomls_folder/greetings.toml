@@ -32,7 +32,9 @@ developer_humor = [
 ]
 generics = [
     "\"Insert catchphrase here...\"\n Alright, let's do a classic: Hi {name}! 😉\n",
-    "\nLorem ipsum sit... Wait, no. Hi {name},\n we almost forgot about you!"
+    "\nLorem ipsum sit... Wait, no. Hi {name},\n we almost forgot about you!",
+    "\nNo witty phrase found.\n Nice to see you again, {name}.\n",
+
 ]
 
 
@@ -105,9 +107,9 @@ late_night = [
 ]
 [en.holidays.europe]
 "01_01" = ["One currency, one shared journey.\nHappy Euro Day, {name}.", "Happy Euro anniversary, {name}.\nMaking history since 2002."]
-"25_03" = "Γεια σας Ελλαδα!\nHappy Independence Day to Greece 🇬🇷\nF rom the cradle of democracy, welcome back {name}."
+"25_03" = "Γεια σας Ελλαδα!\nHappy Independence Day to Greece 🇬🇷\nFrom the cradle of democracy, welcome back {name}."
 "09_05" = ["United in diversity.\nHappy Europe Day! {name}🇪🇺, Building the future together, {name}.\n"]
-"02_06" = "Buona Festa della Repubblica, {name}.\n"
+"02_06" = "Buona Festa della Repubblica 🇮🇹, {name}.\n"
 "14_06" = ["A continent without borders!.\nHappy Schengen Day, {name}.", "Free to move, free to be, Happy Schengen Day, {name}\n"]
 "14_07" = "\nLiberté, égalité, fraternité.\nHappy 14th of July, {name} 🇫🇷"
 "21_07" = "Happy National Day to Belgium, {name} 🇧🇪\n"

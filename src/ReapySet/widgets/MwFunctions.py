@@ -5,7 +5,7 @@ from typing import Callable
 
 from PySide6.QtCore import QRegularExpression, QTimer
 from PySide6.QtGui import QRegularExpressionValidator
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QLineEdit, QFileDialog
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QLineEdit, QFileDialog, QButtonGroup
 
 from ReapySet.common.toml_handler import TomlHandler
 from config import MwConfig as Mwc
@@ -90,7 +90,15 @@ class MwFuncs:
 
         p_path_input.setCursorPosition(len(project_path_txt))
 
-        p_path_input.setToolTip(project_path_txt)
+        #p_path_input.setToolTip(project_path_txt)
         # Updates DEST_PATH
         TomlHandler.toml_edit("global", "project_path", project_path_txt)
 
+    @staticmethod
+    def reset_radio_group(p_btngroup: QButtonGroup, toml_key: str, subsection: str = "python"):
+        """Turns off active buttons in a QButtonGroup and empties the relevant key in the TOML."""
+        if button := p_btngroup.checkedButton():
+            p_btngroup.setExclusive(False)
+            button.setChecked(False)
+            p_btngroup.setExclusive(True)
+            TomlHandler.toml_edit("languages", toml_key, "", subsection=subsection)

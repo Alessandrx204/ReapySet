@@ -119,11 +119,11 @@ class RpsMainWindow(QMainWindow):
             lambda: self.reveal_in_file_manager(CONFIG_PATH)
         )
         file_menu.addAction(locate_config_action)
-        find_socket_action = QAction("&Locate socket file", self)
-        find_socket_action.triggered.connect(
+        find_input_cache_action = QAction("&Locate input cache file", self)
+        find_input_cache_action.triggered.connect(
             lambda: self.reveal_in_file_manager(TomlHandler._temp_dir)
         )
-        file_menu.addAction(find_socket_action)
+        file_menu.addAction(find_input_cache_action)
 
 
 
@@ -369,7 +369,11 @@ class RpsMainWindow(QMainWindow):
         self.statusBar().addWidget(self.back_button)
         self.statusBar().addPermanentWidget(self.button_box)  # on the right ( for whatever reason)
         # ------------------- END TOOLBAR / STATUSBAR BUTTONS ------------------#
-        Mwf.connect_qlineedit(self.w1_path_input, "global", "project_path")
+
+        Mwf.connect_qlineedit(self.w1_path_input, "global", "project_path",
+                              # only allow '\' on Windows'/' on Linux/macOS
+                              p_regex_validation=r"^[\w/\\-]*$" if platform.system() == "Windows" else r"^[\w/-]*$"
+)
 
         # TODO: decide if this is worth keeping or not (most likely not)
         self.w1_path_input.textChanged.connect(

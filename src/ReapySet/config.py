@@ -109,7 +109,7 @@ class MwConfig:
         github_box_top_label: str       = "\nImport a project from GitHub"
         github_box_placeholder_txt: str = "COMING SOON " #insert a repo URL
         path_box_top_label: str         = "\nProject Location:\n(Double-click to browse)"
-        path_box_placeholder_txt: str   = "\nProject Path...?"
+        path_box_placeholder_txt: str   = "Project Path...?"
         sample_box_top_label: str       = "🍪 CookieCutter:\n  Insert a path\n  (or Double-click to browse)"
         boilerplates_box_placeholder_txt: str = "cctemplates/paths/example "
         browse_button_text: str         = "Browse"
@@ -305,7 +305,7 @@ class MwConfig:
         py_radiobutton_qss: str = (
             "QRadioButton {\n"
             "    spacing: -1px;\n"
-            "    padding: 4px 14px;\n"
+            "    padding: 3px 14px;\n"
             "    border: 2px solid rgba(0, 0, 0, 0.3);\n"
             "    border-radius: 7px;\n"
             "    background: qlineargradient(\n"
@@ -315,7 +315,7 @@ class MwConfig:
             "        stop:1 rgba(30, 30, 30, 200)\n"
             "    );\n"
             "    color: rgba(235, 235, 235, 220);\n"
-            "    font-size: 13px;\n"
+            "    font-size: 12px;\n"
             "    min-width: 90px;\n"
             "}\n"
             "\n"
@@ -364,10 +364,10 @@ class MwConfig:
             ("PY:PIPENV", "PipEnv", "pipenv_logo.png"),
             ("PY:VIRTUALENV", "VirtualEnv", "virtualenv_logo.png"),
             ("PY:PDM", "PDM", "pdm_logo.png"),
-            ("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png"),
+            #("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png"),
                                                          ])
         py_FMK_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
-            ("PY:DJANGO", "Django", "django_logo.png"),
+            ("PY:DJANGO", "Django      ", "django_logo.png"),
             ("PY:FLASK", "Flask", "flask_logo.png"),
             ("PY:FASTAPI", "FastAPI", "fastapi_logo.png"),
             ("PY:PYSIDE6", "PySide6", "pyside6_logo.png"),
@@ -452,13 +452,13 @@ class LogicVariables:
         py_mamba_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "mamba_path") or shutil.which("mamba") or ""# noqa
         py_pixi_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pixi_path") or shutil.which("pixi") or ""# noqa
             #----- iCmd stands for Init(ialise) Command -----#
-        py_venv_icmd: list[str] = ["python", "-m", "venv", ".venv"]  # python -m venv .venv (dentro proj_path)
+        py_venv_icmd: list[str] = ["python", "-m", "venv", ".venv"]  # python -m venv .venv (inside proj_path)
         py_uv_icmd: list[str] = [py_uv_path, "init"]  # uv init <proj_path>
         py_poetry_icmd: list[str] = [py_poetry_path, "new"]  # poetry new <proj_path>
         py_hatch_icmd: list[str] = [py_hatch_path, "new"]  # hatch new <proj_path>
         py_pdm_icmd: list[str] = [py_pdm_path, "init"]  # pdm init (cdw=proj_path)
         py_pipenv_icmd: list[str] = [py_pipenv_path, "install"]  # pipenv install (cdw=proj_path)
-        py_virtualenv_icmd: list[str] = [py_virtualenv_path, ".venv"]  # virtualenv .venv (cdw=proj_path)
+        py_virtualenv_icmd: list[str] = [py_virtualenv_path, "-p"]  # virtualenv -p <python_interpreter> .venv (cdw=proj_path)
         py_conda_icmd: list[str] = [py_conda_path, "create", "-y", "-p"]  # conda create -p <proj_path>
         py_mamba_icmd: list[str] = [py_mamba_path, "create", "-y", "-p"]  # mamba create -p <proj_path>
 

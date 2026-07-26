@@ -1,0 +1,12 @@
+QLabel#titleLabel {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+QLineEdit {
+    padding: 8px;
+}
+
+QPushButton {
+    padding: 8px 16px;
+}

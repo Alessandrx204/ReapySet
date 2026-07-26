@@ -199,21 +199,28 @@ class LogicMainWindow(RpsMainWindow):
         self.confirm_button.setEnabled(path_ok and lang_ok) # path not null and a lang is enabled
 
     def handle_confirm_clicked(self) -> None:
+        self.confirm_button.setEnabled(False)
+        self.confirm_shortcut.setEnabled(False)
+
+
         if self.confirm_busy: #if is busy lets it finish
             return
         self.confirm_busy = True
-        self.confirm_button.setEnabled(False)
-        self.confirm_shortcut.setEnabled(False)
+        #self.confirm_button.setEnabled(False)
+        #self.confirm_shortcut.setEnabled(False)
         self.confirm_shortcut_numpad.setEnabled(False)
+        self.setEnabled(False)
 
         try:
             self.confirm_logic.on_confirm_clicked()
 
-        finally:
+        finally: # awaits confirm logic to finish
             QTimer.singleShot(
-                2000,
+                8000,
                 self._unlock_confirm_btn # no () since its a reference
             )
+        self.setEnabled(True) # re enables the window after confirm logic finishes
+
 
 
     def _unlock_confirm_btn(self) -> None:

@@ -23,7 +23,7 @@ def main():
     app: QApplication = QApplication(sys.argv)
     app.setApplicationName("ReapySet")
     app.setApplicationVersion("beta: 5.0")
-    app.setOrganizationName("Alessandrx's ReapySet")
+    app.setOrganizationName("Alessandrx")
     app.setStyle("Fusion" if os.name == "nt" else "")
     app.styleHints().setColorScheme(Qt.ColorScheme.Dark) # ENFORCES MANDATORY DARK MODE
     app.setPalette(

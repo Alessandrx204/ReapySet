@@ -7,12 +7,12 @@ from PySide6.QtWidgets import (
     QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
 )
 
-from widgets.MwFunctions import MwFuncs as Mwf
-#from pathlib import Path
-
-from widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
-from config import MwConfig as Mwc
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
+from config import MwConfig as Mwc
+from widgets.MwFunctions import MwFuncs as Mwf
+from widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
+
+# from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
 widget3_instance = Mwc.Widget3()
 PMS_ENTRIES = widget3_instance.py_PM_RBTNS_ENTRIES
@@ -159,8 +159,8 @@ class PythonGenWidget(QWidget):
                 btn.setChecked(True)
                 # Selects the package manager currently stored in the project TOML.
                 # If missing, it was initialised from the global default.
-            if i == len(entries) - 1:
-                btn.setEnabled(False) #disables mojo
+            """if i == len(entries) - 1:
+                btn.setEnabled(False) #disables mojo"""
 
         btn_group.buttonClicked.connect(self.on_package_manager_changed)
 
@@ -183,12 +183,6 @@ class PythonGenWidget(QWidget):
         fmk_layout.setSpacing(Mwc.Widget3.py_pkg_manager_rbtns_spacing)
         fmk_layout.setContentsMargins(0, 0, 0, 0)
         fmk_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        project_fmk = TomlHandler.toml_get(
-            p_file=TomlHandler._dest_path(),
-            section="languages",
-            subsection="python",
-            key="selected_framework"
-        )
 
 
 
@@ -208,7 +202,7 @@ class PythonGenWidget(QWidget):
 
                 # Selects the package manager currently stored in the project TOML.
                 # If missing, it was initialised from the global default.
-            if i != len(entries) :# a way to disable them
+            if i not in [3, 4] :# a way to disable them
                 btn.setEnabled(False) #disables all except the last
 
         btn_group.buttonClicked.connect(self.on_framework_changed)
@@ -229,13 +223,21 @@ class PythonGenWidget(QWidget):
 
     @staticmethod
     def on_framework_changed(button: QRadioButton) -> None:
-        key = button.property("key")
-        TomlHandler.toml_edit(
-            "languages",
-            "selected_framework",
-            str(key),
-            subsection="python"
-        )
+        group = button.group()  # from qt itself
+
+        if button.property("was_checked"):
+            group.setExclusive(False)
+            button.setChecked(False)
+            group.setExclusive(True)
+            button.setProperty("was_checked", False)
+            TomlHandler.toml_edit("languages", "selected_framework", "", subsection="python")
+        else:
+            key = button.property("key")
+            TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="python")
+
+            for btn in group.buttons():
+                btn.setProperty("was_checked", btn == button)
+
 
     def resizeEvent(self, event) -> None:
         self.bg_label.setPixmap(
@@ -250,7 +252,7 @@ class PythonGenWidget(QWidget):
 
     @staticmethod
     def on_interpreter_changed(combobox: QComboBox) -> None:
-        label = combobox.currentText()
+        label = combobox.currentText().removeprefix("Python ")
         path = combobox.currentData()
         print(f"{label} interpreter was selected, path: {path}")
         TomlHandler.toml_edit("languages", "interpreter_version", label, subsection="python")

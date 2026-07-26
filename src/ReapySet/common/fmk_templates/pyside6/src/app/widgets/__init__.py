@@ -1,0 +1,1 @@
+"""Widget personalizzati dell’applicazione."""

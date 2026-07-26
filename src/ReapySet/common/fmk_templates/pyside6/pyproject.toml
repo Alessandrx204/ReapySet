@@ -1,0 +1,16 @@
+[project]
+name = "pyside6-template-rps"
+version = "0.1.0"
+description = "essential PySide6 for ReapySet"
+requires-python = ">=3.11"
+dependencies = ["PySide6>=6.11"]
+
+[project.scripts]
+pyside6-template = "app.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/app"]
