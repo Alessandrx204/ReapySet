@@ -25,7 +25,7 @@ The goal of ReapySet is to provide a clean and fast way to:
 - Open projects directly in your preferred editor
 - Apply boilerplates/templates
 
-Think of it as a **developer launcher + project initialiser**, with a focus on speed and usability.
+Think of it as a **developer launcher + project initialiser**, with a focus on clarity and usability.
 
 ---
 
@@ -36,8 +36,8 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 -	Dynamic Directory Creation: Any missing nested directories will be created on the fly. Please note that creating deeply nested structures may slightly increase initial setup time.
 **Editor Integration**
 -(currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
-
-- Optional boilerplates support *(WIP)*
+(a No editor option is available as well)
+- Cookiecutter's boilerplates support *(in works)*
 
 - Customisation: You can easily add, remove, or modify the startup commands for any editor via the configuration file. Please ensure you follow the specific instructions provided within the file.
 
@@ -59,8 +59,8 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 ### Python Workspace Configuration
 **available python package managers**
 
-- `venv`
 - `uv`
+- `pip`
 - `poetry`
 - `hatch`
 - `pixi`
@@ -97,6 +97,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on s
 - pyobjc on OS X (on legacy versions)
 - qtdarktheme
 - tomlkit
+- cookiecutter
 
 ### Clone the project
 

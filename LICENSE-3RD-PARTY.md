@@ -76,6 +76,7 @@ In accordance with the LGPL v3:
 
 ---
 
+
 ## MIT License Notice
 
 The above components are distributed under the **MIT License**.
@@ -85,6 +86,19 @@ The full text of the MIT License is included in `LICENSES/MIT.txt`.
 Original copyright notices and permissions remain the property of their respective authors.
 
 ---
+# Components under BSD 3-Clause License
+## Cookiecutter
+- **Copyright:** © 2013-2026 Audrey M. Roy Greenfeld and contributors
+- **License:** BSD 3-Clause License
+- **Source:** https://github.com/cookiecutter/cookiecutter
+---  
+## BSD 3-Clause License Notice
+
+The above component is distributed under the BSD 3-Clause License.
+
+The full text of the BSD 3-Clause License is included in LICENSES/BSD-3-Clause.txt.
+
+Original copyright notices and permissions remain the property of their respective authors.
 
 # Third-Party Names & Trademarks
 
