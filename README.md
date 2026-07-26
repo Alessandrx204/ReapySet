@@ -37,7 +37,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 **Editor Integration**
 -(currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
 (a No editor option is available as well)
-- Optional boilerplates support *(WIP)*
+- Cookiecutter's boilerplates support *(in works)*
 
 - Customisation: You can easily add, remove, or modify the startup commands for any editor via the configuration file. Please ensure you follow the specific instructions provided within the file.
 
