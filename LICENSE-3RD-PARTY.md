@@ -105,8 +105,8 @@ Original copyright notices and permissions remain the property of their respecti
 ## Other licenses
 ## NumPy
 - **Copyright:** Copyright (c) 2005-2025, NumPy Developers.
-- **source:**
-- **License**:
+- **source:** https://github.com/numpy/numpy
+- **License**
 - Copyright (c) 2005-2025, NumPy Developers.
 All rights reserved.
 
