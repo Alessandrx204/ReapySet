@@ -95,7 +95,7 @@ class GreetingsGetter:
 
         if not is_greetings_enabled:
             print(is_greetings_enabled)
-            return "\nReadySet\n"
+            return "\nReapySet\n"
 
 
         now: dtime.datetime = dtime.datetime.now()

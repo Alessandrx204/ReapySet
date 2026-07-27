@@ -54,7 +54,7 @@ class TomlHandler:
         return TomlHandler.DEST_PATH
 
     @staticmethod
-    @cache
+    #@cache
     def _toml_load(p_doc_path: TomlReadable | None = None) -> tomlkit.TOMLDocument:
         """
         Loads a TOML document.
@@ -83,12 +83,12 @@ class TomlHandler:
 
         with resources.as_file(SRC_PATH) as src:
             shutil.copy(src, dest_path)
-        TomlHandler._toml_load.cache_clear()
+        # TomlHandler._toml_load.cache_clear()
 
     @staticmethod
     def clear_sandbox() -> None:
 
-        TomlHandler._toml_load.cache_clear()
+        # TomlHandler._toml_load.cache_clear()
         if TomlHandler._temp_dir is not None:
 
             shutil.rmtree(TomlHandler._temp_dir, ignore_errors=False)
@@ -109,7 +109,7 @@ class TomlHandler:
         path = p_doc_path or TomlHandler._dest_path()
         with path.open("w", encoding="utf-8") as f_:
             tomlkit.dump(data, f_)
-        TomlHandler._toml_load.cache_clear()
+        # TomlHandler._toml_load.cache_clear()
 
     @staticmethod #edits the toml in a specific line in order to allow the file to be easily parsed
     def toml_edit(section: str, key: str, value: Any, subsection: str | None = None, p_doc_path: TomlWritable | None = None) -> None:
@@ -166,7 +166,7 @@ class TomlHandler:
         with resources.as_file(BACKUP_CONFIG_PATH) as src:
             shutil.copy(src, CONFIG_PATH)
 
-        TomlHandler._toml_load.cache_clear()
+        # TomlHandler._toml_load.cache_clear()
 
     @staticmethod
     def ensure_config_exists() -> None:

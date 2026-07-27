@@ -8,9 +8,9 @@ from PySide6.QtWidgets import (
 )
 
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
-from config import MwConfig as Mwc
-from widgets.MwFunctions import MwFuncs as Mwf
-from widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
+from ReapySet.config import MwConfig as Mwc
+from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
+from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
 
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---

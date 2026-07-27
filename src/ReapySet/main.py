@@ -11,11 +11,11 @@ start_time = time.perf_counter()
 import qdarktheme
 from PySide6.QtGui import QIcon, Qt
 from PySide6.QtWidgets import QApplication, QMenuBar
-from config import MwConfig as Mwc
+from ReapySet.config import MwConfig as Mwc
 from ReapySet.common.toml_handler import TomlHandler
 
 def main():
-    from logic_mainwindow import LogicMainWindow
+    from ReapySet.logic_mainwindow import LogicMainWindow
     TomlHandler.ensure_config_exists()
     TomlHandler.initialise_sandbox()
     print("Sandbox temp dir:", TomlHandler._temp_dir)
@@ -69,7 +69,7 @@ def main():
 
     # Calculate and print total startup time before entering the event loop
     end_time = time.perf_counter()
-    print(f"ReadySet started in: {end_time - start_time:.4f} seconds")
+    print(f"ReapySet started in: {end_time - start_time:.4f} seconds")
 
     atexit.register(TomlHandler.clear_sandbox)
     sys.exit(app.exec())

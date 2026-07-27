@@ -14,7 +14,7 @@ from cookiecutter.exceptions import CookiecutterException
 
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
-from common.init_frameworks import InitFrameworks
+from ReapySet.common.init_frameworks import InitFrameworks
 
 NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 

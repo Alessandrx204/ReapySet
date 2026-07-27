@@ -1,14 +1,14 @@
 from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
 from PySide6.QtGui import QResizeEvent
 
-from main_window import RpsMainWindow
+from ReapySet.main_window import RpsMainWindow
 
-from config import MwConfig as Mwc
-from widgets.MwFunctions import MwFuncs as Mwf
-import widgets.widgets3.widget31_python.stacked_widget3 as SW3 # noqa
+from ReapySet.config import MwConfig as Mwc
+from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
+import ReapySet.widgets.widgets3.widget31_python.stacked_widget3 as SW3 # noqa
 from ReapySet.common.toml_handler import TomlHandler
-from common.confirm_button_logic import ConfirmButtonLogic
-from widgets.floating_widgets import MwAdditions
+from ReapySet.common.confirm_button_logic import ConfirmButtonLogic
+from ReapySet.widgets.floating_widgets import MwAdditions
 
 
 def switch_stacked_widget():

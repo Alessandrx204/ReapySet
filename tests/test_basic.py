@@ -14,7 +14,7 @@ print(app.style().name())
 from pathlib import Path
 from PySide6.QtGui import QIcon
 
-icon_path = Path("src/ReadySet/resources/icon.png").resolve()
+icon_path = Path("src/ReapySet/resources/icon.png").resolve()
 print(icon_path)
 print(icon_path.exists())
 

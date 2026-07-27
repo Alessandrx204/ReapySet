@@ -8,7 +8,7 @@ from PySide6.QtGui import QRegularExpressionValidator
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QLineEdit, QFileDialog, QButtonGroup
 
 from ReapySet.common.toml_handler import TomlHandler
-from config import MwConfig as Mwc
+from ReapySet.config import MwConfig as Mwc
 
 
 class MwFuncs:
