@@ -29,8 +29,9 @@ You may, free of charge:
 2. COMMERCIAL USE
 
 Commercial use requires prior written permission from the copyright holder.
+Commercial licences are available as described in the README.md.
 
-Commercial use includes, but is not limited to:
+If obtaining a licence through the standard process is not possible, you are welcome to contact the copyright holder to request an exception or a custom licence.
 
 • selling this software;
 
@@ -59,7 +60,9 @@ You may redistribute unmodified copies of the original source code only if:
 
 • the software is distributed free of charge.
 
-Redistributing modified versions of the source code or binary builds requires prior written permission from the copyright holder.
+Public forks of the official repository are permitted for collaboration and contribution purposes.
+
+Redistributing modified versions of the software outside such forks, including modified binary builds or independent distributions, requires prior written permission from the copyright holder.
 
 Official Pull Requests are the preferred way to contribute improvements.
 
