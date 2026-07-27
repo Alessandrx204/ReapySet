@@ -1,14 +1,122 @@
+ReapySet Community License v1.0
+
 Copyright © 2026 Alessandra
-All rights reserved.
 
-This software and its original source code are proprietary. Unauthorized copying, distribution, modification, reverse engineering(except solely to the extent permitted by applicable law or third-party licenses, such as for debugging modifications to LGPL components), or unauthorized commercial exploitation of this software, in whole or in part, is prohibited without explicit permission from the copyright holder.
+This software is source-available but is not Open Source as defined by the Open Source Initiative (OSI).
 
-⸻
 
-Third-Party Components
+The source code is provided to encourage learning, transparency, bug reporting, and community contributions while protecting the project's identity and commercial rights.
 
-This software incorporates third-party open-source components, including PySide6 (licensed under the GNU Lesser General Public License v3) and other components distributed under permissive licenses such as the MIT License.
+By using, copying, modifying, or distributing this software, you agree to the terms of this license.
 
-PySide6 is dynamically linked and has not been modified by this project. Users may replace the PySide6 shared libraries with compatible versions in accordance with the LGPL v3.
+────────────────────────────────────────────────────────
 
-Full third-party license notices, attribution information, and applicable open-source license texts are provided in the LICENSE-3RD-PARTY.md file included with this software.
+1. PERMITTED USE
+
+You may, free of charge:
+
+• use the software for personal, educational, research, or other non-commercial purposes;
+
+• inspect and study the source code;
+
+• modify the source code for your own personal, non-commercial use;
+
+• create and maintain a public or private fork of the official repository;
+
+• submit Issues, Pull Requests, documentation improvements, translations, bug reports, and feature suggestions.
+
+────────────────────────────────────────────────────────
+
+2. COMMERCIAL USE
+
+Commercial use requires prior written permission from the copyright holder.
+Commercial licences are available as described in the README.md.
+
+If obtaining a licence through the standard process is not possible, you are welcome to contact the copyright holder to request an exception or a custom licence.
+
+• selling this software;
+
+• selling derivative works;
+
+• providing paid services primarily based on this software;
+
+• bundling this software into commercial products;
+
+• using substantial portions of the software within commercial products or services.
+
+Commercial licences or written exceptions may be granted upon request.
+
+────────────────────────────────────────────────────────
+
+This licence may be updated in future versions.
+Unless otherwise stated, copies of the software remain governed by the version of the licence under which they were originally distributed.
+
+3. REDISTRIBUTION
+
+You may redistribute unmodified copies of the original source code only if:
+
+• this license remains unchanged;
+
+• all copyright notices remain intact;
+
+• the software is distributed free of charge.
+
+Public forks of the official repository are permitted for collaboration and contribution purposes.
+
+Redistributing modified versions of the software outside such forks, including modified binary builds or independent distributions, requires prior written permission from the copyright holder.
+
+Official Pull Requests are the preferred way to contribute improvements.
+
+────────────────────────────────────────────────────────
+
+4. COPYRIGHT
+
+You may not remove, alter, or obscure any copyright notice, licence notice, attribution, or author information included with this project.
+
+────────────────────────────────────────────────────────
+
+5. THIRD-PARTY SOFTWARE
+
+This software includes third-party open-source components distributed under their own licences.
+
+PySide6 is dynamically linked, has not been modified by this project, and remains licensed under the GNU Lesser General Public License version 3 (LGPL v3).
+
+Users may replace the PySide6 shared libraries with compatible versions in accordance with the LGPL.
+
+Complete licence texts and attribution notices are provided in LICENSE-3RD-PARTY.md.
+
+Nothing in this licence restricts any rights granted by applicable third-party licences.
+
+────────────────────────────────────────────────────────
+
+6. REVERSE ENGINEERING
+
+Reverse engineering of the distributed binaries is prohibited except where permitted by applicable law or required by third-party licences.
+
+This licence is intended to encourage collaboration rather than restrict it.
+
+If you are unsure whether your intended use is permitted, please ask first. Reasonable requests are frequently approved.
+
+────────────────────────────────────────────────────────
+
+7. DISCLAIMER
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
+
+────────────────────────────────────────────────────────
+
+8. ADDITIONAL PERMISSIONS
+
+If your intended use is not explicitly covered by this licence, please open a GitHub Issue or Pull Request, or contact the copyright holder directly.
+
+Questions, collaboration proposals, and reasonable requests for additional permissions are always welcome.
+
+────────────────────────────────────────────────────────
+
+9. FUTURE REVISIONS
+
+This licence may be revised in future releases.
+
+Unless explicitly stated otherwise, each copy of the software remains governed by the version of the licence under which it was originally distributed.

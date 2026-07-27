@@ -38,6 +38,9 @@ In accordance with the LGPL v3:
 4. **License Text**  
    The full text of the LGPL v3 license is included in the `LICENSES/LGPL-3.0.txt` file distributed with this software.
    The full text of the GPL v3 license is included in the `LICENSES/GPL-3.0.txt` file distributed with this software.
+   
+6. **Binaries**
+   The corresponding source code for Qt and PySide6 is available from the Qt Project: https://www.qt.io/ and https://code.qt.io/.
 
 ---
 
@@ -97,6 +100,22 @@ Original copyright notices and permissions remain the property of their respecti
 The above component is distributed under the BSD 3-Clause License.
 
 The full text of the BSD 3-Clause License is included in LICENSES/BSD-3-Clause.txt.
+
+Original copyright notices and permissions remain the property of their respective authors.
+
+
+---
+# Components under BSD 2-Clause License
+## imageio
+- **Copyright:** Copyright (c) 2014-2026, imageio developers
+- **License:** BSD 2-Clause License
+- **Source:** https://github.com/imageio/imageio
+---  
+## BSD 2-Clause License Notice
+
+The above component is distributed under the BSD 2-Clause License.
+
+The full text of the BSD 2-Clause License is included in LICENSES/BSD-2-Clause.txt.
 
 Original copyright notices and permissions remain the property of their respective authors.
 
