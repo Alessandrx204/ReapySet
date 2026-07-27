@@ -15,8 +15,8 @@ from widgets.widgets3.widget31_python.python_interpreter_find import populate_in
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
 widget3_instance = Mwc.Widget3()
-PMS_ENTRIES = widget3_instance.py_PM_RBTNS_ENTRIES
-FMK_ENTRIES = widget3_instance.py_FMK_RBTNS_ENTRIES
+PMS_ENTRIES: list[tuple[str, str, str]] = widget3_instance.py_PM_RBTNS_ENTRIES
+FMK_ENTRIES: list[tuple[str, str, str]] = widget3_instance.py_FMK_RBTNS_ENTRIES
 
 MAX_PER_ROW = 4  # p_max_entry_x_row
 
@@ -144,7 +144,7 @@ class PythonGenWidget(QWidget):
                 subsection="python"
             )
 
-        for i, (key, label, icon_path) in enumerate(entries):
+        for i, (key, label, icon_path, tooltip) in enumerate(entries):
             row, col = divmod(i, max_per_row)
             btn_label: str = label
             if key == default_pm:
@@ -152,6 +152,7 @@ class PythonGenWidget(QWidget):
             btn = QRadioButton(btn_label)
             btn.setProperty("key", key)
             btn.setIcon(QIcon(icon_path))
+            btn.setToolTip(tooltip)
             btn.setIconSize(QSize(20, 20))
             btn_group.addButton(btn, i)
             pm_layout.addWidget(btn, row, col)
@@ -167,6 +168,18 @@ class PythonGenWidget(QWidget):
 
 
         self.main_layout.addWidget(pm_widget, row_offset, col_offset)
+
+
+    @staticmethod
+    def on_package_manager_changed(button: QRadioButton) -> None:
+        key = button.property("key")
+        TomlHandler.toml_edit(
+            "languages",
+            "package_manager",
+            str(key),
+            subsection="python"
+        )
+        #------ frameworks --------#
     def setup_py_fmk_selector(self,
                             entries,
                               btn_group: QButtonGroup,
@@ -189,7 +202,7 @@ class PythonGenWidget(QWidget):
 
 
 
-        for i, (key, label, icon_path) in enumerate(entries):
+        for i, (key, label, icon_path, tooltip) in enumerate(entries):
             row, col = divmod(i, max_per_row)
             btn_label: str = label
 
@@ -197,13 +210,15 @@ class PythonGenWidget(QWidget):
             btn.setProperty("key", key)
             btn.setIcon(QIcon(icon_path))
             btn.setIconSize(QSize(20, 20))
+            btn.setToolTip(tooltip)
             btn_group.addButton(btn, i)
             fmk_layout.addWidget(btn, row, col)
 
                 # Selects the package manager currently stored in the project TOML.
                 # If missing, it was initialised from the global default.
-            if i not in [3, 4] :# a way to disable them
+            if i not in ( 4, 5, 6) :# a way to disable them
                 btn.setEnabled(False) #disables all except the last
+                btn.setToolTip("") # disables all tooltip for un-enabled buttons
 
         btn_group.buttonClicked.connect(self.on_framework_changed)
 
@@ -212,25 +227,11 @@ class PythonGenWidget(QWidget):
         self.main_layout.addWidget(fmk_widget, row_offset, col_offset)
 
     @staticmethod
-    def on_package_manager_changed(button: QRadioButton) -> None:
-        key = button.property("key")
-        TomlHandler.toml_edit(
-            "languages",
-            "package_manager",
-            str(key),
-            subsection="python"
-        )
-
-    @staticmethod
     def on_framework_changed(button: QRadioButton) -> None:
-        group = button.group()  # from qt itself
+        group = button.group()  # returns the group the button is part of
 
         if button.property("was_checked"):
-            group.setExclusive(False)
-            button.setChecked(False)
-            group.setExclusive(True)
-            button.setProperty("was_checked", False)
-            TomlHandler.toml_edit("languages", "selected_framework", "", subsection="python")
+            Mwf.reset_qradio_group(group, "selected_framework", p_subsection="python")
         else:
             key = button.property("key")
             TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="python")

@@ -95,10 +95,16 @@ class MwFuncs:
         TomlHandler.toml_edit("global", "project_path", project_path_txt)
 
     @staticmethod
-    def reset_radio_group(p_btngroup: QButtonGroup, toml_key: str, subsection: str = "python"):
-        """Turns off active buttons in a QButtonGroup and empties the relevant key in the TOML."""
-        if button := p_btngroup.checkedButton():
-            p_btngroup.setExclusive(False)
-            button.setChecked(False)
-            p_btngroup.setExclusive(True)
-            TomlHandler.toml_edit("languages", toml_key, "", subsection=subsection)
+    def reset_qradio_group(p_btngroup: QButtonGroup, toml_key: str, p_subsection: str = "python") -> None:
+        """Deselects each button in the QButtonGroup, clears their custom states and updates the TOML."""
+        p_btngroup.setExclusive(False)
+        if checked_button := p_btngroup.checkedButton():
+            checked_button.setChecked(False)
+        p_btngroup.setExclusive(True)
+
+        # reset the custom property "was_checked" for each button in the group
+        for btn in p_btngroup.buttons():
+            btn.setProperty("was_checked", False)
+
+        # clears the entry
+        TomlHandler.toml_edit("languages", toml_key, "", subsection=p_subsection)

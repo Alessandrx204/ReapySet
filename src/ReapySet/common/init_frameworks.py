@@ -1,5 +1,4 @@
 import json
-import os
 import shutil
 from pathlib import Path
 
@@ -79,3 +78,19 @@ class InitFrameworks:
 
         with open(full_path, "w", encoding="utf-8") as f:
             json.dump(template_notebook, f, indent=2)
+
+    @staticmethod
+    def init_pyscript(p_path: str | Path) -> None:
+        p_path = Path(p_path)
+        file_to_remove: Path = p_path / "main.py"
+        file_to_remove.unlink(missing_ok=True)  # doesnt crash if not found
+        source: Path = Path(__file__).parent / "fmk_templates" / "pyscript"
+
+        shutil.copytree(
+
+            source,
+
+            p_path,
+
+            dirs_exist_ok=True,
+        )

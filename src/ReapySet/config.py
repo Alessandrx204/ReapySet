@@ -354,24 +354,68 @@ class MwConfig:
         )
         py_MAX_RBTNS_PER_ROW: int = 4
         py_PM_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
-            ("PY:UV", "uv", "uv_logo.png"),
-            ("PY:VENV", "Venv", "python_logo.png"),
-            ("PY:POETRY", "poetry", "poetry_logo.png"),
-            ("PY:HATCH", "Hatch", "pip_logo.png"),
-            ("PY:CONDA", "conda", "conda_logo.png"),
-            ("PY:PIXI", "Pixi", "pixi_logo.png"),
-            ("PY:MAMBA", "Mamba", "mamba_logo.png"),
-            ("PY:PIPENV", "PipEnv", "pipenv_logo.png"),
-            ("PY:VIRTUALENV", "VirtualEnv", "virtualenv_logo.png"),
-            ("PY:PDM", "PDM", "pdm_logo.png"),
-            #("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png"),
+            ("PY:UV", "uv", "uv_logo.png",
+             "Ultra-fast modern Python package and project manager\n"
+             "written in rust is the Fastest choice for most new Python projects."),
+
+            ("PY:VENV", "Pip", "python_logo.png",
+             "Standard Python's built-in package manager & virtual environment."),
+
+            ("PY:POETRY", "Poetry", "poetry_logo.png",
+             "Best for dependency locking and package publishing"),
+
+            ("PY:HATCH", "Hatch", "pip_logo.png",
+             "Ideal for multi-environment development and packaging."),
+
+            ("PY:CONDA", "Conda", "conda_logo.png",
+             "Best when using scientific or native dependencies."),
+
+            ("PY:PIXI", "Pixi", "pixi_logo.png",
+             "Modern Conda workflow with fast, reproducible environments."
+             "\n (written in rust)"),
+
+            ("PY:MAMBA", "Mamba", "mamba_logo.png",
+             "A much faster drop-in replacement for Conda"),
+
+            ("PY:PIPENV", "Pipenv", "pipenv_logo.png",
+             "Traditional Pipfile workflow combining pip and virtual environments."),
+
+            ("PY:VIRTUALENV", "Virtualenv", "virtualenv_logo.png",
+             "Enhanced virtual environments for compatibility needs.\n beyond standard venv."),
+
+            ("PY:PDM", "PDM", "pdm_logo.png",
+             "Modern PEP-based workflow without Poetry"),
+            #("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png", ""),
                                                          ])
         py_FMK_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
-            ("PY:DJANGO", "Django      ", "django_logo.png"),
-            ("PY:FLASK", "Flask", "flask_logo.png"),
-            ("PY:FASTAPI", "FastAPI", "fastapi_logo.png"),
-            ("PY:PYSIDE6", "PySide6", "pyside6_logo.png"),
-            ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png"),
+            ("PY:DJANGO", f"Django{" "*6}", "django_logo.png",
+             "Full-featured web framework with ORM, authentication,\n"
+             "admin panel and batteries included!"),
+
+            ("PY:FLASK", "Flask", "flask_logo.png",
+             "Minimal and flexible web framework. Ideal for small projects,"
+             "\nAPIs, and custom architectures."),
+
+            ("PY:FASTAPI", "FastAPI", "fastapi_logo.png",
+             "High-performance API framework with automatic validation,"
+             "\n type hints, and OpenAPI documentation."),
+
+            ("PY:STREAMLIT", "Streamlit", "streamlit_logo.png",
+             "Build interactive data apps and dashboards\n"
+             "directly from Python with minimal code."),
+
+            ("PY:PYSCRIPT", "PyScript", "pyscript_logo.png",
+             "Run Python directly in the browser using WebAssembly,"
+             "\nwith full CPython available through Pyodide"
+             "\nor microPython and access to browser APIs."),
+
+            ("PY:PYSIDE6", "PySide6", "pyside6_logo.png",
+             "Official Qt for Python framework for creating Advanced cross-platform desktop applications"
+             "\nwith native-looking GUIs.\t(such as this very one you're using!)"),
+
+            ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png",
+             "Interactive notebooks for data analysis, visualisation,"
+             "\nexperimentation, and machine learning.")
         ])
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)

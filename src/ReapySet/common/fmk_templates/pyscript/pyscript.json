@@ -1,0 +1,7 @@
+{
+  "name": "pyscript-templete(by ReapySet)",
+  "description": "Minimal PyScript project Template",
+  "packages": [
+    "numpy"
+  ]
+}

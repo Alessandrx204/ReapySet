@@ -139,7 +139,7 @@ class ConfirmButton2ndThread(QThread):
         return True
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, *,
                      p_project_already: bool = False) -> bool:
-        project_toml_path: Path = TomlHandler._dest_path()
+        current_proj_toml_path: Path = TomlHandler._dest_path()
 
             # post conditional mkdir
         pm: str = p_py_config["package_manager"]
@@ -151,16 +151,18 @@ class ConfirmButton2ndThread(QThread):
                 "disable_poetry_centralised_venvs"
             )
         )
+        if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "python") in ("PY:PYSCRIPT",):
+            return True # NO venv option
 
         interp_ver: str | None = TomlHandler.toml_get(
-            project_toml_path,
+            current_proj_toml_path,
             "languages",
             "interpreter_version",
             "python"
         )
 
         unb_interp_ver: str | None = TomlHandler.toml_get(
-            project_toml_path,
+            current_proj_toml_path,
             "languages",
             "unb_interpreter_version",
             "python"
@@ -475,13 +477,10 @@ class ConfirmButton2ndThread(QThread):
 
                 case "PY:PYSIDE6":
 
-                    InitFrameworks.init_pyside6(
+                    InitFrameworks.init_pyside6(self.proj_path)
 
-                        self.proj_path,
-
-                    )
-
-
+                case "PY:PYSCRIPT":
+                    InitFrameworks.init_pyscript(self.proj_path)
 
                 case _:
 
