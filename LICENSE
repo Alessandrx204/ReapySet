@@ -2,7 +2,8 @@ ReapySet Community License v1.0
 
 Copyright © 2026 Alessandra
 
-This software is source-available.
+This software is source-available but is not Open Source as defined by the Open Source Initiative (OSI).
+
 
 The source code is provided to encourage learning, transparency, bug reporting, and community contributions while protecting the project's identity and commercial rights.
 
@@ -92,6 +93,10 @@ Nothing in this licence restricts any rights granted by applicable third-party l
 
 Reverse engineering of the distributed binaries is prohibited except where permitted by applicable law or required by third-party licences.
 
+This licence is intended to encourage collaboration rather than restrict it.
+
+If you are unsure whether your intended use is permitted, please ask first. Reasonable requests are frequently approved.
+
 ────────────────────────────────────────────────────────
 
 7. DISCLAIMER
@@ -107,3 +112,10 @@ IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHE
 If your intended use is not explicitly covered by this licence, please open a GitHub Issue or Pull Request, or contact the copyright holder directly.
 
 Questions, collaboration proposals, and reasonable requests for additional permissions are always welcome.
+
+────────────────────────────────────────────────────────
+
+8. ADDITIONAL PERMISSIONS
+This licence may be revised in future releases.
+
+Unless explicitly stated otherwise, each copy of the software remains governed by the version of the licence under which it was originally distributed.
