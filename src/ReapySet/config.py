@@ -410,7 +410,7 @@ class MwConfig:
              "\nor microPython and access to browser APIs."),
 
             ("PY:PYSIDE6", "PySide6", "pyside6_logo.png",
-             "Official Qt for Python framework for creating Advanced cross-platform desktop applications"
+             "Qt's Official Python framework for creating Advanced cross-platform desktop applications"
              "\nwith native-looking GUIs.\t(such as this very one you're using!)"),
 
             ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png",
