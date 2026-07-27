@@ -105,6 +105,22 @@ Original copyright notices and permissions remain the property of their respecti
 
 
 ---
+# Components under BSD 2-Clause License
+## imageio
+- **Copyright:** Copyright (c) 2014-2026, imageio developers
+- **License:** BSD 2-Clause License
+- **Source:** https://github.com/imageio/imageio
+---  
+## BSD 2-Clause License Notice
+
+The above component is distributed under the BSD 2-Clause License.
+
+The full text of the BSD 2-Clause License is included in LICENSES/BSD-2-Clause.txt.
+
+Original copyright notices and permissions remain the property of their respective authors.
+
+
+---
 ## Other licenses
 ## NumPy
 - **Copyright:** Copyright (c) 2005-2025, NumPy Developers.
