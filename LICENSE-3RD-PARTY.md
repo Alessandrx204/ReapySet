@@ -38,6 +38,9 @@ In accordance with the LGPL v3:
 4. **License Text**  
    The full text of the LGPL v3 license is included in the `LICENSES/LGPL-3.0.txt` file distributed with this software.
    The full text of the GPL v3 license is included in the `LICENSES/GPL-3.0.txt` file distributed with this software.
+   
+6. **Binaries**
+   The corresponding source code for Qt and PySide6 is available from the Qt Project: https://www.qt.io/ and https://code.qt.io/.
 
 ---
 
