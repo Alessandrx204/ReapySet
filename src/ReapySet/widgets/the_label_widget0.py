@@ -151,7 +151,7 @@ class GreetingsGetter:
 
                 category: str = random.choice(list(memes.keys())) # chooses a random category key put in a list
 
-                msg: str | None = GreetingsGetter._pick(memes[category])
+                msg = GreetingsGetter._pick(memes[category])
 
                 if msg:
                     return msg.format(name=name)
@@ -162,7 +162,7 @@ class GreetingsGetter:
 
         greetings: dict[str, Any] = lang_data.get("splashscreens", {}).get("topics", {}).get("greetings", {})
 
-        msg: str | None = GreetingsGetter._pick(greetings.get(period))
+        msg = GreetingsGetter._pick(greetings.get(period))
 
         if msg:
             return msg.format(name=name)

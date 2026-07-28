@@ -353,7 +353,7 @@ class MwConfig:
             "}"
         )
         py_MAX_RBTNS_PER_ROW: int = 4
-        py_PM_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
+        py_PM_RBTNS_ENTRIES: tuple[tuple[str, str, str, str], ...] = field(default_factory=lambda: (
             ("PY:UV", "uv", "uv_logo.png",
              "Ultra-fast modern Python package and project manager\n"
              "written in rust is the Fastest choice for most new Python projects."),
@@ -386,8 +386,8 @@ class MwConfig:
             ("PY:PDM", "PDM", "pdm_logo.png",
              "Modern PEP-based workflow without Poetry"),
             #("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png", ""),
-                                                         ])
-        py_FMK_RBTNS_ENTRIES: list[tuple[str, str, str]] = field(default_factory=lambda: [
+                                                                ))
+        py_FMK_RBTNS_ENTRIES: tuple[tuple[str, str, str, str], ...] = field(default_factory=lambda: (
             ("PY:DJANGO", f"Django{" "*6}", "django_logo.png",
              "Full-featured web framework with ORM, authentication,\n"
              "admin panel and batteries included!"),
@@ -416,7 +416,7 @@ class MwConfig:
             ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png",
              "Interactive notebooks for data analysis, visualisation,"
              "\nexperimentation, and machine learning.")
-        ])
+        ))
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
         py_frameworks_sep_label_coords: tuple[int, int] = (4, 0)

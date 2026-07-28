@@ -15,8 +15,8 @@ from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import po
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
 widget3_instance = Mwc.Widget3()
-PMS_ENTRIES: list[tuple[str, str, str]] = widget3_instance.py_PM_RBTNS_ENTRIES
-FMK_ENTRIES: list[tuple[str, str, str]] = widget3_instance.py_FMK_RBTNS_ENTRIES
+PMS_ENTRIES: tuple[tuple[str, str, str]] = widget3_instance.py_PM_RBTNS_ENTRIES
+FMK_ENTRIES: tuple[tuple[str, str, str]] = widget3_instance.py_FMK_RBTNS_ENTRIES
 
 MAX_PER_ROW = 4  # p_max_entry_x_row
 
