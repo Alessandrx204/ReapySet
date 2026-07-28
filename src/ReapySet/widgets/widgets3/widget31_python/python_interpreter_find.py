@@ -1,8 +1,10 @@
+import pathlib
 import shutil
 import subprocess
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 """
 python_interpreter_find.py
@@ -36,10 +38,10 @@ def get_python_interpreters() -> list[tuple[str, str]]:
     found: dict[str, str] = {}
     is_windows = sys.platform == "win32"
 
-    # 1. Cerca nel PATH
+    # 1. looks for the PATH
     candidates: list[str] = ["python", "python3"] if not is_windows else ["python"]
     if not is_windows:
-        candidates += [f"python3.{v}" for v in range(6, 20)] #note my need to work aroud and remove the limit
+        candidates += [f"python3.{v}" for v in range(6, 20)] #note my need to work around and remove the limit
 
     for cmd in candidates:
         path = shutil.which(cmd)
@@ -54,6 +56,58 @@ def get_python_interpreters() -> list[tuple[str, str]]:
             found[real_path] = f"{version}"
         except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
             pass
+
+    # 2. macOS: searches into macos standard directories
+    if sys.platform == "darwin": # otherwise the bundled app couldnt locate interpreters on macos
+        osx_python_paths: list[pathlib.Path] = [
+            Path("/opt/homebrew/bin"),  # Homebrew Apple Silicon
+            Path("/usr/local/bin"),  # Homebrew Intel
+            Path.home() / ".local" / "bin",
+        ]
+        valid_names: set[str | Any] = {"python", "python3",
+                       *{f"python3.{version}" for version in range(6, 50)},}
+
+        for directory in osx_python_paths:
+            if not directory.is_dir():
+                continue
+
+            for path_obj in directory.glob("python3*"):
+                if path_obj.name not in valid_names:
+                    continue
+
+                try:
+                    real_path: str = str(path_obj.resolve())
+
+                    if real_path in found:
+                        continue
+
+                    result = subprocess.run([ real_path,
+                        "-c",
+                        (
+                            "import sys; "
+                            "print(f'Python {sys.version_info.major}."
+                            "{sys.version_info.minor}."
+                            "{sys.version_info.micro}')"
+                        ),
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=2,)
+
+
+                    if result.returncode != 0:
+                        continue
+
+                    version = result.stdout.strip()
+                    if version.startswith("Python "):
+                        found[real_path] = version
+
+                except (
+                        OSError,
+                        subprocess.TimeoutExpired,
+                        subprocess.SubprocessError,
+                ):
+                    pass
 
     # 2. Windows: Python Launcher
     if is_windows:

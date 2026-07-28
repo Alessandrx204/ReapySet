@@ -59,6 +59,7 @@ none_display         = "None "
 # Just keep the {editor_name} part EXACTLY the same for both. It can literally be 'pineapplepizza'
 # even if your editor is Eclipse. it’s just a variable, after all ! :) But I'd recommend keeping it
 # clear, or it gets confusing fast (trust me on this one!). Happy coding! x
+# keep in mind though that ReapySet can read your Zshrc or Bashrc if you use aliases
 
 
 [python]
@@ -80,7 +81,7 @@ pixi_path                       = ""
 
 
 [js] # NOT IMPLEMENTED YET
-default_runtime = "JS:NODE" # JS:NODE JS:BUN JS:DENO JS:VANILLAJS
+default_runtime = "JS:NODE" # JS:NODE   JS:BUN JS:DENO JS:VANILLAJS
 default_jspm = "JS:NPM" # JS:NPM JS:PNPM JS:BUN JS:YARN
 typescript_by_default = true
 
@@ -105,6 +106,6 @@ lua_path        = ""   # placeholder
 
 
 
-[advanced] # Avoid if you dont want to mess up with the Application
-nativeMenubar = true # only Macos and some Linux DEs
-main_window_height = 380 # on some linux distros or older windows versions or if you enable force_attached_menubar on macos and gnome the window will get a bit clunky, i reccoment tweaking this value if you mess up with the menu bar or if your oprating system is very customised or not well detected by ReapySet
+[advanced] # Avoid if you don't want to mess up with the Application
+nativeMenubar = true # only macOS and some Linux DEs
+main_window_height = 380 # on some linux distros or older windows versions or if you enable force_attached_menubar on macOS and gnome the window will get a bit clunky, i reccoment tweaking this value if you mess up with the menu bar or if your oprating system is very customised or not well detected by ReapySet

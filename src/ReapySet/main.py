@@ -3,24 +3,27 @@ import os
 import sys
 import time
 
-from PySide6.QtCore import QTimer
+import ReapySet.init_shell as i_sh
 
-# Start the timer immediately at the script entry point
-start_time = time.perf_counter()
+start_time: float | int = time.perf_counter()
 
-import qdarktheme
-from PySide6.QtGui import QIcon, Qt
-from PySide6.QtWidgets import QApplication, QMenuBar
-from ReapySet.config import MwConfig as Mwc
-from ReapySet.common.toml_handler import TomlHandler
 
-def main():
+def main() -> None:
+    i_sh.init_macos_term_path()
+
+    import qdarktheme
+    from PySide6.QtCore import QTimer
+    from PySide6.QtGui import QIcon, Qt
+    from PySide6.QtWidgets import QApplication, QMenuBar
+
+    from ReapySet.config import MwConfig as Mwc
+    from ReapySet.common.toml_handler import TomlHandler
     from ReapySet.logic_mainwindow import LogicMainWindow
+
     TomlHandler.ensure_config_exists()
     TomlHandler.initialise_sandbox()
-    print("Sandbox temp dir:", TomlHandler._temp_dir)
-    print("Sandbox TOML:", TomlHandler._dest_path())
-    app: QApplication = QApplication(sys.argv)
+
+    app = QApplication(sys.argv)
     app.setApplicationName("ReapySet")
     app.setApplicationVersion("beta: 5.0")
     app.setOrganizationName("Alessandrx")
@@ -39,17 +42,17 @@ def main():
 )
     m_window: LogicMainWindow = LogicMainWindow()
     #qdarktheme.setup_theme()
-    QTimer.singleShot(0, lambda: m_window.create_language_buttons(m_window.button_labels_dict,
+    """QTimer.singleShot(0, lambda: m_window.create_language_buttons(m_window.button_labels_dict,
                                      Mwc.LangBtnWidget.max_btn_x_row,
                                      m_window.main_layout))
     widget_flag = getattr(m_window.additions, 'trans_flag', None)
 
     if widget_flag is None:
-        print("Critical error: Widget 'trans_flag' does not exist. Closing app.")
+        print("Critical error. Closing the app.")
         TomlHandler.clear_sandbox()
         sys.exit(1)
     else:
-        pass
+        pass"""
 
 
     icon: QIcon = QIcon(str(Mwc.Images().icon_path))
@@ -59,6 +62,21 @@ def main():
 
 
     m_window.show()
+
+    QTimer.singleShot(0, lambda: m_window.create_language_buttons(m_window.button_labels_dict,
+                                                                  Mwc.LangBtnWidget.max_btn_x_row,
+                                                                  m_window.main_layout))
+    widget_flag = getattr(m_window.additions, 'trans_flag', None)
+
+    if widget_flag is None:
+        print("Critical error. Closing the app.")
+        TomlHandler.clear_sandbox()
+        atexit.register(TomlHandler.clear_sandbox)
+        sys.exit(1)
+    else:
+        pass
+
+
     menubar: QMenuBar = m_window.menuBar()
     if menubar and menubar.isVisible() and not menubar.isNativeMenuBar():
         menubar_height: int = menubar.height()
@@ -67,7 +85,7 @@ def main():
     m_window.original_geometry = m_window.geometry()
     print(m_window.maximumHeight())
 
-    # Calculate and print total startup time before entering the event loop
+    # Calculates and print total startup time before entering the event loop
     end_time = time.perf_counter()
     print(f"ReapySet started in: {end_time - start_time:.4f} seconds")
 
