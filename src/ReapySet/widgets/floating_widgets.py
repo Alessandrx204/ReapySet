@@ -8,8 +8,8 @@ from PySide6.QtGui import QPixmap, QPainter
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import QLabel, QPushButton, QApplication
 
-from ReapySet.common.toml_handler import CONFIG_PATH, TomlEditorDialog, TomlHandler
-
+from ReapySet.common.toml_handler import CONFIG_PATH, TomlHandler
+from ReapySet.common.toml_filedialog import TomlEditorDialog
 
 class TransFlagWidget(QLabel):
     """Discreet trans flag with tooltip"""

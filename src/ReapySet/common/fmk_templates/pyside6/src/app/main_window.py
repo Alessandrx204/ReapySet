@@ -1,6 +1,6 @@
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QAction, QKeySequence
-from PySide6.QtWidgets import QMainWindow, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QMessageBox, QMenu
 
 from app.config import APP_NAME, APP_WINDOW_MINIMUM_SIZE
 from app.widgets.home_widget import HomeWidget
@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(*APP_WINDOW_MINIMUM_SIZE)
 
         # Initialises central widget
-        self.home_widget = HomeWidget(self)
+        self.home_widget: HomeWidget = HomeWidget(self)
         self.setCentralWidget(self.home_widget)
 
         # Builds application interface and signal connections
@@ -36,10 +36,10 @@ class MainWindow(QMainWindow):
 
     def _create_menus(self) -> None:
         """Construct the top menu bar structure."""
-        file_menu = self.menuBar().addMenu("File")
+        file_menu: QMenu = self.menuBar().addMenu("File")
         file_menu.addAction(self.exit_action)
 
-        help_menu = self.menuBar().addMenu("Help")
+        help_menu: QMenu = self.menuBar().addMenu("Help")
         help_menu.addAction(self.about_action)
 
     def _connect_signals(self) -> None:

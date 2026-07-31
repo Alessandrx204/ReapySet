@@ -6,8 +6,8 @@ from app.config import APP_NAME, STYLESHEET_PATH
 from app.main_window import MainWindow
 
 def main() -> int:
-    # Initialise application instance
-    app = QApplication(sys.argv)
+    # Initialises application instance
+    app: QApplication = QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
     # Applies the global stylesheet if any
     if STYLESHEET_PATH.exists():

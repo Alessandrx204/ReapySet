@@ -13,6 +13,8 @@ from PySide6.QtWidgets import QMessageBox
 from cookiecutter.exceptions import CookiecutterException
 
 from ReapySet.config import LogicVariables as LcFg
+from ReapySet.config import MwConfig as Mwc
+
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.common.init_frameworks import InitFrameworks
 
@@ -664,8 +666,7 @@ class ConfirmButtonLogic:
                     p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
                     p_msg_txt="",
                     p_info_txt=(
-                        ":( \nNote: make sure uv is installed, the Python interpreter is valid "
-                        f"and the project path is usable.\n\nDetails: {error_info}"
+                        f"{Mwc.Widget3.uv_error_msg}: {error_info}"
                     )
                 )
                 return

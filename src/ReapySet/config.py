@@ -9,6 +9,7 @@ from pathlib import Path
 import tomlkit
 from PySide6.QtCore import QEasingCurve
 
+import lang
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
 def _get_root() -> Path:
@@ -21,10 +22,32 @@ def _get_root() -> Path:
 class MwConfig:
     """Main Window configs"""
 
-    mw_title: str = "ReapySet"
+    mw_title: str = lang.MwConfig.mw_title # ReapySet
+    default_label: str = lang.MwConfig.default_label # (default)
+    #------ general configs --------#
+    file_menu: str = lang.MwConfig.file_menu
+    view_menu: str = lang.MwConfig.view_menu
+    help_menu: str = lang.MwConfig.help_menu
+    settings_menu: str = lang.MwConfig.settings_menu
+    quit_action: str = lang.MwConfig.quit_action
+    locate_config_file_action_txt: str = lang.MwConfig.locate_config_file_action_txt
+    locate_input_cache_file_action_txt: str = lang.MwConfig.locate_input_cache_file_action_txt
+    reset_window_pos_action_txt: str = lang.MwConfig.reset_window_pos_action_txt
+    github_action: str = lang.MwConfig.github_action
+    license_action: str = lang.MwConfig.license_action
+    third_party_licenses_action: str = lang.MwConfig.third_party_licenses_action
+    about_action: str = lang.MwConfig.about_action
+    about_txt_title: str = lang.MwConfig.about_txt_title
+    about_txt: str = lang.MwConfig.about_txt
+
+    toml_error_txt: str = lang.MwConfig.toml_error_txt
+    toml_error_txt_title: str = lang.MwConfig.toml_error_txt_title
+    toml_settings_window_title: str = lang.MwConfig.toml_settings_window_title
+    toml_settings_window_save_button: str= lang.MwConfig.toml_settings_window_save_button
+    toml_settings_window_close_button: str = lang.MwConfig.toml_settings_window_close_button
 
     mw_width: int = 770
-    _mw_height: int = 380 # cos ill be get ftom config
+    _mw_height: int = 380 # cos ill be got from config
     mw_height_expansion: int = 280
 
     @classmethod
@@ -106,12 +129,13 @@ class MwConfig:
         }
         """
         QlineTopTextQSS: str            = "font-size:10px; margin-top:0px; margin-bottom:6px;"
-        github_box_top_label: str       = "\nImport a project from GitHub"
-        github_box_placeholder_txt: str = "COMING SOON " #insert a repo URL
-        path_box_top_label: str         = "\nProject Location:\n(Double-click to browse)"
-        path_box_placeholder_txt: str   = "Project Path...?"
-        sample_box_top_label: str       = "🍪 CookieCutter:\n  Insert a path\n  (or Double-click to browse)"
-        boilerplates_box_placeholder_txt: str = "cctemplates/paths/example "
+        github_box_top_label: str       = lang.MwConfig.Widget1.github_box_top_label
+        github_box_placeholder_txt: str = lang.MwConfig.Widget1.github_box_placeholder_txt #insert a repo URL
+        path_box_top_label: str         = lang.MwConfig.Widget1.path_box_top_label
+        path_box_placeholder_txt: str   = lang.MwConfig.Widget1.path_box_placeholder_txt
+        sample_box_top_label: str       = lang.MwConfig.Widget1.sample_box_top_label
+        ccboilerplates_box_placeholder_txt: str = lang.MwConfig.Widget1.ccboilerplates_box_placeholder_txt
+        cookiecutter_error_msg: str = "project initialisation or sync failed!"
         browse_button_text: str         = "Browse"
         select_editor_Combobox_top_label: str = ""
 
@@ -131,7 +155,7 @@ class MwConfig:
     class LangBtnWidget:
         """Widget 2: language selector buttons"""
         images: MwConfig.Images = field(default_factory=lambda: MwConfig.Images()) # aving future i can usw MwConfig.Images
-        enabled_btns: list[int]   = field(default_factory=lambda: [0])
+        enabled_btns: set[int]   = field(default_factory=lambda: {0})
         cw_height:     int = 120
         max_btn_x_row: int = 3 #ex 5
         lang_btns_qss: str = ("QPushButton {\n"
@@ -283,11 +307,11 @@ class MwConfig:
                             "        ")
 
         """python"""
-        py_qlabel_txt: str = "Please Setup Your Python Workspace! (^-^)/"
-        py_interp_qcbox_top_txt: str = "locally installed interpreters"
-        py_unb_interp_qlinedit_top_txt: str = "exact Interp. version\n(only uv & conda dervivatives)"
+        py_qlabel_txt: str = lang.MwConfig.Widget3.py_qlabel_txt
+        py_interp_qcbox_top_txt: str = lang.MwConfig.Widget3.py_interp_qcbox_top_txt
+        py_unb_interp_qlinedit_top_txt: str = lang.MwConfig.Widget3.py_unb_interp_qlinedit_top_txt
         py_unb_interp_qlinedit_inner_txt: str = "e.g. 3.13.5"
-        py_frameworks_sep_label_txt: str = f" (W.I.P.) Python Frameworks & Teamplates :3  "
+        py_frameworks_sep_label_txt: str = lang.MwConfig.Widget3.py_frameworks_sep_label_txt
 
         py_qlabel_qss: str = (
             ""
@@ -352,70 +376,63 @@ class MwConfig:
             "    font-weight: 500; \n"
             "}"
         )
+        uv_error_msg: str = lang.MwConfig.Widget3.uv_error_msg
+        conda_mamaba_error_msg: str = lang.MwConfig.Widget3.conda_mamba_error_msg
+
         py_MAX_RBTNS_PER_ROW: int = 4
         py_PM_RBTNS_ENTRIES: tuple[tuple[str, str, str, str], ...] = field(default_factory=lambda: (
             ("PY:UV", "uv", "uv_logo.png",
-             "Ultra-fast modern Python package and project manager\n"
-             "written in rust is the Fastest choice for most new Python projects."),
+             lang.MwConfig.Widget3.py_uv_tooltip),
 
             ("PY:VENV", "Pip", "python_logo.png",
-             "Standard Python's built-in package manager & virtual environment."),
+             lang.MwConfig.Widget3.py_pip_tooltip),
 
             ("PY:POETRY", "Poetry", "poetry_logo.png",
-             "Best for dependency locking and package publishing"),
+             lang.MwConfig.Widget3.py_poetry_tooltip),
 
             ("PY:HATCH", "Hatch", "pip_logo.png",
-             "Ideal for multi-environment development and packaging."),
+             lang.MwConfig.Widget3.py_hatch_tooltip),
 
             ("PY:CONDA", "Conda", "conda_logo.png",
-             "Best when using scientific or native dependencies."),
+             lang.MwConfig.Widget3.py_conda_tooltip),
 
             ("PY:PIXI", "Pixi", "pixi_logo.png",
-             "Modern Conda workflow with fast, reproducible environments."
-             "\n (written in rust)"),
+             lang.MwConfig.Widget3.py_pixi_tooltip),
 
             ("PY:MAMBA", "Mamba", "mamba_logo.png",
-             "A much faster drop-in replacement for Conda"),
+             lang.MwConfig.Widget3.py_mamba_tooltip),
 
             ("PY:PIPENV", "Pipenv", "pipenv_logo.png",
-             "Traditional Pipfile workflow combining pip and virtual environments."),
+             lang.MwConfig.Widget3.py_pipenv_tooltip),
 
             ("PY:VIRTUALENV", "Virtualenv", "virtualenv_logo.png",
-             "Enhanced virtual environments for compatibility needs.\n beyond standard venv."),
+             lang.MwConfig.Widget3.py_virtualenv_tooltip),
 
             ("PY:PDM", "PDM", "pdm_logo.png",
-             "Modern PEP-based workflow without Poetry"),
+             lang.MwConfig.Widget3.py_pdm_tooltip),
             #("PY:MOJO", "Mojo (W.I.P.)", "mojo_logo.png", ""),
                                                                 ))
         py_FMK_RBTNS_ENTRIES: tuple[tuple[str, str, str, str], ...] = field(default_factory=lambda: (
             ("PY:DJANGO", f"Django{" "*6}", "django_logo.png",
-             "Full-featured web framework with ORM, authentication,\n"
-             "admin panel and batteries included!"),
+             lang.MwConfig.Widget3.py_django_tooltip),
 
             ("PY:FLASK", "Flask", "flask_logo.png",
-             "Minimal and flexible web framework. Ideal for small projects,"
-             "\nAPIs, and custom architectures."),
+             lang.MwConfig.Widget3.py_flask_tooltip),
 
             ("PY:FASTAPI", "FastAPI", "fastapi_logo.png",
-             "High-performance API framework with automatic validation,"
-             "\n type hints, and OpenAPI documentation."),
+             lang.MwConfig.Widget3.py_fastapi_tooltip),
 
             ("PY:STREAMLIT", "Streamlit", "streamlit_logo.png",
-             "Build interactive data apps and dashboards\n"
-             "directly from Python with minimal code."),
+             lang.MwConfig.Widget3.py_streamlit_tooltip),
 
             ("PY:PYSCRIPT", "PyScript", "pyscript_logo.png",
-             "Run Python directly in the browser using WebAssembly,"
-             "\nwith full CPython available through Pyodide"
-             "\nor microPython and access to browser APIs."),
+             lang.MwConfig.Widget3.py_pyscript_tooltip),
 
             ("PY:PYSIDE6", "PySide6", "pyside6_logo.png",
-             "Qt's Official Python framework for creating Advanced cross-platform desktop applications"
-             "\nwith native-looking GUIs.\t(such as this very one you're using!)"),
+             lang.MwConfig.Widget3.py_pyside6_tooltip),
 
             ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png",
-             "Interactive notebooks for data analysis, visualisation,"
-             "\nexperimentation, and machine learning.")
+             lang.MwConfig.Widget3.py_jupyter_tooltip),
         ))
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)

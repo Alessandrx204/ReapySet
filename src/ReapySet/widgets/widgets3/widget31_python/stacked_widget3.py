@@ -15,22 +15,22 @@ from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import po
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
 widget3_instance = Mwc.Widget3()
-PMS_ENTRIES: tuple[tuple[str, str, str]] = widget3_instance.py_PM_RBTNS_ENTRIES
-FMK_ENTRIES: tuple[tuple[str, str, str]] = widget3_instance.py_FMK_RBTNS_ENTRIES
+PMS_ENTRIES: tuple[tuple[str, str, str, str], ...] = widget3_instance.py_PM_RBTNS_ENTRIES
+FMK_ENTRIES: tuple[tuple[str, str, str, str], ...] = widget3_instance.py_FMK_RBTNS_ENTRIES
 
-MAX_PER_ROW = 4  # p_max_entry_x_row
+MAX_PER_ROW: int = 4  # p_max_entry_x_row
 
 
-QSS = Mwc.Widget3.py_radiobutton_qss
+QSS: str = Mwc.Widget3.py_radiobutton_qss
 
 
 class PythonGenWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.pms_group = QButtonGroup(self)
-        self.frameworks_group = QButtonGroup(self)
+        self.pms_group: QButtonGroup = QButtonGroup(self)
+        self.frameworks_group: QButtonGroup = QButtonGroup(self)
 
-        self.select_interpreter = QComboBox()
+        self.select_interpreter: QComboBox = QComboBox()
 
         self.main_layout: QGridLayout = QGridLayout(self)
         self.main_layout.setSpacing(Mwc.Widget3.py_pkg_manager_rbtns_spacing)
@@ -134,7 +134,7 @@ class PythonGenWidget(QWidget):
             key="default_pm"
         )
 
-        checked_pm = project_pm or default_pm or "PY:VENV"
+        checked_pm: str = project_pm or default_pm or "PY:VENV"
 
         if not project_pm: # "" in toml is not none but empty string
             TomlHandler.toml_edit(
@@ -148,7 +148,7 @@ class PythonGenWidget(QWidget):
             row, col = divmod(i, max_per_row)
             btn_label: str = label
             if key == default_pm:
-                btn_label += " (default)" # adds default label to the default pm
+                btn_label += Mwc.default_label # adds default label to the default pm
             btn = QRadioButton(btn_label)
             btn.setProperty("key", key)
             btn.setIcon(QIcon(icon_path))
@@ -216,7 +216,7 @@ class PythonGenWidget(QWidget):
 
                 # Selects the package manager currently stored in the project TOML.
                 # If missing, it was initialised from the global default.
-            if i not in ( 4, 5, 6) :# a way to disable them
+            if i not in {4, 5, 6} :# a way to disable them
                 btn.setEnabled(False) #disables all except the last
                 btn.setToolTip("") # disables all tooltip for un-enabled buttons
 
@@ -228,15 +228,15 @@ class PythonGenWidget(QWidget):
 
     @staticmethod
     def on_framework_changed(button: QRadioButton) -> None:
-        group = button.group()  # returns the group the button is part of
+        qbgroup: QButtonGroup = button.group()  # returns the qbgroup the button is part of
 
         if button.property("was_checked"):
-            Mwf.reset_qradio_group(group, "selected_framework", p_subsection="python")
+            Mwf.reset_qradio_group(qbgroup, "selected_framework", p_subsection="python")
         else:
             key = button.property("key")
             TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="python")
 
-            for btn in group.buttons():
+            for btn in qbgroup.buttons():
                 btn.setProperty("was_checked", btn == button)
 
 

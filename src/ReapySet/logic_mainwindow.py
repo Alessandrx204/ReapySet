@@ -1,5 +1,6 @@
 from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
-from PySide6.QtGui import QResizeEvent
+from PySide6.QtGui import QResizeEvent, QKeySequence
+from PySide6.QtWidgets import QMenuBar
 
 from ReapySet.main_window import RpsMainWindow
 
@@ -27,7 +28,7 @@ class LogicMainWindow(RpsMainWindow):
         self.lang_btn_cfg = Mwc.LangBtnWidget()
         self._lang_widget = None
         self.confirm_logic = ConfirmButtonLogic()
-        self.confirm_busy = False
+        self.confirm_busy: bool = False
         self.back_button.clicked.connect(self.handle_back_button)
         #----Widgets on top -----#
         self.additions = MwAdditions(self)
@@ -43,7 +44,7 @@ class LogicMainWindow(RpsMainWindow):
         if self._lang_widget is not None:# if exists
             return
 
-        lang_id = p_language  # "PY" it's already the id
+        lang_id: str = p_language  # "PY" it's already the id
 
         specific_h_expansion: int = Mwc.mw_height_expansion
 
@@ -129,7 +130,7 @@ class LogicMainWindow(RpsMainWindow):
             self._lang_widget = None
             self.confirm_button.setEnabled(False)
 
-        menu_bar = self.menuBar()
+        menu_bar: QMenuBar = self.menuBar()
 
         mb_extra_h = menu_bar.height() if (
                     menu_bar and menu_bar.isVisible() and not menu_bar.isNativeMenuBar()) else 0

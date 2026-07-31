@@ -4,17 +4,17 @@ from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidg
 
 class HomeWidget(QWidget):
     # Custom signal emitted when a valid message is submitted
-    message_submitted = Signal(str)
+    message_submitted: Signal = Signal(str)
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
         # UI elements setup
-        self.title_label = QLabel("PySide6 template (ReapySet)")
+        self.title_label= QLabel("PySide6 template (ReapySet)")
         self.title_label.setObjectName("titleLabel")
 
-        self.description_label = QLabel(
-            "This is a simple PySide6 template application.\n You can type a message below and press 'Invia' or hit Enter to submit it."
+        self.description_label= QLabel(
+            "This is a simple PySide6 template application.\n You can type a message below and press the button or hit Enter to submit it."
         )
         self.description_label.setWordWrap(True)
 
@@ -42,7 +42,7 @@ class HomeWidget(QWidget):
     @Slot()
     def _submit_message(self) -> None:
         """Validate input and emit the message signal."""
-        message = self.message_edit.text().strip()
+        message: str = self.message_edit.text().strip()
 
         # Ignore empty submissions and retain input focus
         if not message:

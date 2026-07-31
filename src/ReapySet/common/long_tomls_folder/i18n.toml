@@ -1,0 +1,412 @@
+[en.MwConfig]
+mw_title = "ReapySet"
+default_label = "(default)"
+
+file_menu = "&File"
+view_menu= "&View"
+help_menu = "&Help"
+settings_menu = "&Settings..."
+quit_action = "&Quit ReapySet"
+locate_config_file_action_txt = "&Locate config.toml file"
+locate_input_cache_file_action_txt = "&Locate input cache file"
+reset_window_pos_action_txt = "&Reset Window Position"
+github_action = "&GitHub Repository"
+license_action = "&ReapySet License"
+third_party_licenses_action = "&Open Source Licenses"
+about_action = "&About ReapySet"
+about_txt_title = "About ReapySet"
+about_txt = """<h3>ReapySet</h3>
+                <p>Version: beta 5.0</p>
+                <p>Project setup and environment launcher.</p>
+                <p>Powered by Open source software</p>
+                <p>Copyright © Alessandra 2026</p>"""
+
+toml_error_txt = "The Config TOML file contains an error"
+toml_error_txt_title = "Invalid Config TOML"
+toml_settings_window_title = "Settings"
+toml_settings_window_save_button = "&Save && Exit"
+toml_settings_window_close_button = "Close without saving"
+
+learn_more_txt = "Learn More"
+
+[en.MwConfig.Widget1]
+github_box_top_label = """\nImport a project from GitHub"""
+
+github_box_placeholder_txt = "COMING SOON "
+
+path_box_top_label = """
+\nProject Location:
+(Double-click to browse)"""
+
+path_box_placeholder_txt = "Project Path..."
+
+sample_box_top_label = "🍪 CookieCutter:\n  Insert a path\n  (or Double-click to browse)"
+
+ccboilerplates_box_placeholder_txt = "cctemplates/paths/example "
+
+cookiecutter_error_msg = "Invalid template path configured."
+
+browse_button_text = "Browse"
+
+select_editor_Combobox_top_label = ""
+
+
+[en.MwConfig.LangBtnWidget]
+python_button_text = "Python"
+
+javascript_button_text = "TypeScript/JavaScript (W.I.P.)"
+
+rust_button_text = "Rust (W.I.P.)"
+
+dotnet_button_text = ".NET (W.I.P.)"
+
+kotlin_button_text = "Kotlin/Java (W.I.P.)"
+
+cpp_button_text = "C/C++"
+
+go_button_text = "Go"
+
+lua_button_text = "Lua"
+
+gdscript_button_text = "GDScript"
+
+
+[en.MwConfig.Widget3]
+py_qlabel_txt = "Please Set-up Your Python Workspace! (^-^)/"
+
+py_interp_qcbox_top_txt = "Locally installed interpreters"
+
+py_unb_interp_qlinedit_top_txt = "exact Interp. version\n(only uv & conda based tools)"
+
+py_unb_interp_qlinedit_inner_txt = "e.g. 3.13.5"
+
+py_frameworks_sep_label_txt = " (W.I.P.) Python Frameworks & Templates :3  "
+
+
+[en.MwConfig.Widget3.PackageManagers.uv]
+name = "uv"
+
+tooltip = """Ultra-fast modern Python package and project manager
+             written in rust is the Fastest choice for most new Python projects."""
+
+error_msg = """:( \nNote: make sure uv is installed, the Python interpreter is valid "
+                        "and the project path is usable.\n\nDetails"""
+[en.MwConfig.Widget3.PackageManagers.venv]
+name = "Pip"
+
+tooltip = """Python's standard built-in package manager and virtual environment workflow."""
+
+
+[en.MwConfig.Widget3.PackageManagers.poetry]
+name = "Poetry"
+
+tooltip = """Best suited to dependency locking, project management and package publishing."""
+
+
+[en.MwConfig.Widget3.PackageManagers.hatch]
+name = "Hatch"
+
+tooltip = """Ideal for packaging, testing and development across multiple environments."""
+
+
+[en.MwConfig.Widget3.PackageManagers.conda]
+name = "Conda"
+
+tooltip = """Best suited to scientific projects and environments containing native
+or non-Python dependencies."""
+
+conda_mamba_error_msg = "environment creation failed!"
+
+[en.MwConfig.Widget3.PackageManagers.pixi]
+name = "Pixi"
+
+tooltip = """A modern, fast and reproducible Conda-compatible workflow written in Rust."""
+
+pixi_error_msg = "project initialisation failed!"
+[en.MwConfig.Widget3.PackageManagers.mamba]
+name = "Mamba"
+
+tooltip = """A much faster, largely compatible replacement for the traditional
+Conda command-line workflow."""
+
+
+[en.MwConfig.Widget3.PackageManagers.pipenv]
+name = "Pipenv"
+
+tooltip = """A traditional Pipfile-based workflow combining pip, dependency locking
+and virtual environments."""
+
+
+[en.MwConfig.Widget3.PackageManagers.virtualenv]
+name = "Virtualenv"
+
+tooltip = """Creates virtual environments with additional compatibility options
+beyond Python's standard venv module."""
+
+
+[en.MwConfig.Widget3.PackageManagers.pdm]
+name = "PDM"
+
+tooltip = """A modern, standards-based project and dependency manager for developers
+who do not want the Poetry workflow."""
+
+
+[en.MwConfig.Widget3.Frameworks.django]
+name = "Django"
+
+tooltip = """A full-featured web framework with an ORM, authentication,
+an administration panel and many built-in components."""
+
+
+[en.MwConfig.Widget3.Frameworks.flask]
+name = "Flask"
+
+tooltip = """A minimal and flexible web framework, ideal for small projects,
+APIs and custom architectures."""
+
+
+[en.MwConfig.Widget3.Frameworks.fastapi]
+name = "FastAPI"
+
+tooltip = """A high-performance API framework with automatic validation,
+type hints and OpenAPI documentation."""
+
+
+[en.MwConfig.Widget3.Frameworks.streamlit]
+name = "Streamlit"
+
+tooltip = """Build interactive data applications and dashboards directly
+from Python with minimal code."""
+
+
+[en.MwConfig.Widget3.Frameworks.pyscript]
+name = "PyScript"
+
+tooltip = """Run Python directly in the browser through WebAssembly,
+using full CPython through Pyodide or MicroPython,
+with access to browser APIs."""
+
+
+[en.MwConfig.Widget3.Frameworks.pyside6]
+name = "PySide6"
+
+tooltip = """Qt's Official Python framework for creating Advanced cross-platform desktop applications"
+             with native-looking GUIs.\t(such as this very one you're using!)"""
+
+
+[en.MwConfig.Widget3.Frameworks.jupyter]
+name = "Jupyter Notebook"
+
+tooltip = """Interactive notebooks for data analysis, visualisation,
+experimentation and machine learning."""
+
+#-----------------------------------------------------------------------#
+[it.MwConfig]
+
+mw_title = "ReapySet"
+
+default_label = "(default)"
+
+
+
+file_menu = "&File"
+view_menu= "&View"
+help_menu = "&Aiuto"
+settings_menu = "&impostazioni..."
+quit_action = "Chiudi ReapySet"
+locate_config_file_action_txt = "&Apri il file config.toml nel file manager"
+locate_input_cache_file_action_txt = "&Apri il file input_cache.toml nel file manager"
+reset_window_pos_action_txt = "&Ripristina la posizione della finestra"
+github_action = "& Repo GitHub "
+license_action = "Licensa d'uso"
+third_party_licenses_action = "licenze di terze parti"
+about_action = "ReapySet"
+about_txt_title = "riguardo a ReapySet"
+about_txt = """<h3>ReapySet</h3>
+                <p>Version: beta 5.0</p>
+                <p>Project setup and environment launcher.</p>
+                <p>Powered by Open source software</p>
+                <p>Copyright © Alessandra 2026</p>"""
+
+toml_error_txt = "Il file Config TOML contiene un errore"
+toml_error_txt_title = "il file Config TOML non è valido"
+toml_settings_window_title = "Impostazioni"
+toml_settings_window_save_button = "&Salva ed Esci"
+toml_settings_window_close_button = "Chiudi senza salvare"
+
+learn_more_txt = "di più"
+
+
+[it.MwConfig.Widget1]
+
+github_box_top_label = """\nImporta un progetto da GitHub"""
+
+github_box_placeholder_txt = "NON ANCORA DISPONIBILE"
+
+path_box_top_label = """\nCartella del progetto:
+(Fai doppio clic per sfogliare)"""
+
+path_box_placeholder_txt = "Percorso del progetto…"
+
+sample_box_top_label = "🍪 Cookiecutter:\n  Inserisci un percorso\n  (oppure fai doppio clic per sfogliare)"
+
+ccboilerplates_box_placeholder_txt = "cctemplates/paths/example"
+cookiecutter_error_msg = "il percorso del template configurato non è valido."
+learn_more_txt = "Learn More"
+
+browse_button_text = "Sfoglia…"
+
+select_editor_Combobox_top_label = ""
+
+[it.MwConfig.LangBtnWidget]
+
+python_button_text = "Python"
+
+javascript_button_text = "TypeScript/JavaScript (W.I.P.)"
+
+rust_button_text = "Rust (W.I.P.)"
+
+dotnet_button_text = ".NET (W.I.P.)"
+
+kotlin_button_text = "Kotlin/Java (W.I.P.)"
+
+cpp_button_text = "C/C++"
+
+go_button_text = "Go"
+
+lua_button_text = "Lua"
+
+gdscript_button_text = "GDScript"
+
+[it.MwConfig.Widget3]
+
+py_qlabel_txt = "Configura il tuo workspace Python! (^-^)/"
+
+py_interp_qcbox_top_txt = "Interpreti installati localmente"
+
+py_unb_interp_qlinedit_top_txt = "Versione esatta dell'interprete\n(solo uv e strumenti basati su Conda)"
+
+py_unb_interp_qlinedit_inner_txt = "es. 3.13.5"
+
+py_frameworks_sep_label_txt = "(W.I.P.) Framework e template Python :3 "
+
+[it.MwConfig.Widget3.PackageManagers.uv]
+
+name = "uv"
+
+tooltip = """Package manager e project manager Python moderno e molto veloce,
+scritto in Rust. È una scelta eccellente per la maggior parte dei nuovi progetti."""
+error_msg = "project initialisation or sync failed!"
+
+[it.MwConfig.Widget3.PackageManagers.venv]
+
+name = "Pip"
+
+tooltip = """Il package manager standard integrato in Python, basato sul modulo venv
+ per creare e gestire ambienti virtuali."""
+
+[it.MwConfig.Widget3.PackageManagers.poetry]
+
+name = "Poetry"
+
+tooltip = """Ideale per gestire progetti, bloccare le versioni delle dipendenze
+e pubblicare pacchetti Python con un flusso di lavoro integrato."""
+
+[it.MwConfig.Widget3.PackageManagers.hatch]
+
+name = "Hatch"
+
+tooltip = """Pensato per packaging, test e sviluppo su più ambienti.
+È particolarmente adatto a librerie e pacchetti Python."""
+
+[it.MwConfig.Widget3.PackageManagers.conda]
+
+name = "Conda"
+
+tooltip = """Ideale per progetti scientifici e ambienti che includono dipendenze
+native, strumenti esterni o pacchetti non esclusivamente Python."""
+conda_mamba_error_msg = ""
+[it.MwConfig.Widget3.PackageManagers.pixi]
+
+name = "Pixi"
+
+tooltip = """Un flusso di lavoro moderno, veloce e riproducibile, compatibile
+con l'ecosistema Conda scritto in Rust."""
+
+[it.MwConfig.Widget3.PackageManagers.mamba]
+
+name = "Mamba"
+
+tooltip = """Un'alternativa molto più veloce e ampiamente compatibile
+con il tradizionale flusso di lavoro da riga di comando di Conda."""
+
+[it.MwConfig.Widget3.PackageManagers.pipenv]
+
+name = "Pipenv"
+
+tooltip = """Un flusso di lavoro tradizionale basato su Pipfile che integra pip,
+lock delle dipendenze e gestione degli ambienti virtuali."""
+
+[it.MwConfig.Widget3.PackageManagers.virtualenv]
+
+name = "Virtualenv"
+
+tooltip = """Crea ambienti virtuali con opzioni di compatibilità aggiuntive.
+Oggi, per i casi comuni, il modulo standard venv è generalmente sufficiente."""
+
+[it.MwConfig.Widget3.PackageManagers.pdm]
+
+name = "PDM"
+
+tooltip = """Un moderno gestore di progetti e dipendenze basato sugli standard Python,
+adatto a chi cerca un'alternativa al flusso di lavoro di Poetry."""
+
+[it.MwConfig.Widget3.Frameworks.django]
+
+name = "Django"
+
+tooltip = """Framework web completo con ORM, autenticazione, pannello di amministrazione
+e numerosi componenti già integrati."""
+
+[it.MwConfig.Widget3.Frameworks.flask]
+
+name = "Flask"
+
+tooltip = """Framework web minimale e flessibile, adatto a piccoli progetti,
+API e architetture personalizzate."""
+
+[it.MwConfig.Widget3.Frameworks.fastapi]
+
+name = "FastAPI"
+
+tooltip = """Framework ad alte prestazioni per creare API, con validazione automatica,
+type hint e documentazione OpenAPI integrata."""
+
+[it.MwConfig.Widget3.Frameworks.streamlit]
+
+name = "Streamlit"
+
+tooltip = """Permette di creare applicazioni interattive, dashboard e strumenti
+per l'analisi dei dati direttamente in Python, con poco codice."""
+
+[it.MwConfig.Widget3.Frameworks.pyscript]
+
+name = "PyScript"
+
+tooltip = """Esegue vero codice Python direttamente nel browser tramite WebAssembly,
+usando CPython con Pyodide oppure MicroPython e accedendo alle API del browser."""
+
+[it.MwConfig.Widget3.Frameworks.pyside6]
+
+name = "PySide6"
+
+tooltip = """Il framework Python ufficiale di Qt per creare applicazioni desktop
+avanzate e multipiattaforma con interfacce dall'aspetto nativo.
+(Proprio come quella che stai usando!)"""
+
+[it.MwConfig.Widget3.Frameworks.jupyter]
+
+name = "Jupyter Notebook"
+
+tooltip = """Notebook interattivi per analisi dei dati, visualizzazione,
+sperimentazione, ricerca e machine learning."""

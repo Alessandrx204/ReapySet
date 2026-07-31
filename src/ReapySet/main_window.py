@@ -35,9 +35,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH, TomlEditorDialog
-
-
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
+from ReapySet.common.toml_filedialog import TomlEditorDialog
 from ReapySet.widgets.the_label_widget0 import (
     the_label_txt,
     get_label_stylesheet,
@@ -66,7 +65,17 @@ class RpsMainWindow(QMainWindow):
             screen = QApplication.primaryScreen()  # fallback
         print(f"Screen: {screen.name()}, geometry: {screen.availableGeometry()}")
         print(f"Cursor pos: {QCursor.pos()}")
-        # ----------------- PALETTE --------------------------#
+        flags = (
+                Qt.WindowType.Window
+                | Qt.WindowType.CustomizeWindowHint
+                | Qt.WindowType.WindowTitleHint
+                | Qt.WindowType.WindowSystemMenuHint
+                | Qt.WindowType.WindowMinimizeButtonHint
+                | Qt.WindowType.WindowCloseButtonHint
+        )
+
+        self.setWindowFlags(flags)
+            # ----------------- PALETTE --------------------------#
         """Disabled due inability to work on os theme changes"""
 
         #std_palette: QPalette = self.palette()
@@ -83,14 +92,14 @@ class RpsMainWindow(QMainWindow):
         # Main menus
         app_menu = mw_menubar.addMenu("&ReapySet")
 
-        file_menu = mw_menubar.addMenu("&File")
+        file_menu = mw_menubar.addMenu(Mwc.file_menu)
 
-        view_menu = mw_menubar.addMenu("&View")
-        help_menu = mw_menubar.addMenu("&Help")
+        view_menu = mw_menubar.addMenu(Mwc.view_menu)
+        help_menu = mw_menubar.addMenu(Mwc.help_menu)
 
         # ---------------------- APP / SETTINGS ------------------------#
 
-        open_settings_action = QAction("&Settings...", self)
+        open_settings_action = QAction(Mwc.settings_menu, self)
         open_settings_action.setShortcut(QKeySequence.StandardKey.Preferences)
         open_settings_action.setMenuRole(QAction.MenuRole.PreferencesRole)
         open_settings_action.triggered.connect(lambda: (
@@ -114,12 +123,12 @@ class RpsMainWindow(QMainWindow):
         edit_menu.addSeparator()
         edit_menu.addAction(QAction("Select &All", self))"""
         file_menu.addSeparator()
-        locate_config_action = QAction("&Locate config.toml file", self)
+        locate_config_action = QAction(Mwc.locate_config_file_action_txt, self)
         locate_config_action.triggered.connect(
             lambda: self.reveal_in_file_manager(CONFIG_PATH)
         )
         file_menu.addAction(locate_config_action)
-        find_input_cache_action = QAction("&Locate input cache file", self)
+        find_input_cache_action = QAction(Mwc.locate_input_cache_file_action_txt, self)
         find_input_cache_action.triggered.connect(
             lambda: self.reveal_in_file_manager(TomlHandler._temp_dir)
         )
@@ -128,20 +137,20 @@ class RpsMainWindow(QMainWindow):
 
 
         # ---------------------- VIEW ----------------------------------#
-        reset_window_pos_action = QAction("&Reset Window Position", self)
+        reset_window_pos_action = QAction(Mwc.reset_window_pos_action_txt, self)
         reset_window_pos_action.triggered.connect(self.centre_mwindow)
 
         view_menu.addAction(reset_window_pos_action) # todo bug puts i too hig if reposed when expaned
 
         # ----------------- HELP & LEGAL STUFFS ------------------------#
-        github_action = QAction("&GitHub Repository", self)
+        github_action = QAction(Mwc.github_action, self)
         github_action.triggered.connect(
             lambda: QDesktopServices.openUrl(
                 QUrl("https://github.com/Alessandrx204/ReapySet")
             )
         )
 
-        license_action = QAction("&ReapySet License", self)
+        license_action = QAction(Mwc.license_action, self)
         license_action.triggered.connect(
             lambda: QDesktopServices.openUrl(
                 QUrl("https://github.com/Alessandrx204/ReapySet/blob/Master/LICENSE")
@@ -155,7 +164,7 @@ class RpsMainWindow(QMainWindow):
             )
         )
 
-        about_action = QAction("&About ReapySet", self)
+        about_action = QAction(Mwc.about_action, self)
         about_action.setMenuRole(QAction.MenuRole.AboutRole)
         about_action.triggered.connect(self.show_about_dialog)
 
@@ -263,7 +272,7 @@ class RpsMainWindow(QMainWindow):
         self.w1_cookiecutter_boilerplates_box = QLineEdit()
         self.w1_cookiecutter_boilerplates_box.setEnabled(True)
         self.w1_cookiecutter_boilerplates_box.setPlaceholderText(
-            Mwc.Widget1.boilerplates_box_placeholder_txt
+            Mwc.Widget1.ccboilerplates_box_placeholder_txt
         )
         self.w1_cookiecutter_boilerplates_box.setStyleSheet(
             Mwc.Widget1.QlineEditQSS
@@ -510,15 +519,10 @@ class RpsMainWindow(QMainWindow):
     def show_about_dialog(self) -> None:
         QMessageBox.about(
             self,
-            "About ReapySet",
-            (
-                "<h3>ReapySet</h3>"
-                "<p>Version: beta 5.0</p>"
-                "<p>Project setup and environment launcher.</p>"
-                "<p>Powered by Open source software</p>"
-                "<p>Copyright © Alessandra 2026</p>"
-            )
+            Mwc.about_txt_title,
+            Mwc.about_txt
         )
+
 
 
 
