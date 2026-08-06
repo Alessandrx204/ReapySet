@@ -1,14 +1,13 @@
 from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
-from PySide6.QtGui import QResizeEvent, QKeySequence
+from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QMenuBar
 
-from ReapySet.main_window import RpsMainWindow
-
-from ReapySet.config import MwConfig as Mwc
-from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
-import ReapySet.widgets.widgets3.widget31_python.stacked_widget3 as SW3 # noqa
-from ReapySet.common.toml_handler import TomlHandler
+import ReapySet.widgets.widgets3.widget31_python.stacked_widget3 as SW3  # noqa
 from ReapySet.common.confirm_button_logic import ConfirmButtonLogic
+from ReapySet.common.toml_handler import TomlHandler
+from ReapySet.config import MwConfig as Mwc
+from ReapySet.main_window import RpsMainWindow
+from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.floating_widgets import MwAdditions
 
 
@@ -132,7 +131,7 @@ class LogicMainWindow(RpsMainWindow):
 
         menu_bar: QMenuBar = self.menuBar()
 
-        mb_extra_h = menu_bar.height() if (
+        mb_extra_h: int = menu_bar.height() if (
                     menu_bar and menu_bar.isVisible() and not menu_bar.isNativeMenuBar()) else 0
 
         self.setMinimumSize(Mwc.mw_width, Mwc.mw_height() + mb_extra_h)
@@ -195,8 +194,10 @@ class LogicMainWindow(RpsMainWindow):
 
     def _update_confirm_button(self) -> None:
         data = TomlHandler._toml_read()
-        path_ok = bool(data["global"]["project_path"].strip())
-        lang_ok = any(data["languages"][i]["enabled"] for i in data["languages"])
+
+        path_ok: bool = bool(data["global"]["project_path"].strip())
+        lang_ok: bool = any(lang.get("enabled", False) for lang in data["languages"].values())
+
         self.confirm_button.setEnabled(path_ok and lang_ok) # path not null and a lang is enabled
 
     def handle_confirm_clicked(self) -> None:

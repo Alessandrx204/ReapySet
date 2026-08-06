@@ -384,7 +384,7 @@ class MwConfig:
             ("PY:UV", "uv", "uv_logo.png",
              lang.MwConfig.Widget3.py_uv_tooltip),
 
-            ("PY:VENV", "Pip", "python_logo.png",
+            ("PY:VENV", "Venv", "python_logo.png",
              lang.MwConfig.Widget3.py_pip_tooltip),
 
             ("PY:POETRY", "Poetry", "poetry_logo.png",
@@ -473,33 +473,32 @@ class LogicVariables:
             return TomlHandler.toml_get(CONFIG_PATH, "editors", key) or ""
 
         @staticmethod
-        def get_all_editors() -> list[str]:
+        def get_all_editors() -> tuple[str, ...]:
             """
-                Reads available editors from the [editors] section of config.toml.
-                Only reads keys ending in '_cmd' (e.g. 'vscode_cmd', 'nvim_cmd').
-                For each editor, looks for an optional '_display' key for the human-readable name
-                (e.g. 'nvim_display = "nVim"'). If not found, falls back to .title() on the base name.
-                Adding a new editor only requires a new '_cmd' line in the TOML — no code changes needed.
-                :rtype: list[str]
-                :return:
-
+                        Reads available editors from the [editors] section of config.toml.
+                        Only reads keys ending in '_cmd' (e.g. 'vscode_cmd', 'nvim_cmd').
+                        For each editor, looks for an optional '_display' key for the human-readable name.
             """
             try:
                 with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-                    data = tomlkit.load(f)
-                editors = data.get("editors", {})
-                result: list[str] = []
-                for key in editors:
-                    if not key.endswith("_cmd"):
-                        continue
-                    base = key.removesuffix("_cmd")
-                    display_name = TomlHandler.toml_get(CONFIG_PATH, "editors", f"{base}_display") or base.replace("_",
-                                                                                                                   " ").title()
-                    result.append(display_name)
-                return result
-            except FileNotFoundError:
-                return []
+                    data: tomlkit.TOMLDocument = tomlkit.load(f)
 
+                editors = data.get("editors", {})
+                result = []
+
+                for key in editors:
+                    if key.endswith("_cmd"):
+                        base = key.removesuffix("_cmd")
+                        display_name: str = (
+                                editors.get(f"{base}_display") # if has got banana_cmd it looks for a banana_display in case its spelled funny alike 90% of code editors like BånaNà
+                                or base.replace("_", " ").title()# if  none it capitalises each word in the base name and replaces underscores with spaces, e.g. "vscode" becomes "Vscode"
+                        )
+                        result.append(display_name)
+
+                return tuple(result) # converts to tuple to hold less ram
+
+            except FileNotFoundError:
+                return ()
 
     class PythonVars:
         py_uv_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "uv_path") or shutil.which("uv") or "" # noqa "" avoids crashes or None by returning an empy string which is falsy

@@ -178,7 +178,7 @@ class RpsMainWindow(QMainWindow):
         #----------------------------------------------------------------#
         #self._button_labels_list: list[str] = Mwc.LangBtnWidget.button_list
         self.button_labels_dict: dict[str, list] = Mwc.LangBtnWidget().button_dict
-        self._enabled_buttons = Mwc.LangBtnWidget().enabled_btns  #enabled buttons list
+        self._enabled_buttons: set[int] = Mwc.LangBtnWidget().enabled_btns  #enabled buttons list
         self.widget0 = QWidget()  # <-- top Widget containts stuffs like "hello" news titles etc...
         self.widget1 = QWidget()  #<--- stuff like GitHub and path
         self.central_widget2 = QWidget()  # <-- QMainWindow needs a central window
