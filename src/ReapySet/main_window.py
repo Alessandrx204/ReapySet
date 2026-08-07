@@ -43,6 +43,7 @@ from ReapySet.widgets.the_label_widget0 import (
 )
 from ReapySet.config import MwConfig as Mwc, LogicVariables
 from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.logging import log_file_path, logger
 
 
 #mainwindow
@@ -63,8 +64,8 @@ class RpsMainWindow(QMainWindow):
         screen = QApplication.screenAt(QCursor.pos()) # screen where the cursor is at
         if screen is None:
             screen = QApplication.primaryScreen()  # fallback
-        print(f"Screen: {screen.name()}, geometry: {screen.availableGeometry()}")
-        print(f"Cursor pos: {QCursor.pos()}")
+        logger.info(f"Screen: {screen.name()}, geometry: {screen.availableGeometry()}")
+        logger.info(f"Cursor pos: {QCursor.pos()}")
         flags = (
                 Qt.WindowType.Window
                 | Qt.WindowType.CustomizeWindowHint
@@ -122,17 +123,28 @@ class RpsMainWindow(QMainWindow):
         edit_menu.addAction(QAction("&Paste", self))
         edit_menu.addSeparator()
         edit_menu.addAction(QAction("Select &All", self))"""
+
         file_menu.addSeparator()
+
         locate_config_action = QAction(Mwc.locate_config_file_action_txt, self)
         locate_config_action.triggered.connect(
             lambda: self.reveal_in_file_manager(CONFIG_PATH)
         )
         file_menu.addAction(locate_config_action)
+
         find_input_cache_action = QAction(Mwc.locate_input_cache_file_action_txt, self)
         find_input_cache_action.triggered.connect(
             lambda: self.reveal_in_file_manager(TomlHandler._temp_dir)
         )
         file_menu.addAction(find_input_cache_action)
+
+        file_menu.addSeparator()
+
+        locate_config_action = QAction(Mwc.locate_log_file_action_txt, self)
+        locate_config_action.triggered.connect(
+            lambda: self.reveal_in_file_manager(log_file_path)
+        )
+        file_menu.addAction(locate_config_action)
 
 
 
@@ -399,31 +411,26 @@ class RpsMainWindow(QMainWindow):
 
     #---------------- INIT END ---------------------#
     def centre_mwindow(self) -> None:
-        screen = QApplication.screenAt(QCursor.pos())
-        # Tries the application's primary screen as a fallback.
+        screen = QApplication.screenAt(QCursor.pos()) or QApplication.primaryScreen()
         if screen is None:
-            screen = QApplication.primaryScreen()
-
-        # If no screen is available even after the fallback, return.
-        if screen is None:
-            return
+            return # noqa
 
         if self.initial_centre_pos is None:
             frame = self.frameGeometry()
-
             frame.moveCenter(screen.availableGeometry().center())
-
             self.initial_centre_pos = frame.topLeft()
 
         current_pos: QPoint = QPoint(self.initial_centre_pos)
-        current_pos.setY(current_pos.y() + Mwc.mw_y_offset)  #offsets 150 px to Y - is up + is down
+        current_pos.setY(current_pos.y() + Mwc.mw_y_offset)
 
         self.move(current_pos)
+        logger.info("window position has been reset")
 
     def reveal_in_file_manager(self, target_path):
         path = Path(target_path).resolve()
 
         if not path.exists():
+            logger.warning(f"File or directory not found: {path}")
             msg = QMessageBox(self)
 
             msg.setIcon(QMessageBox.Icon.Warning)

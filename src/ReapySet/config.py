@@ -32,6 +32,8 @@ class MwConfig:
     quit_action: str = lang.MwConfig.quit_action
     locate_config_file_action_txt: str = lang.MwConfig.locate_config_file_action_txt
     locate_input_cache_file_action_txt: str = lang.MwConfig.locate_input_cache_file_action_txt
+    locate_log_file_action_txt: str = lang.MwConfig.locate_log_file_action_txt
+
     reset_window_pos_action_txt: str = lang.MwConfig.reset_window_pos_action_txt
     github_action: str = lang.MwConfig.github_action
     license_action: str = lang.MwConfig.license_action

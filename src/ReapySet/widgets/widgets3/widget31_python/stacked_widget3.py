@@ -11,6 +11,7 @@ from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import MwConfig as Mwc
 from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
+from ReapySet.common.logging import logger
 
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
@@ -255,7 +256,7 @@ class PythonGenWidget(QWidget):
     def on_interpreter_changed(combobox: QComboBox) -> None:
         label = combobox.currentText().removeprefix("Python ")
         path = combobox.currentData()
-        print(f"{label} interpreter was selected, path: {path}")
+        logger.info(f"{label} interpreter was selected, path: {path}")
         TomlHandler.toml_edit("languages", "interpreter_version", label, subsection="python")
         TomlHandler.toml_edit("languages", "interpreter_path", path, subsection="python")
 

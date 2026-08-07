@@ -1,6 +1,7 @@
 from PySide6.QtCore import QRect, QPropertyAnimation, QTimer
 from PySide6.QtGui import QResizeEvent
 from PySide6.QtWidgets import QMenuBar
+from tomlkit import TOMLDocument
 
 import ReapySet.widgets.widgets3.widget31_python.stacked_widget3 as SW3  # noqa
 from ReapySet.common.confirm_button_logic import ConfirmButtonLogic
@@ -9,6 +10,7 @@ from ReapySet.config import MwConfig as Mwc
 from ReapySet.main_window import RpsMainWindow
 from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.floating_widgets import MwAdditions
+from ReapySet.common.logging import logger
 
 
 def switch_stacked_widget():
@@ -177,7 +179,7 @@ class LogicMainWindow(RpsMainWindow):
             btn.style().polish(btn) # forces a refresh
         self.expand_window(button_label_txt)
         self.back_button.setEnabled(True)
-        print(button_label_txt)
+        logger.info(button_label_txt)
 
 
 
@@ -193,7 +195,7 @@ class LogicMainWindow(RpsMainWindow):
         print("downloading repo...")
 
     def _update_confirm_button(self) -> None:
-        data = TomlHandler._toml_read()
+        data: TOMLDocument = TomlHandler._toml_read()
 
         path_ok: bool = bool(data["global"]["project_path"].strip())
         lang_ok: bool = any(lang.get("enabled", False) for lang in data["languages"].values())

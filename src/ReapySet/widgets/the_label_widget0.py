@@ -4,6 +4,7 @@ import random
 from typing import Any
 
 from ReapySet.common.toml_handler import TomlHandler, GREETINGS_PATH, CONFIG_PATH
+from ReapySet.common.logging import logger
 
 
 
@@ -95,7 +96,7 @@ class GreetingsGetter:
         is_greetings_enabled = TomlHandler.toml_get(CONFIG_PATH, "personal", "enabled_greetings") is True
 
         if not is_greetings_enabled:
-            print(is_greetings_enabled)
+            logger.info(is_greetings_enabled)
             return "\nReapySet\n"
 
 

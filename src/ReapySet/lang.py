@@ -34,6 +34,7 @@ class MwConfig:
     quit_action: str = _section["quit_action"]
     locate_config_file_action_txt: str = _section["locate_config_file_action_txt"]
     locate_input_cache_file_action_txt: str = _section["locate_input_cache_file_action_txt"]
+    locate_log_file_action_txt: str = _section["locate_log_file_action_txt"]
     reset_window_pos_action_txt: str = _section["reset_window_pos_action_txt"]
     github_action: str = _section["github_action"]
     license_action: str = _section["license_action"]
