@@ -234,6 +234,7 @@ toml_settings_window_title = "Impostazioni"
 toml_settings_window_save_button = "&Salva ed Esci"
 toml_settings_window_close_button = "Chiudi senza salvare"
 
+learn_more_txt = "scopri di più"
 
 
 [it.MwConfig.Widget1]
@@ -251,7 +252,6 @@ sample_box_top_label = "🍪 Cookiecutter:\n  Inserisci un percorso\n  (oppure f
 
 ccboilerplates_box_placeholder_txt = "cctemplates/paths/example"
 cookiecutter_error_msg = "il percorso del template configurato non è valido."
-learn_more_txt = "scopri di più"
 
 
 browse_button_text = "Sfoglia…"
