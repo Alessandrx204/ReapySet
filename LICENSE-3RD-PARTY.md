@@ -77,6 +77,12 @@ In accordance with the LGPL v3:
 - **Source:** https://github.com/tox-dev/platformdirs
 
 
+## Loguru
+
+- **Copyright:** © Delgan
+- **License:** MIT License
+- **Source:** https://github.com/delgan/loguru
+
 ---
 
 
