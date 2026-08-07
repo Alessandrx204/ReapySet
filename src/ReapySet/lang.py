@@ -46,6 +46,8 @@ class MwConfig:
     toml_settings_window_title: str = _section["toml_settings_window_title"]
     toml_settings_window_save_button: str = _section["toml_settings_window_save_button"]
     toml_settings_window_close_button: str = _section["toml_settings_window_close_button"]
+    #------ pop ups-------#
+    learn_more_txt: str = _section["Widget1"]["learn_more_txt"]
 
 
     class Widget1:
@@ -94,6 +96,7 @@ class MwConfig:
         ccboilerplates_box_placeholder_txt: str = _section[
             "ccboilerplates_box_placeholder_txt"
         ]
+        cookiecutter_error_msg: str = _section["cookiecutter_error_msg"]
 
         browse_button_text: str = _section["browse_button_text"]
         select_editor_Combobox_top_label: str = _section[

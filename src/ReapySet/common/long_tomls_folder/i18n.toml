@@ -234,7 +234,6 @@ toml_settings_window_title = "Impostazioni"
 toml_settings_window_save_button = "&Salva ed Esci"
 toml_settings_window_close_button = "Chiudi senza salvare"
 
-learn_more_txt = "di più"
 
 
 [it.MwConfig.Widget1]
@@ -252,7 +251,8 @@ sample_box_top_label = "🍪 Cookiecutter:\n  Inserisci un percorso\n  (oppure f
 
 ccboilerplates_box_placeholder_txt = "cctemplates/paths/example"
 cookiecutter_error_msg = "il percorso del template configurato non è valido."
-learn_more_txt = "Learn More"
+learn_more_txt = "scopri di più"
+
 
 browse_button_text = "Sfoglia…"
 
@@ -286,7 +286,7 @@ py_interp_qcbox_top_txt = "Interpreti installati localmente"
 
 py_unb_interp_qlinedit_top_txt = "Versione esatta dell'interprete\n(solo uv e strumenti basati su Conda)"
 
-py_unb_interp_qlinedit_inner_txt = "es. 3.13.5"
+py_unb_interp_qlinedit_inner_txt = "es. 3.13.5 "
 
 py_frameworks_sep_label_txt = "(W.I.P.) Framework e template Python :3 "
 
@@ -294,16 +294,20 @@ py_frameworks_sep_label_txt = "(W.I.P.) Framework e template Python :3 "
 
 name = "uv"
 
-tooltip = """Package manager e project manager Python moderno e molto veloce,
-scritto in Rust. È una scelta eccellente per la maggior parte dei nuovi progetti."""
-error_msg = "project initialisation or sync failed!"
+tooltip = """Package e project manager Python estremamente veloce!, scritto in Rust.
+Rappresenta la scelta ideale per la maggior parte dei nuovi progetti python moderni."""
+
+error_msg = "Errore durante l'inizializzazione o la sincronizzazione del progetto!"
+
+
 
 [it.MwConfig.Widget3.PackageManagers.venv]
 
-name = "Pip"
+name = "Venv"
 
-tooltip = """Il package manager standard integrato in Python, basato sul modulo venv
- per creare e gestire ambienti virtuali."""
+tooltip = """Modulo standard integrato in Python per creare e gestire
+ambienti virtuali isolati, fornito con Pip."""
+
 
 [it.MwConfig.Widget3.PackageManagers.poetry]
 
@@ -325,13 +329,15 @@ name = "Conda"
 
 tooltip = """Ideale per progetti scientifici e ambienti che includono dipendenze
 native, strumenti esterni o pacchetti non esclusivamente Python."""
-conda_mamba_error_msg = ""
+conda_mamba_error_msg = "Errore durante la creazione dell'ambiente Conda/Mamba!"
+
 [it.MwConfig.Widget3.PackageManagers.pixi]
 
 name = "Pixi"
 
 tooltip = """Un flusso di lavoro moderno, veloce e riproducibile, compatibile
 con l'ecosistema Conda scritto in Rust."""
+pixi_error_msg = "Errore durante l'inizializzazione del progetto!"
 
 [it.MwConfig.Widget3.PackageManagers.mamba]
 

@@ -2,21 +2,21 @@ import os
 import shlex
 import shutil
 import subprocess
+from _collections_abc import Iterable
 from pathlib import Path
 from subprocess import CompletedProcess
 from typing import Any
 
-from cookiecutter.main import cookiecutter
 from PySide6.QtCore import QThread, Signal, QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QMessageBox
 from cookiecutter.exceptions import CookiecutterException
+from cookiecutter.main import cookiecutter
 
+from ReapySet.common.init_frameworks import InitFrameworks
+from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
-
-from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
-from ReapySet.common.init_frameworks import InitFrameworks
 
 NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 
@@ -188,8 +188,7 @@ class ConfirmButton2ndThread(QThread):
                 uv_cmds: list[list[str]] = (
                     [
                         LcFg.PythonVars.py_uv_icmd
-                        + [self.proj_path, "--python", uvs_python],
-                        [uv_bin, "sync"],
+                        + ["--python", uvs_python, p_proj_path]
                     ]
                     if not p_project_already
                     else [
@@ -294,23 +293,19 @@ class ConfirmButton2ndThread(QThread):
 
                 )
 
-
-
             case "PY:HATCH":
                 hatch_bin = LcFg.PythonVars.py_hatch_path
+
                 hatch_cmds: list[list[str]] = (
-                    [
-                        LcFg.PythonVars.py_hatch_icmd + [p_proj_path],
-                    ]
+                    [[hatch_bin, "new", "--init"]]
                     if not p_project_already
-                    else [
-                        [hatch_bin, "env", "create"],
-                    ]
+                    else [[hatch_bin, "env", "create"]]
                 )
+
                 return self._run_cmd_list(
                     hatch_cmds,
                     p_error_code="hatcherror",
-                    p_first_cmd_outside_project=not p_project_already,
+                    p_first_cmd_outside_project=False,
                 )
 
             case "PY:VENV":
@@ -356,6 +351,225 @@ class ConfirmButton2ndThread(QThread):
 
         return True
 
+    from collections.abc import Iterable
+    from pathlib import Path
+
+    def package_install(
+            self,
+            p_packages: str | Iterable[str],
+            p_proj_path: str | Path,
+            *,
+            p_dev: bool = False,
+    ) -> bool:
+        """
+        Installs one or more packages in an existing Python project.
+
+        Args:
+           :param p_packages:
+                A package name or an iterable of package names.
+
+                Examples:
+                    "django"
+                    ("django", "requests")
+                    ["pytest>=8", "ruff"]
+
+            :param p_proj_path:
+                Path of the project in which the command is executed.
+
+            :param p_dev:
+                If True, records the packages as development dependencies
+                when supported by the selected package manager.
+
+        Returns:
+            True if the installation succeeds, otherwise False.
+
+        Raises:
+            TypeError:
+                If a package name is not a string.
+
+            ValueError:
+                If no package manager is configured, the package manager is
+                unsupported, or development dependencies are not supported.
+        """
+
+        def _venv_python_path(_p_proj_path: str | Path) -> Path:
+            venv_path: Path = Path(_p_proj_path) / ".venv"
+
+            if os.name == "nt":
+                return venv_path / "Scripts" / "python.exe"
+
+            return venv_path / "bin" / "python"
+
+        project_path = Path(p_proj_path)
+        current_proj_toml_path: Path = TomlHandler._dest_path()
+
+        pm: str | None = TomlHandler.toml_get(
+            current_proj_toml_path,
+            "languages",
+            "package_manager",
+            "python",
+        )
+
+        if pm is None:
+            raise ValueError(
+                "No Python package manager is configured for the project."
+            )
+
+        if isinstance(p_packages, str):
+            raw_packages: Iterable[str] = (p_packages,)
+        else:
+            raw_packages = p_packages
+
+        normalised_packages: list[str] = []
+
+        for package in raw_packages:
+            if not isinstance(package, str):
+                raise TypeError(
+                    "Every package name must be a string, "
+                    f"not {type(package).__name__}."
+                )
+
+            package = package.strip()
+
+            if package:
+                normalised_packages.append(package)
+
+        # Removes duplicates while preserving insertion order.
+        packages: tuple[str, ...] = tuple(
+            dict.fromkeys(normalised_packages)
+        )
+
+        if not packages:
+            return True
+
+        command: list[str]
+
+        match pm:
+            case "PY:UV":
+                command = [
+                    LcFg.PythonVars.py_uv_path,
+                    "add",
+                ]
+
+                if p_dev:
+                    command.append("--dev")
+
+                command.extend(packages)
+
+            case "PY:POETRY":
+                command = [
+                    LcFg.PythonVars.py_poetry_path,
+                    "add",
+                ]
+
+                if p_dev:
+                    command.extend(["--group", "dev"])
+
+                command.extend(packages)
+
+            case "PY:PDM":
+                command = [
+                    LcFg.PythonVars.py_pdm_path,
+                    "add",
+                ]
+
+                if p_dev:
+                    command.append("--dev")
+
+                command.extend(packages)
+
+            case "PY:PIPENV":
+                command = [
+                    LcFg.PythonVars.py_pipenv_path,
+                    "install",
+                ]
+
+                if p_dev:
+                    command.append("--dev")
+
+                command.extend(packages)
+
+            case "PY:PIXI":
+                if p_dev:
+                    raise ValueError(
+                        "Pixi has no implicit development dependency group. "
+                        "A dedicated feature and environment must be configured."
+                    )
+
+                command = [
+                    LcFg.PythonVars.py_pixi_path,
+                    "add",
+                    "--pypi",
+                    *packages,
+                ]
+
+            case "PY:CONDA":
+                if p_dev:
+                    raise ValueError(
+                        "Conda does not distinguish normal dependencies "
+                        "from development dependencies."
+                    )
+
+                command = [
+                    LcFg.PythonVars.py_conda_path,
+                    "install",
+                    "--yes",
+                    "--prefix",
+                    str(project_path / ".conda"),
+                    *packages,
+                ]
+
+            case "PY:MAMBA":
+                if p_dev:
+                    raise ValueError(
+                        "Mamba does not distinguish normal dependencies "
+                        "from development dependencies."
+                    )
+
+                command = [
+                    LcFg.PythonVars.py_mamba_path,
+                    "install",
+                    "--yes",
+                    "--prefix",
+                    str(project_path / ".mamba"),
+                    *packages,
+                ]
+
+            case "PY:VENV" | "PY:VIRTUALENV":
+                venv_python: Path = _venv_python_path(project_path)
+
+                if not venv_python.is_file():
+                    raise FileNotFoundError(
+                        f"Virtual environment not found: {venv_python}"
+                    )
+
+                command = [
+                    str(venv_python),
+                    "-m",
+                    "pip",
+                    "install",
+                    *packages,
+                ]
+
+            case "PY:HATCH":
+                raise ValueError(
+                    "Hatch does not provide a general command equivalent "
+                    "to 'add dependency'. Dependencies must be declared "
+                    "in pyproject.toml."
+                )
+
+
+
+            case _:
+                raise ValueError(
+                    f"Unsupported Python package manager: {pm!r}"
+                )
+
+        return self._run_cmd_list(
+            [command],
+            p_error_code="packageinstallerror",
+            p_first_cmd_outside_project=False,
+        )
 
 
     def setup_cookiecutter(self) -> str | None:
@@ -443,65 +657,76 @@ class ConfirmButton2ndThread(QThread):
         return True
 
     def _setup_selected_framework(self) -> bool:
-        py_config = self.data["languages"]["python"] # python fmks
+        py_config = self.data["languages"]["python"]  # Python frameworks
 
         if not py_config["enabled"]:
             return True
 
-        selected_framework = py_config.get("selected_framework")
+        selected_framework = py_config.get("selected_framework") # python fmks
 
-        if selected_framework == "":
+        if not selected_framework:
             return True
 
-
+        install_packages = (
+                TomlHandler.toml_get(
+                    CONFIG_PATH,
+                    "advanced",
+                    "install_packages_on_project_creation",
+                )
+                is not False
+        )
 
         try:
-
             match selected_framework:
-
                 case "PY:JUPYTER":
-
                     python_version = (
-
                             py_config.get("unb_interpreter_version")
-
                             or py_config.get("interpreter_version")
-
                     )
 
                     InitFrameworks.init_jupyter_notebook(
-
                         self.proj_path,
-
                         python_version,
-
                     )
 
-                case "PY:PYSIDE6":
+                    if install_packages:
+                        if not self.package_install(
+                                ("jupyterlab",),
+                                self.proj_path,
+                        ):
+                            return False
 
+                case "PY:PYSIDE6":
                     InitFrameworks.init_pyside6(self.proj_path)
+
+                    if install_packages:
+                        if not self.package_install(
+                                ("pyside6",),
+                                self.proj_path,
+                        ):
+                            return False
+
 
                 case "PY:PYSCRIPT":
                     InitFrameworks.init_pyscript(self.proj_path)
 
-                case _:
+                    # PyScript does not use the local Python environment.
 
+                case _:
                     return True
 
-        except (OSError, subprocess.SubprocessError) as exc:
-
+        except (
+                OSError,
+                subprocess.SubprocessError,
+                ValueError,
+        ) as exc:
             self.status_emitted.emit(
-
                 "frameworkerror",
-
                 str(exc),
-
             )
-
             return False
 
         return True
-
     def run(self) -> None:
         if not self._setup_cc_project():
             return
@@ -577,7 +802,7 @@ class ConfirmButtonLogic:
         msg.addButton("OK", QMessageBox.ButtonRole.AcceptRole)
 
         if p_learn_more_url:
-            learn_more = msg.addButton("Learn More", QMessageBox.ButtonRole.HelpRole)
+            learn_more = msg.addButton(f"{Mwc.learn_more_txt}", QMessageBox.ButtonRole.HelpRole)
             msg.exec()
             if msg.clickedButton() == learn_more:
                 QDesktopServices.openUrl(QUrl(p_learn_more_url))
@@ -638,7 +863,7 @@ class ConfirmButtonLogic:
                 self._warn_missing_popup(
                     "Cookiecutter",
                     p_msg_txt="template was not found",
-                    p_info_txt="Invalid template path configured.",
+                    p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}",
                     p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/README.html"
                 )
                 return
@@ -654,7 +879,7 @@ class ConfirmButtonLogic:
                 self._warn_missing_popup(
                     "cookiecutter",
                     p_msg_txt="Project generation failed :(",
-                    p_info_txt=error_info,
+                    p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}: {error_info}",
                     p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/troubleshooting.html#i-created-a-cookiecutter-but-it-doesn-t-work-and-i-can-t-figure-out-why"
                 )
                 return
@@ -772,7 +997,7 @@ class ConfirmButtonLogic:
         if not self._check_editor(editor):
             return
 
-        self.editor = editor
+        self.editor: str = editor
 
         worker = ConfirmButton2ndThread(
             p_data=data,

@@ -69,6 +69,9 @@ class MwConfig:
 
     mw_y_offset: int = -150
 
+    #----pop-ups------#
+    learn_more_txt: str = lang.MwConfig.learn_more_txt
+
     # ── nested classes ──────────────────────────────────
 
     @dataclass
@@ -135,7 +138,7 @@ class MwConfig:
         path_box_placeholder_txt: str   = lang.MwConfig.Widget1.path_box_placeholder_txt
         sample_box_top_label: str       = lang.MwConfig.Widget1.sample_box_top_label
         ccboilerplates_box_placeholder_txt: str = lang.MwConfig.Widget1.ccboilerplates_box_placeholder_txt
-        cookiecutter_error_msg: str = "project initialisation or sync failed!"
+        cookiecutter_error_msg: str = lang.MwConfig.Widget1.cookiecutter_error_msg
         browse_button_text: str         = "Browse"
         select_editor_Combobox_top_label: str = ""
 
@@ -276,7 +279,7 @@ class MwConfig:
         def __post_init__(self):
             img = self.images
             self.button_dict = {
-                "Python":        ["PY",       img.python_logo],
+                "Python":                 ["PY",       img.python_logo],
                 "Ts/JavaScript (W.I.P.)": ["TSJS",     img.javascript_logo],
                 "Rust (W.I.P.)":          ["RUST",     img.rust_logo],
                 ".NET (W.I.P.)":          ["DOTNET",   img.dotnet_logo],
@@ -310,7 +313,7 @@ class MwConfig:
         py_qlabel_txt: str = lang.MwConfig.Widget3.py_qlabel_txt
         py_interp_qcbox_top_txt: str = lang.MwConfig.Widget3.py_interp_qcbox_top_txt
         py_unb_interp_qlinedit_top_txt: str = lang.MwConfig.Widget3.py_unb_interp_qlinedit_top_txt
-        py_unb_interp_qlinedit_inner_txt: str = "e.g. 3.13.5"
+        py_unb_interp_qlinedit_inner_txt: str = lang.MwConfig.Widget3.py_unb_interp_qlinedit_inner_txt
         py_frameworks_sep_label_txt: str = lang.MwConfig.Widget3.py_frameworks_sep_label_txt
 
         py_qlabel_qss: str = (
@@ -512,15 +515,19 @@ class LogicVariables:
         py_mamba_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "mamba_path") or shutil.which("mamba") or ""# noqa
         py_pixi_path: str = TomlHandler.toml_get(CONFIG_PATH, "python", "pixi_path") or shutil.which("pixi") or ""# noqa
             #----- iCmd stands for Init(ialise) Command -----#
-        py_venv_icmd: list[str] = ["python", "-m", "venv", ".venv"]  # python -m venv .venv (inside proj_path)
         py_uv_icmd: list[str] = [py_uv_path, "init"]  # uv init <proj_path>
         py_poetry_icmd: list[str] = [py_poetry_path, "new"]  # poetry new <proj_path>
         py_hatch_icmd: list[str] = [py_hatch_path, "new"]  # hatch new <proj_path>
         py_pdm_icmd: list[str] = [py_pdm_path, "init"]  # pdm init (cdw=proj_path)
         py_pipenv_icmd: list[str] = [py_pipenv_path, "install"]  # pipenv install (cdw=proj_path)
-        py_virtualenv_icmd: list[str] = [py_virtualenv_path, "-p"]  # virtualenv -p <python_interpreter> .venv (cdw=proj_path)
-        py_conda_icmd: list[str] = [py_conda_path, "create", "-y", "-p"]  # conda create -p <proj_path>
-        py_mamba_icmd: list[str] = [py_mamba_path, "create", "-y", "-p"]  # mamba create -p <proj_path>
+        py_virtualenv_icmd: list[str] = [py_virtualenv_path,
+                                         "--python"]  # virtualenv -p <python_interpreter> .venv (cdw=proj_path)
+        py_conda_icmd: list[str] = [py_conda_path, "create",
+                                    "--yes",
+                                    "--prefix"]  # conda create --prefix <proj_path>/.conda
+        py_mamba_icmd: list[str] = [py_mamba_path, "create",
+                                    "--yes",
+                                    "--prefix"]  # mamba create --prefix <proj_path>
 
         py_pixi_icmd: list[str] = [py_pixi_path, "init"]  # pixi init <proj_path>
 

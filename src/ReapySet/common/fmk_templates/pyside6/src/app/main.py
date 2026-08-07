@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from PySide6.QtWidgets import QApplication
 
 
@@ -22,3 +22,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+    #python -m src.app to run
+    # or uv run python -m src.app if you use uv
