@@ -3,12 +3,12 @@ from pathlib import Path
 from loguru import logger
 from platformdirs import user_log_dir
 
-APP_NAME = "ReapySet"
+APP_NAME: str = "ReapySet"
 
 # Sets the appropriate log folder
-log_dir = Path(user_log_dir(APP_NAME))
-log_dir.mkdir(parents=True, exist_ok=True)
-log_file_path: Path = log_dir / "ReapySet.log"
+LOG_DIR = Path(user_log_dir(APP_NAME))
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+log_file_path: Path = LOG_DIR / "ReapySet.log"
 
 logger.remove()
 
