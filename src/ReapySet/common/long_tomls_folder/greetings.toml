@@ -77,6 +77,7 @@ evening = [
     "\nA calm evening can do wonders.\n",
     "\nStill chasing goals, {name}?\n",
     "\nThe day isn't over yet.\n",
+    "\n Just another project for today uh.\n",
     "\nAnother day, another chapter.\n",
     "\nHope today was productive.\n"
 ]
@@ -89,7 +90,7 @@ night = [
     "\nThe world is quieter now.\n",
     "\nFocus comes easier at night.\n",
     "\nJust you and your ideas, {name}.\n",
-    "\nThe stars are out, and so are you.\n",
+    "\nThe stars are out, are you too?\n",
     "\nLate hours, clear thoughts.\n"
 ]
 
@@ -122,7 +123,7 @@ late_night = [
 "01_04" = "Celebrating marriage equality in Europe, {name}."
 "17_05" = ["Free to love, everywhere. Happy IDAHOBIT, {name}\n(International Day Against Homophobia, Biphobia, and Transphobia).",
     "United against discrimination, {name}. 🇪🇺🏳️‍🌈", "Love is love, {name}. Always.\n"]
-"01_06" = "Welcome to June! The Pride month begins, {name}."
+"01_06" = "Welcome to June! The Pride month begins, {name}.\n Make sure to open Hyfetch today ;)"
 "23_06" = ["Remembering Alan Turing today.\nThe father of modern computing, a true visionary.\n", "Honoring Alan Turing's legacy: logic, courage,\nand a mind that changed the world.\n"]
 "11_10" = "Live your truth, {name}. Happy Coming Out Day."
 
@@ -269,7 +270,8 @@ late_night = [
 
 "09_05" = [
   "Uniti nella diversità.\nBuona Festa dell’Europa, {name} 🇪🇺",
-  "Costruiamo il futuro insieme, {name}.\nBuona Festa dell’Europa 🇪🇺"
+  "Costruiamo il futuro insieme, {name}.\nBuona Festa dell’Europa 🇪🇺",
+    "\nIn Varietate Concordia 🇪🇺\n"
 ]
 
 "02_06" = "Buona Festa della Repubblica, {name}.\n"
@@ -284,33 +286,32 @@ late_night = [
 "21_07" = "Buona Festa Nazionale al Belgio, {name} 🇧🇪\n"
 
 "26_09" = [
-  "Un continente, molte voci.\nBentornato, {name}.",
-  "Oggi si celebra la diversità culturale, {name}."
+  "\nUn continente, molte voci.\nBentornato, {name}.",
+  "\nOggi si celebra la diversità culturale, {name}."
 ]
 
 "12_10" = [
-  "¡Feliz Día de la Fiesta Nacional, {name}! 🇪🇸",
-  "Auguri alla Spagna nel giorno della sua festa nazionale, {name}.\n"
+  "\n¡Feliz Día de la Fiesta Nacional, {name}! 🇪🇸",
+  "\nAuguri alla Spagna nel giorno della sua festa nazionale, {name}.\n"
 ]
 
-"09_11" = "Abbattere muri, costruire ponti.\nBentornato, {name}."
-
+"09_11" = "\nAbbattere muri, costruire ponti.\nBentornato, {name}."
 
 [it.holidays.lgbt]
 "01_02" = [
-  "Grazie alla donna che ha contribuito a plasmare\nil futuro digitale. Buon compleanno, Lynn Conway 🏳️‍⚧️",
+  "\nGrazie alla donna che ha contribuito a plasmare\nil futuro digitale. Buon compleanno, Lynn Conway 🏳️‍⚧️",
   "Oggi ricordiamo Lynn Conway:\npioniera dei microchip moderni, libera di essere sé stessa. 🏳️‍⚧️"
 ]
 
-"01_04" = "Celebriamo l’uguaglianza matrimoniale in Europa, {name}."
+"01_04" = "\nCelebriamo l’uguaglianza matrimoniale in Europa, {name}.\n (in alcuni posti piu di altri...)"
 
 "17_05" = [
   "Liberi di amare, ovunque.\nBuona IDAHOBIT, {name}\n(Giornata internazionale contro omofobia, bifobia e transfobia).",
-  "Uniti contro ogni discriminazione, {name}. 🇪🇺🏳️‍🌈",
+  "\nUniti contro ogni discriminazione, {name}. 🇪🇺🏳‍🌈\n",
   "L’amore è amore, {name}. Sempre.\n"
 ]
 
-"01_06" = "Benvenuto giugno!\nComincia il mese del Pride, {name}."
+"01_06" = "Benvenuto giugno!\nComincia il mese del Pride, {name}.\n Hai già aperto Hyfetch oggi?"
 
 "23_06" = [
   "Oggi ricordiamo Alan Turing.\nPadre dell’informatica moderna, vero visionario.\n",
@@ -339,13 +340,13 @@ late_night = [
 "29_09" = "Dove la scienza incontra la collaborazione:\noggi è la Notte Europea dei Ricercatori, {name}!"
 
 "04_12" = [
-  "JavaScript venne rilasciato al mondo\noggi, nel 1995... evviva...",
+  "\nJavaScript venne rilasciato al mondo\noggi, nel 1995... evviva...",
   "Buon compleanno a JavaScript.\n grazie per Rendere il web interattivo\n(e imprevedibile) dal 1995."
 ]
 
 
 [it.holidays.history]
-"27_01" = "Ricordare il passato per proteggere il futuro, {name}."
+"27_01" = "\nRicordare il passato per proteggere il futuro, {name}.\n"
 
 "25_04" = [
   "Buona Festa della Liberazione, {name} 🇮🇹",
@@ -353,10 +354,10 @@ late_night = [
 ]
 
 "27_04" = [
-  "Fijne Koningsdag, {name}!\nPronta per un po’ di arancione? 🇳🇱", #g
-  "Buona Festa del Re, {name}.\nFijne Koningsdag!\n"
+  "\nFijne Koningsdag, {name}!\nPronta per un po’ di arancione? 🇳🇱", #g
+  "\nBuona Festa del Re, {name}.\nFijne Koningsdag!\n"
 ]
 
-"15_06" = "Alla generazione che ha sfumato i confini europei.\nBuon Erasmus Day, {name}."
+"15_06" = "\nAlla generazione che ha sfumato i confini europei.\nBuon Erasmus Day, {name}."
 
-"25_12" = "Buon Natale, {name}!\nTi auguriamo feste senza bug."
+"25_12" = "\nBuon Natale, {name}!\nTi auguriamo feste senza bug."
