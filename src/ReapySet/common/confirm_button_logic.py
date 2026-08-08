@@ -9,11 +9,13 @@ from typing import Any
 
 from PySide6.QtCore import QThread, Signal, QUrl
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox, QPushButton
 from cookiecutter.exceptions import CookiecutterException
 from cookiecutter.main import cookiecutter
+from tomlkit import TOMLDocument
 
 from ReapySet.common.init_frameworks import InitFrameworks
+from ReapySet.common.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
@@ -121,7 +123,7 @@ class ConfirmButton2ndThread(QThread):
                     index == 0 and p_first_cmd_outside_project
             )
 
-            cwd = None if runs_outside_project else self.proj_path
+            cwd: str | None = None if runs_outside_project else self.proj_path
 
             result: CompletedProcess[str] = self._run_cmd(cmd, cwd=cwd)
 
@@ -153,7 +155,7 @@ class ConfirmButton2ndThread(QThread):
                 "disable_poetry_centralised_venvs"
             )
         )
-        if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "python") in ("PY:PYSCRIPT",):
+        if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "python") in {"PY:PYSCRIPT",}:
             return True # NO venv option
 
         interp_ver: str | None = TomlHandler.toml_get(
@@ -183,7 +185,7 @@ class ConfirmButton2ndThread(QThread):
         Path(p_proj_path).mkdir(parents=True, exist_ok=True)
         match pm:
             case "PY:UV":
-                uv_bin = LcFg.PythonVars.py_uv_path
+                uv_bin: str = LcFg.PythonVars.py_uv_path
 
                 uv_cmds: list[list[str]] = (
                     [
@@ -205,7 +207,7 @@ class ConfirmButton2ndThread(QThread):
 
 
             case "PY:POETRY":
-                poetry_bin = LcFg.PythonVars.py_poetry_path
+                poetry_bin: str = LcFg.PythonVars.py_poetry_path
 
                 poetry_cmds: list[list[str]] = []
                 if not p_project_already:
@@ -242,7 +244,7 @@ class ConfirmButton2ndThread(QThread):
 
 
             case "PY:PIXI":
-                pixi_bin = LcFg.PythonVars.py_pixi_path
+                pixi_bin: str = LcFg.PythonVars.py_pixi_path
 
                 if p_project_already:
                     pixi_cmds: list[list[str]] = [
@@ -391,7 +393,7 @@ class ConfirmButton2ndThread(QThread):
                 If no package manager is configured, the package manager is
                 unsupported, or development dependencies are not supported.
         """
-
+        errcode: str = "packageinstallerror"
         def _venv_python_path(_p_proj_path: str | Path) -> Path:
             venv_path: Path = Path(_p_proj_path) / ".venv"
 
@@ -454,7 +456,7 @@ class ConfirmButton2ndThread(QThread):
                 if p_dev:
                     command.append("--dev")
 
-                command.extend(packages)
+                command.extend(packages) # extend is like append with *
 
             case "PY:POETRY":
                 command = [
@@ -552,11 +554,13 @@ class ConfirmButton2ndThread(QThread):
                 ]
 
             case "PY:HATCH":
-                raise ValueError(
+                errcode: str = "hatcherr_pkg"
+                command = []
+                """raise ValueError(
                     "Hatch does not provide a general command equivalent "
                     "to 'add dependency'. Dependencies must be declared "
                     "in pyproject.toml."
-                )
+                )"""
 
 
 
@@ -567,7 +571,7 @@ class ConfirmButton2ndThread(QThread):
 
         return self._run_cmd_list(
             [command],
-            p_error_code="packageinstallerror",
+            p_error_code=errcode,
             p_first_cmd_outside_project=False,
         )
 
@@ -784,6 +788,7 @@ class ConfirmButtonLogic:
 
     @staticmethod
     def _warn_missing_popup(p_tool_name: str,
+                            p_popup_icon: QMessageBox.Icon = QMessageBox.Icon.Critical,
                            p_learn_more_url: str = "about:blank",
                            p_window_title: str = "Tool Not Found",
                            p_msg_txt: str = "not found or not installed.",
@@ -793,8 +798,9 @@ class ConfirmButtonLogic:
 
         :rtype: None
         """
+        logger.warning(f"{p_window_title}: {p_tool_name} {p_msg_txt} | {p_info_txt}")
         msg = QMessageBox()
-        msg.setIcon(QMessageBox.Icon.Critical)
+        msg.setIcon(p_popup_icon)
         msg.setWindowTitle(p_window_title)
         msg.setText(f" {p_tool_name} {p_msg_txt}")
         msg.setInformativeText(p_info_txt)
@@ -802,12 +808,13 @@ class ConfirmButtonLogic:
         msg.addButton("OK", QMessageBox.ButtonRole.AcceptRole)
 
         if p_learn_more_url:
-            learn_more = msg.addButton(f"{Mwc.learn_more_txt}", QMessageBox.ButtonRole.HelpRole)
+            learn_more: QPushButton = msg.addButton(f"{Mwc.learn_more_txt}", QMessageBox.ButtonRole.HelpRole)
             msg.exec()
             if msg.clickedButton() == learn_more:
                 QDesktopServices.openUrl(QUrl(p_learn_more_url))
         else:
             msg.exec()
+
 
     def _check_editor(self, p_editor: str) -> bool:
         cmd = LcFg.EditorCmd.get_cmd(p_editor)
@@ -946,10 +953,18 @@ class ConfirmButtonLogic:
 
             case "hatcherror":
                 self._warn_missing_popup(
-                    "hatch",
+                    "Hatch",
                     p_learn_more_url="https://hatch.pypa.io/latest/environment/",
                 )
                 return
+            case "hatcherr_pkg":
+                self._warn_missing_popup(
+                    p_popup_icon=QMessageBox.Icon.Information,
+                    p_window_title="Hatch information",
+                    p_tool_name="Hatch",
+                    p_msg_txt="Hatch does not provide a general command equivalent to 'pip install dependency'.\n Dependencies must be declared only in pyproject.toml manully",
+                    p_learn_more_url="https://github.com/pypa/hatch/issues/1599"#https://hatch.pypa.io/latest/cli/reference/#hatch-dep
+                )
 
             case "venverror":
                 self._warn_missing_popup(
@@ -984,12 +999,13 @@ class ConfirmButtonLogic:
                     final_path = self.worker.proj_path
                     if self.editor != "None":
                         self._openin_editor(self.editor, final_path)
+                        logger.success(f"Project created! Opened in editor: {self.editor} | Path: {final_path}")
 
     def on_confirm_clicked(self) -> None:
         if self.worker is not None and self.worker.isRunning():
             return
 
-        data = TomlHandler._toml_read()
+        data: TOMLDocument = TomlHandler._toml_read()
 
         project_path: str = data["global"]["project_path"]
         editor: str = data["global"]["fav_editor"]

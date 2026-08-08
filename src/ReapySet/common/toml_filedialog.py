@@ -12,10 +12,11 @@
 from pathlib import Path
 
 import tomlkit
-from PySide6.QtCore import QRegularExpression
+from PySide6.QtCore import QRegularExpression, QRegularExpressionMatchIterator, QRegularExpressionMatch
 from PySide6.QtGui import QShortcut, QKeySequence, QSyntaxHighlighter, QTextCharFormat, QColor, QFont
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QPlainTextEdit, QVBoxLayout, QMessageBox
 from ReapySet.config import MwConfig as Mwc
+from ReapySet.common.logging import logger
 
 class TomlEditorDialog(QDialog):
     def __init__(self, config_path: Path, parent=None):
@@ -25,7 +26,7 @@ class TomlEditorDialog(QDialog):
         self.close_shortcut = QShortcut(QKeySequence.StandardKey.Close, self)
         self.close_shortcut.activated.connect(self.reject)
 
-        self.path = config_path# qt is a
+        self.path: Path = config_path# qt is a
         self.setWindowTitle(Mwc.toml_settings_window_title)
         self.resize(700, 600)
 
@@ -88,7 +89,7 @@ class TomlEditorDialog(QDialog):
 
     def _save(self):
         # validates TOML before saving
-        text = self.editor_page.toPlainText()
+        text: str = self.editor_page.toPlainText()
 
         try:
             tomlkit.parse(text)
@@ -98,10 +99,12 @@ class TomlEditorDialog(QDialog):
                 Mwc.toml_error_txt_title,
                 f"{Mwc.toml_error_txt}:\n\n{e}"
             )
+            logger.critical(f" Config TOML Edit attemp failed: {Mwc.toml_error_txt}:\n\n{e}")
             return
 
         self.path.write_text(text, encoding="utf-8")
-        self.accept()
+        self.accept() # Qdialog method
+        logger.debug(f"Config TOML file has been successfully edited: {self.path}")
 
 
 
@@ -142,13 +145,13 @@ class TomlHighlighter(QSyntaxHighlighter):
         ]
 
     def highlightBlock(self, text: str) -> None:
-        for pattern, fmt in self.rules:
-            match_iterator = pattern.globalMatch(text)
+        for pattern, format_ in self.rules:
+            match_iterator: QRegularExpressionMatchIterator= pattern.globalMatch(text)
 
             while match_iterator.hasNext():
-                match = match_iterator.next()
+                match: QRegularExpressionMatch = match_iterator.next()
                 self.setFormat(
                     match.capturedStart(),
                     match.capturedLength(),
-                    fmt
+                    format_
                 )

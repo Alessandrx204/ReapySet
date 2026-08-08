@@ -1,20 +1,17 @@
 from __future__ import annotations
+
 import shutil
 import tempfile
+from importlib import resources
+from importlib.abc import Traversable
 from pathlib import Path
-from functools import cache
+from typing import Any
 
 import tomlkit
-from PySide6.QtCore import QRegularExpression
-from PySide6.QtGui import QSyntaxHighlighter, QTextCharFormat, QColor, QFont, QKeySequence, QShortcut
-from PySide6.QtWidgets import (
-    QPlainTextEdit, QDialogButtonBox, QDialog, QVBoxLayout, QMessageBox, )
-from importlib import resources
-
 from platformdirs import PlatformDirs
+from tomlkit import TOMLDocument
 
-from importlib.abc import Traversable
-from typing import Any
+from ReapySet.common.logging import logger
 
 TomlReadable = Path | Traversable
 
@@ -26,7 +23,7 @@ _cfg_dir = Path(_platform_data_dirs.user_config_dir)
 
 _cfg_dir.mkdir(parents=True, exist_ok=True)
 
-CONFIG_PATH = _cfg_dir / "config.toml"
+CONFIG_PATH: Path = _cfg_dir / "config.toml"
 SRC_PATH: Traversable = resources.files("ReapySet.common") / "_rpsproj.toml"
 
 BACKUP_CONFIG_PATH: Traversable = resources.files("ReapySet.common") / "_config_backup.toml"
@@ -51,6 +48,7 @@ class TomlHandler:
     def _dest_path() -> Path:
 
         if TomlHandler.DEST_PATH is None:
+            logger.error("Project TOML sandbox has not been initialised.", )
             raise RuntimeError("Project TOML sandbox has not been initialised.")
         return TomlHandler.DEST_PATH
 
@@ -118,8 +116,8 @@ class TomlHandler:
         path = p_doc_path or TomlHandler._dest_path()
 
 
-        """print(f"toml_edit called: {section}.{key} = {value}")"""
-        data = TomlHandler._toml_read(path)
+        logger.debug(f"toml_edit called: {section}.{key} = {value}")
+        data: TOMLDocument = TomlHandler._toml_read(path)
         if subsection:
             data[section][subsection][key] = value
         else:
@@ -137,23 +135,23 @@ class TomlHandler:
        reads a specific value from a TOML.
         """
         try:
-                data = TomlHandler._toml_load(p_file)
+                data: TOMLDocument = TomlHandler._toml_load(p_file)
                 return data[section][subsection][key] if subsection else data[section][key]
 
         except (FileNotFoundError, KeyError) as e:
-            print(f"Error reading file or key: {e}")
+            logger.exception(f"Error reading file or key: {e}")
             return None
 
     @staticmethod
     def set_enabled_1lang(p_lang: str) -> None:
-        toml_line = TomlHandler._toml_read()
+        toml_line: TOMLDocument = TomlHandler._toml_read()
         for lang in toml_line["languages"]:
             toml_line["languages"][lang]["enabled"] = (lang == p_lang)
         TomlHandler._toml_write(toml_line)
 
     @staticmethod
     def set_disabled_all_langs() -> None:
-        toml_line = TomlHandler._toml_read()
+        toml_line: TOMLDocument = TomlHandler._toml_read()
         for lang in toml_line["languages"]:
             toml_line["languages"][lang]["enabled"] = False
         TomlHandler._toml_write(toml_line)
