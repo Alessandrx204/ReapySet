@@ -789,11 +789,13 @@ class ConfirmButtonLogic:
     @staticmethod
     def _warn_missing_popup(p_tool_name: str,
                             p_popup_icon: QMessageBox.Icon = QMessageBox.Icon.Critical,
-                           p_learn_more_url: str = "about:blank",
-                           p_window_title: str = "Tool Not Found",
-                           p_msg_txt: str = "not found or not installed.",
-                           p_info_txt: str = "Make sure it is installed and the path is correct in config.toml"
-                           ) -> None:
+                            p_learn_more_url: str = "about:blank",
+                            p_window_title: str = "Tool Not Found",
+                            p_download_button: dict[str, str] | None = None,
+                            p_download_button_txt: str = "Download",
+                            p_msg_txt: str = "not found or not installed.",
+                            p_info_txt: str = "Make sure it is installed and the path is correct in config.toml"
+                            ) -> None:
         """
 
         :rtype: None
@@ -806,6 +808,11 @@ class ConfirmButtonLogic:
         msg.setInformativeText(p_info_txt)
 
         msg.addButton("OK", QMessageBox.ButtonRole.AcceptRole)
+        if p_download_button:
+            msg.addButton(
+                p_download_button_txt,
+                QMessageBox.ButtonRole.ActionRole)
+
 
         if p_learn_more_url:
             learn_more: QPushButton = msg.addButton(f"{Mwc.learn_more_txt}", QMessageBox.ButtonRole.HelpRole)

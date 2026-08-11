@@ -49,6 +49,9 @@ class MwConfig:
     toml_settings_window_close_button: str = _section["toml_settings_window_close_button"]
     #------ pop ups-------#
     learn_more_txt: str = _section["learn_more_txt"]
+    download_btn_txt: str = _section["download_btn_txt"]
+    NONE_editor_display: str = _section["NONE_editor_display"]
+
 
 
     class Widget1:

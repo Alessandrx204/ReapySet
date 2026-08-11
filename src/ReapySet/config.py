@@ -73,6 +73,8 @@ class MwConfig:
 
     #----pop-ups------#
     learn_more_txt: str = lang.MwConfig.learn_more_txt
+    download_btn_txt: str = lang.MwConfig.download_btn_txt
+    NONE_editor_display: str = lang.MwConfig.NONE_editor_display
 
     # ── nested classes ──────────────────────────────────
 
@@ -145,7 +147,7 @@ class MwConfig:
         select_editor_Combobox_top_label: str = ""
 
         # plain class variable — accessible directly on the class without instantiation
-        select_editor_Combobox_entry: list[str] = field(
+        select_editor_Combobox_entry: tuple[str] = field(
             default_factory=lambda: LogicVariables.EditorCmd.get_all_editors())
         #select_editor_Combobox_entry = LogicVariables.EditorCmd.get_all_editors()
 
@@ -497,6 +499,10 @@ class LogicVariables:
                         display_name: str = (
                                 editors.get(f"{base}_display") # if has got banana_cmd it looks for a banana_display in case its spelled funny alike 90% of code editors like BånaNà
                                 or base.replace("_", " ").title()# if  none it capitalises each word in the base name and replaces underscores with spaces, e.g. "vscode" becomes "Vscode"
+                                if base != "none".upper() else f"{MwConfig.NONE_editor_display}" #No editor option for localisation
+
+
+
                         )
                         result.append(display_name)
 
@@ -532,6 +538,54 @@ class LogicVariables:
                                     "--prefix"]  # mamba create --prefix <proj_path>
 
         py_pixi_icmd: list[str] = [py_pixi_path, "init"]  # pixi init <proj_path>
+
+        package_names: dict[str, dict[str, str]] = {
+            "pipenv": {
+                "brew": "pipenv",
+                "apt": "pipenv",
+            },
+
+            "poetry": {
+                "brew": "poetry",
+                "apt": "python3-poetry",
+            },
+
+            "pdm": {
+                "brew": "pdm",
+                "apt": "python3-pdm",
+            },
+
+            "hatch": {
+                "winget": "PyPA.Hatch",
+                "brew": "hatch",
+            },
+
+            "uv": {
+                "winget": "astral-sh.uv",
+                "choco": "uv",
+                "brew": "uv",
+                "snap": "astral-uv",
+            },
+
+            "virtualenv": {
+                "brew": "virtualenv",
+                "apt": "virtualenv",
+            },
+
+            "pixi": {
+                "winget": "prefix-dev.pixi",
+                "brew": "pixi",
+            },
+
+            "conda": {
+                # too difficult to implement rn
+
+            },
+
+            "mamba": {
+                # too difficult to implement rn
+            },
+        }
 
 
 

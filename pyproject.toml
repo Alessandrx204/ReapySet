@@ -6,7 +6,7 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
     "cookiecutter>=2.7.1",
     "loguru>=0.7.3",
-    "platformdirs>=4.11.0",
+    "platformdirs>=4.11.2",
     "pyqtdarktheme>=2.1.0",
     "pyside6>=6.11.0",
     "tomlkit>=0.15.0",

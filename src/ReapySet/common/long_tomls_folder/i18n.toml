@@ -29,6 +29,8 @@ toml_settings_window_save_button = "&Save && Exit"
 toml_settings_window_close_button = "Close without saving"
 
 learn_more_txt = "Learn More"
+download_btn_txt = "Download"
+NONE_editor_display = "None"
 
 [en.MwConfig.Widget1]
 github_box_top_label = """\nImport a project from GitHub"""
@@ -237,6 +239,8 @@ toml_settings_window_save_button = "&Salva ed Esci"
 toml_settings_window_close_button = "Chiudi senza salvare"
 
 learn_more_txt = "scopri di più"
+download_btn_txt = "Scarica"
+NONE_editor_display = "Nessuno"
 
 
 [it.MwConfig.Widget1]
