@@ -35,7 +35,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - Default Location: Projects are created by default in user/projects/....
 -	Dynamic Directory Creation: Any missing nested directories will be created on the fly. Please note that creating deeply nested structures may slightly increase initial setup time.
 - **Editor Integration**
--(currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
+- (currently PyCharm, VSCode, Zed, CLion, IntelliJ IDEA, Notepad++, Godot's editor, nVim & Sublime text are enabled by default but any editor  can be removed or added  or edited the startup command, via config file, just  make sure to follow there given instruction)
 (a No editor option is available as well)
 - Cookiecutter's boilerplates support *(in works)*
 
