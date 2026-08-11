@@ -98,6 +98,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - qtdarktheme
 - tomlkit
 - cookiecutter
+- platformdirs 
 
 ### Clone the project
 
