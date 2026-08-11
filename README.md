@@ -99,6 +99,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - tomlkit
 - cookiecutter
 - platformdirs 
+- loguru
 
 ### Clone the project
 
