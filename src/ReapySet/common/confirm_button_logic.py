@@ -736,14 +736,17 @@ class ConfirmButton2ndThread(QThread):
         return True
     def run(self) -> None: # params are passed from the init here because qt handles thme this way
         if self.package_to_install: # oif the pkg is specified run this
-            succes_outcome = DownloadPkg.install_package(
+            install_outcome = DownloadPkg.install_package(
                 self.package_to_install
             )
-            if succes_outcome:
+            if install_outcome:
                 self.status_emitted.emit(
                     "package_install_success",
                     ""
                 )
+
+
+
             else:
                 self.status_emitted.emit(
                     "package_install_error",
@@ -809,7 +812,7 @@ class ConfirmButtonLogic:
                             p_popup_icon: QMessageBox.Icon = QMessageBox.Icon.Critical,
                             p_learn_more_url: str = "about:blank",
                             p_window_title: str = "Tool Not Found",
-                            p_download_button: dict[str, str] | None = None,
+                            p_has_download_button: bool = False,
                             p_download_button_txt: str = "Download",
                             p_msg_txt: str = "not found or not installed.",
                             p_info_txt: str = "Make sure it is installed and the path is correct in config.toml"
@@ -829,7 +832,7 @@ class ConfirmButtonLogic:
         download_btn: QPushButton | None = None
 
         learn_more: QPushButton | None = None
-        if p_download_button:
+        if p_has_download_button:
             download_btn: QPushButton = msg.addButton(
                 p_download_button_txt,
                 QMessageBox.ButtonRole.ActionRole)
@@ -892,170 +895,118 @@ class ConfirmButtonLogic:
                 env=self._make_clear_term_env1()
             )
         except OSError as exc:
-            self._warn_missing_popup(
-                p_editor,
-                p_info_txt=str(exc),
-            )
+            self._warn_missing_popup(p_editor, p_info_txt=str(exc))
     def handle_2thread_outcomes(self, outcome: str, error_info: str):
         match outcome:
             # --- CCOOKIECUTTER OUTCOMES---
             case "cc_template_missing":
-                self._warn_missing_popup(
-                    "Cookiecutter",
-                    p_msg_txt="template was not found",
-                    p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}",
-                    p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/README.html"
-                )
+                self._warn_missing_popup("Cookiecutter",
+                                         p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/README.html",
+                                         p_msg_txt="template was not found",
+                                         p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}")
                 return
             case "cc_json_missing":
-                self._warn_missing_popup(
-                    "Cookiecutter.json",
-                    p_msg_txt="Template is invalid :(",
-                    p_info_txt="It looks like the selected directory does not contain any cookiecutter.json.",
-                    p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/tutorials/tutorial2.html#step-2-create-cookiecutter-json"
-                )
+                self._warn_missing_popup("Cookiecutter.json",
+                                         p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/tutorials/tutorial2.html#step-2-create-cookiecutter-json",
+                                         p_msg_txt="Template is invalid :(",
+                                         p_info_txt="It looks like the selected directory does not contain any cookiecutter.json.")
                 return
             case "cc_generation_failed":
-                self._warn_missing_popup(
-                    "cookiecutter",
-                    p_msg_txt="Project generation failed :(",
-                    p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}: {error_info}",
-                    p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/troubleshooting.html#i-created-a-cookiecutter-but-it-doesn-t-work-and-i-can-t-figure-out-why"
-                )
+                self._warn_missing_popup("cookiecutter",
+                                         p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/troubleshooting.html#i-created-a-cookiecutter-but-it-doesn-t-work-and-i-can-t-figure-out-why",
+                                         p_msg_txt="Project generation failed :(",
+                                         p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}: {error_info}")
                 return
 
             # --- PYTHON OUTCOMES ---
             case "uverror":
-                self._warn_missing_popup(
-                    "uv",
-                    p_window_title="uv: project initialisation or sync failed!",
-                    p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
-                    p_msg_txt="",
-                    p_info_txt=(
-                        f"{Mwc.Widget3.uv_error_msg}: {error_info}"
-                    )
-                )
+                self._warn_missing_popup("uv", p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
+                                         p_window_title="uv: project initialisation or sync failed!", p_msg_txt="",
+                                         p_info_txt=(
+                                             f"{Mwc.Widget3.uv_error_msg}: {error_info}"
+                                         ))
                 return
 
             case "poetryerror":
-                self._warn_missing_popup(
-                    "poetry",
-                    p_window_title="poetry: project initialisation failed!",
-                    p_learn_more_url="https://python-poetry.org/docs/configuration/",
-
-                    p_msg_txt="",
-                    p_info_txt=(
-                        ":( \nNote: make sure Poetry is installed, the Python interpreter is valid "
-                        f"and the project path is usable.\nDetails:\n {error_info}"
-                    ),
-                    p_download_button=LcFg.package_names.get("poetry")
-                )
+                self._warn_missing_popup("poetry", p_learn_more_url="https://python-poetry.org/docs/configuration/",
+                                         p_window_title="poetry: project initialisation failed!",
+                                         p_has_download_button=True,
+                                         p_info_txt=(
+                                             ":( \nNote: make sure Poetry is installed, the Python interpreter is valid "
+                                             f"and the project path is usable.\nDetails:\n {error_info}"
+                                         ))
                 return
 
             case "pixierror":
-                self._warn_missing_popup(
-                    "pixi",
-                    p_window_title="pixi: project initialisation failed!",
-                    p_learn_more_url="https://pixi.sh/latest/getting_started/",
-                    p_msg_txt="",
-                    p_info_txt=(
-                        ":( \nNote: make sure Pixi is installed and the Python version is valid "
-                        f"and the project path is usable.\nDetails: \n{error_info}"
-                    )
-                )
+                self._warn_missing_popup("pixi", p_learn_more_url="https://pixi.sh/latest/getting_started/",
+                                         p_window_title="pixi: project initialisation failed!", p_msg_txt="",
+                                         p_info_txt=(
+                                             ":( \nNote: make sure Pixi is installed and the Python version is valid "
+                                             f"and the project path is usable.\nDetails: \n{error_info}"
+                                         ))
                 return
 
             case "condaerror":
-                self._warn_missing_popup(
-                    "conda",
-                    p_window_title="conda: environment creation failed!",
-                    p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
-                    p_msg_txt="",
-                    p_info_txt=(
-                        ":( \nNote: make sure conda is installed and you've entered "
-                        f"a valid Python interpreter version.\n\nDetails: {error_info}"
-                    )
-                )
+                self._warn_missing_popup("conda",
+                                         p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
+                                         p_window_title="conda: environment creation failed!", p_msg_txt="",
+                                         p_info_txt=(
+                                             ":( \nNote: make sure conda is installed and you've entered "
+                                             f"a valid Python interpreter version.\n\nDetails: {error_info}"
+                                         ))
                 return
 
             case "mambaerror":
-                self._warn_missing_popup(
-                    "mamba",
-                    p_window_title="mamba: environment creation failed!",
-                    p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
-                    p_msg_txt="",
-                    p_info_txt=(
-                        ":( \nNote: make sure mamba is installed and you've entered "
-                        f"a valid Python interpreter version.\n\nDetails: {error_info}"
-                    )
-                )
+                self._warn_missing_popup("mamba",
+                                         p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
+                                         p_window_title="mamba: environment creation failed!", p_msg_txt="",
+                                         p_info_txt=(
+                                             ":( \nNote: make sure mamba is installed and you've entered "
+                                             f"a valid Python interpreter version.\n\nDetails: {error_info}"
+                                         ))
                 return
 
             case "hatcherror":
-                self._warn_missing_popup(
-                    "Hatch",
-                    p_window_title="Hatch: environment creation failed!",
-                    p_learn_more_url="https://hatch.pypa.io/latest/environment/",
-                )
+                self._warn_missing_popup("Hatch", p_learn_more_url="https://hatch.pypa.io/latest/environment/",
+                                         p_window_title="Hatch: environment creation failed!")
                 return
             case "hatcherr_pkg":
-                self._warn_missing_popup(
-                    p_popup_icon=QMessageBox.Icon.Information,
-                    p_window_title="Hatch information",
-                    p_tool_name="Hatch",
-                    p_msg_txt="Hatch does not provide a general command equivalent to 'pip install dependency'.\n Dependencies must be declared only in pyproject.toml manully",
-                    p_learn_more_url="https://github.com/pypa/hatch/issues/1599"#https://hatch.pypa.io/latest/cli/reference/#hatch-dep
-                )
+                self._warn_missing_popup(p_tool_name="Hatch", p_popup_icon=QMessageBox.Icon.Information,
+                                         p_learn_more_url="https://github.com/pypa/hatch/issues/1599",
+                                         p_window_title="Hatch information",
+                                         p_msg_txt="Hatch does not provide a general command equivalent to 'pip install dependency'.\n Dependencies must be declared only in pyproject.toml manully")
 
             case "venverror":
-                self._warn_missing_popup(
-                    "venv",
-                    p_learn_more_url="https://docs.python.org/3/library/venv.html"
-                )
+                self._warn_missing_popup("venv", p_learn_more_url="https://docs.python.org/3/library/venv.html")
                 return
 
             case "pdmerror":
-                self._warn_missing_popup(
-                    "pdm",
-                    p_learn_more_url="https://pdm-project.org/en/latest/usage/project/",
-                    p_download_button=LcFg.package_names.get("pdm")
-                )
+                self._warn_missing_popup("pdm", p_learn_more_url="https://pdm-project.org/en/latest/usage/project/",
+                                         p_has_download_button=True)
                 return
 
             case "pipenverror":
-                self._warn_missing_popup(
-                    "pipenv",
-                    p_window_title="pipenv: project initialisation failed!",
-                    p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/",
-                    p_download_button=LcFg.package_names.get("pipenv")
-                )
+                self._warn_missing_popup("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/",
+                                         p_window_title="pipenv: project initialisation failed!",
+                                         p_has_download_button=True)
                 return
 
             case "virtualenverror":
-                self._warn_missing_popup(
-                    "virtualenv",
-                    p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html",
-                    p_download_button=LcFg.package_names.get("virtualenv")
-                )
+                self._warn_missing_popup("virtualenv",
+                                         p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html",
+                                         p_has_download_button=True)
                 return
             case "package_install_success":
-                self._warn_missing_popup(
-                    "",
-                            p_msg_txt="tool Installation was successfull"
-                                      "\nrestart ReapySet to see changes!",
-                            p_popup_icon=QMessageBox.Icon.Information,
-                            p_learn_more_url="https://python-poetry.org/docs/basic-usage/"
-
-                )
+                self._warn_missing_popup("", p_popup_icon=QMessageBox.Icon.Information,
+                                         p_learn_more_url="https://python-poetry.org/docs/basic-usage/",
+                                         p_msg_txt="tool Installation was successfull"
+                                                   "\nrestart ReapySet to see changes!")
                 return
             case "package_install_error":
-                self._warn_missing_popup(
-                    "",
-                            p_msg_txt="tool Installation failed!"
-                                      "\nTry again later or try a different tool.",
-                            p_popup_icon=QMessageBox.Icon.Warning,
-                            p_learn_more_url="https://python-poetry.org/docs/1.8#installation"
-                        )
+                self._warn_missing_popup("", p_popup_icon=QMessageBox.Icon.Warning,
+                                         p_learn_more_url="https://python-poetry.org/docs/1.8#installation",
+                                         p_msg_txt="tool Installation failed!"
+                                                   "\nTry again later or try a different tool.")
                 return
 
             case "success":

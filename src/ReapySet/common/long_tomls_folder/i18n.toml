@@ -43,7 +43,7 @@ path_box_top_label = """
 
 path_box_placeholder_txt = "Project Path..."
 
-sample_box_top_label = "🍪 CookieCutter:\n  Insert a path\n  (or Double-click to browse)"
+sample_box_top_label = "🍪 CookieCutter(Beta):\n  Insert a path\n  (or Double-click to browse)"
 
 ccboilerplates_box_placeholder_txt = "cctemplates/paths/example "
 
@@ -254,7 +254,7 @@ path_box_top_label = """\nCartella del progetto:
 
 path_box_placeholder_txt = "Percorso del progetto…"
 
-sample_box_top_label = "🍪 Cookiecutter:\n  Inserisci un percorso\n  (oppure fai doppio clic per sfogliare)"
+sample_box_top_label = "🍪 Cookiecutter(Beta):\n  Inserisci un percorso\n  (oppure fai doppio clic per sfogliare)"
 
 ccboilerplates_box_placeholder_txt = "cctemplates/paths/example"
 cookiecutter_error_msg = "il percorso del template configurato non è valido."

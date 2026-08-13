@@ -2,10 +2,10 @@ import shutil
 import subprocess
 import sys
 from subprocess import CompletedProcess
-
+from ReapySet.common.logging import logger
 
 class DownloadPkg:
-    """it doesnt check if the package exists since its already set"""
+    """it doesn't check if the package exists since its already set"""
 
     @staticmethod
     def _get_package_manager() -> str | None:
@@ -52,8 +52,9 @@ class DownloadPkg:
                 case "opensuse":
                     if shutil.which("zypper"):
                         return "zypper"
+                case _:
 
-            return None
+                    return None
 
         return None
 
@@ -80,17 +81,16 @@ class DownloadPkg:
 
         os_pm = DownloadPkg._get_package_manager()
         if os_pm is None:
-            print("No supported package manager found.")
+            logger.warning("No supported package manager found.")
             return False
 
         package_name = p_package_names.get(os_pm)
         if package_name is None:
 
 
-
-            print(f"This package is not configured for "
-                    f"the '{os_pm}' package manager."
-                  )
+            logger.warning(f"This package is not configured for "
+                           f"the '{os_pm}' package manager."
+                          )
             return False
 
 
