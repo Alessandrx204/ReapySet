@@ -19,6 +19,7 @@ from ReapySet.common.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
+from common.download_pkg import DownloadPkg
 
 NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 
@@ -30,15 +31,17 @@ class ConfirmButton2ndThread(QThread):
 
     def __init__(
         self,
-        p_data: dict[str, Any],
-        p_proj_path: str,
+        p_data: dict[str, Any], # toml
+        p_proj_path: str , # | None
         parent=None,
+        p_package_to_install: dict[str, str] | None = None,
     ) -> None:
         super().__init__(parent)
 
         self.data = p_data
         self.proj_path = p_proj_path
         self.cc_project_already = False
+        self.package_to_install = p_package_to_install
 
 
     @staticmethod
@@ -731,7 +734,22 @@ class ConfirmButton2ndThread(QThread):
             return False
 
         return True
-    def run(self) -> None:
+    def run(self) -> None: # params are passed from the init here because qt handles thme this way
+        if self.package_to_install: # oif the pkg is specified run this
+            succes_outcome = DownloadPkg.install_package(
+                self.package_to_install
+            )
+            if succes_outcome:
+                self.status_emitted.emit(
+                    "package_install_success",
+                    ""
+                )
+            else:
+                self.status_emitted.emit(
+                    "package_install_error",
+                    ""
+                )
+            return
         if not self._setup_cc_project():
             return
 
@@ -740,6 +758,7 @@ class ConfirmButton2ndThread(QThread):
 
         if not self._setup_selected_framework():
             return
+
 
         self.status_emitted.emit("success", "")
 class ConfirmButtonLogic:
@@ -786,8 +805,7 @@ class ConfirmButtonLogic:
 
         return clean_env
 
-    @staticmethod
-    def _warn_missing_popup(p_tool_name: str,
+    def _warn_missing_popup(self,p_tool_name: str,
                             p_popup_icon: QMessageBox.Icon = QMessageBox.Icon.Critical,
                             p_learn_more_url: str = "about:blank",
                             p_window_title: str = "Tool Not Found",
@@ -808,19 +826,27 @@ class ConfirmButtonLogic:
         msg.setInformativeText(p_info_txt)
 
         msg.addButton("OK", QMessageBox.ButtonRole.AcceptRole)
+        download_btn: QPushButton | None = None
+
+        learn_more: QPushButton | None = None
         if p_download_button:
-            msg.addButton(
+            download_btn: QPushButton = msg.addButton(
                 p_download_button_txt,
                 QMessageBox.ButtonRole.ActionRole)
 
 
         if p_learn_more_url:
             learn_more: QPushButton = msg.addButton(f"{Mwc.learn_more_txt}", QMessageBox.ButtonRole.HelpRole)
-            msg.exec()
-            if msg.clickedButton() == learn_more:
-                QDesktopServices.openUrl(QUrl(p_learn_more_url))
-        else:
-            msg.exec()
+
+
+        msg.exec()
+
+        if learn_more is not None and msg.clickedButton() == learn_more:
+            QDesktopServices.openUrl(QUrl(p_learn_more_url))
+
+        elif download_btn is not None and msg.clickedButton() == download_btn:
+            self._start_2thread_worker(data=None, project_path=None, package_name=p_tool_name) # type: ignore
+
 
 
     def _check_editor(self, p_editor: str) -> bool:
@@ -901,7 +927,8 @@ class ConfirmButtonLogic:
             # --- PYTHON OUTCOMES ---
             case "uverror":
                 self._warn_missing_popup(
-                    "uv: project initialisation or sync failed!",
+                    "uv",
+                    p_window_title="uv: project initialisation or sync failed!",
                     p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
                     p_msg_txt="",
                     p_info_txt=(
@@ -912,31 +939,36 @@ class ConfirmButtonLogic:
 
             case "poetryerror":
                 self._warn_missing_popup(
-                    "poetry: project initialisation failed!",
+                    "poetry",
+                    p_window_title="poetry: project initialisation failed!",
                     p_learn_more_url="https://python-poetry.org/docs/configuration/",
+
                     p_msg_txt="",
                     p_info_txt=(
                         ":( \nNote: make sure Poetry is installed, the Python interpreter is valid "
-                        f"and the project path is usable.\n\nDetails: {error_info}"
-                    )
+                        f"and the project path is usable.\nDetails:\n {error_info}"
+                    ),
+                    p_download_button=LcFg.package_names.get("poetry")
                 )
                 return
 
             case "pixierror":
                 self._warn_missing_popup(
-                    "pixi: project initialisation failed!",
+                    "pixi",
+                    p_window_title="pixi: project initialisation failed!",
                     p_learn_more_url="https://pixi.sh/latest/getting_started/",
                     p_msg_txt="",
                     p_info_txt=(
                         ":( \nNote: make sure Pixi is installed and the Python version is valid "
-                        f"and the project path is usable.\n\nDetails: {error_info}"
+                        f"and the project path is usable.\nDetails: \n{error_info}"
                     )
                 )
                 return
 
             case "condaerror":
                 self._warn_missing_popup(
-                    "conda: environment creation failed!",
+                    "conda",
+                    p_window_title="conda: environment creation failed!",
                     p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
                     p_msg_txt="",
                     p_info_txt=(
@@ -948,7 +980,8 @@ class ConfirmButtonLogic:
 
             case "mambaerror":
                 self._warn_missing_popup(
-                    "mamba: environment creation failed!",
+                    "mamba",
+                    p_window_title="mamba: environment creation failed!",
                     p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
                     p_msg_txt="",
                     p_info_txt=(
@@ -961,6 +994,7 @@ class ConfirmButtonLogic:
             case "hatcherror":
                 self._warn_missing_popup(
                     "Hatch",
+                    p_window_title="Hatch: environment creation failed!",
                     p_learn_more_url="https://hatch.pypa.io/latest/environment/",
                 )
                 return
@@ -984,13 +1018,16 @@ class ConfirmButtonLogic:
                 self._warn_missing_popup(
                     "pdm",
                     p_learn_more_url="https://pdm-project.org/en/latest/usage/project/",
+                    p_download_button=LcFg.package_names.get("pdm")
                 )
                 return
 
             case "pipenverror":
                 self._warn_missing_popup(
                     "pipenv",
+                    p_window_title="pipenv: project initialisation failed!",
                     p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/",
+                    p_download_button=LcFg.package_names.get("pipenv")
                 )
                 return
 
@@ -998,7 +1035,27 @@ class ConfirmButtonLogic:
                 self._warn_missing_popup(
                     "virtualenv",
                     p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html",
+                    p_download_button=LcFg.package_names.get("virtualenv")
                 )
+                return
+            case "package_install_success":
+                self._warn_missing_popup(
+                    "",
+                            p_msg_txt="tool Installation was successfull"
+                                      "\nrestart ReapySet to see changes!",
+                            p_popup_icon=QMessageBox.Icon.Information,
+                            p_learn_more_url="https://python-poetry.org/docs/basic-usage/"
+
+                )
+                return
+            case "package_install_error":
+                self._warn_missing_popup(
+                    "",
+                            p_msg_txt="tool Installation failed!"
+                                      "\nTry again later or try a different tool.",
+                            p_popup_icon=QMessageBox.Icon.Warning,
+                            p_learn_more_url="https://python-poetry.org/docs/1.8#installation"
+                        )
                 return
 
             case "success":
@@ -1007,6 +1064,28 @@ class ConfirmButtonLogic:
                     if self.editor != "None":
                         self._openin_editor(self.editor, final_path)
                         logger.success(f"Project created! Opened in editor: {self.editor} | Path: {final_path}")
+
+    def _start_2thread_worker(
+            self,
+            data: TOMLDocument,
+            project_path: str,
+            package_name: str | None = None,
+    ) -> None:
+        if self.worker is not None and self.worker.isRunning():
+            return
+
+        worker = ConfirmButton2ndThread(
+            p_data=data,
+            p_proj_path=project_path,
+            p_package_to_install=LcFg.package_names.get(package_name) if package_name else None,# .get doesnt like | None
+        )
+
+        worker.status_emitted.connect(
+            self.handle_2thread_outcomes
+        )
+
+        self.worker = worker
+        worker.start()
 
     def on_confirm_clicked(self) -> None:
         if self.worker is not None and self.worker.isRunning():
@@ -1022,14 +1101,4 @@ class ConfirmButtonLogic:
 
         self.editor: str = editor
 
-        worker = ConfirmButton2ndThread(
-            p_data=data,
-            p_proj_path=project_path,
-        )
-
-        worker.status_emitted.connect(
-            self.handle_2thread_outcomes
-        )
-
-        self.worker = worker
-        worker.start()
+        self._start_2thread_worker(data=data, project_path=project_path)

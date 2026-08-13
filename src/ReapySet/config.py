@@ -539,53 +539,53 @@ class LogicVariables:
 
         py_pixi_icmd: list[str] = [py_pixi_path, "init"]  # pixi init <proj_path>
 
-        package_names: dict[str, dict[str, str]] = {
-            "pipenv": {
-                "brew": "pipenv",
-                "apt": "pipenv",
-            },
+    package_names: dict[str, dict[str, str]] = {
+        "pipenv": {
+            "brew": "pipenv",
+            "apt": "pipenv",
+        },
 
-            "poetry": {
-                "brew": "poetry",
-                "apt": "python3-poetry",
-            },
+        "poetry": {
+            "brew": "poetry",
+            "apt": "python3-poetry",
+        },
 
-            "pdm": {
-                "brew": "pdm",
-                "apt": "python3-pdm",
-            },
+        "pdm": {
+            "brew": "pdm",
+            "apt": "python3-pdm",
+        },
 
-            "hatch": {
-                "winget": "PyPA.Hatch",
-                "brew": "hatch",
-            },
+        "hatch": {
+            "winget": "PyPA.Hatch",
+            "brew": "hatch",
+        },
 
-            "uv": {
-                "winget": "astral-sh.uv",
-                "choco": "uv",
-                "brew": "uv",
-                "snap": "astral-uv",
-            },
+        "uv": {
+            "winget": "astral-sh.uv",
+            "choco": "uv",
+            "brew": "uv",
+            "snap": "astral-uv",
+        },
 
-            "virtualenv": {
-                "brew": "virtualenv",
-                "apt": "virtualenv",
-            },
+        "virtualenv": {
+            "brew": "virtualenv",
+            "apt": "virtualenv",
+        },
 
-            "pixi": {
-                "winget": "prefix-dev.pixi",
-                "brew": "pixi",
-            },
+        "pixi": {
+            "winget": "prefix-dev.pixi",
+            "brew": "pixi",
+        },
 
-            "conda": {
-                # too difficult to implement rn
+        "conda": {
+            # too difficult to implement rn
 
-            },
+        },
 
-            "mamba": {
-                # too difficult to implement rn
-            },
-        }
+        "mamba": {
+            # too difficult to implement rn
+        },
+    }
 
 
 

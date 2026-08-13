@@ -5,6 +5,7 @@ from subprocess import CompletedProcess
 
 
 class DownloadPkg:
+    """it doesnt check if the package exists since its already set"""
 
     @staticmethod
     def _get_package_manager() -> str | None:

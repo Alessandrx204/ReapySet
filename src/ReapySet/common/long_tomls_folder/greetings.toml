@@ -95,16 +95,16 @@ night = [
 ]
 
 late_night = [
-    "Still awake, {name}?\n",
-    "Just one more thing, right?\n",
-    "Only the dedicated remain online.\n",
+    "\nStill awake, {name}?\n",
+    "\nJust one more thing, right?\n",
+    "\nOnly the dedicated remain online.\n",
     "\nThe bugs never sleep.\n",
-    "It's technically tomorrow already.\n",
-    "Productivity or procrastination?\n",
-    "Sleep is a feature, not a bug.\n",
-    "One last commit... probably.\n",
-    "The keyboard is louder at this hour.\n",
-    "Night Owl achievement unlocked.\n"
+    "\nIt's technically tomorrow already.\n",
+    "\nProductivity or procrastination?\n",
+    "\nSleep is a feature, not a bug.\n",
+    "\nOne last commit... probably.\n",
+    "\nThe keyboard is louder at this hour.\n",
+    "\nNight Owl achievement unlocked.\n"
 ]
 [en.holidays.europe]
 "01_01" = ["One currency, one shared journey.\nHappy Euro Day, {name}.", "Happy Euro anniversary, {name}.\nMaking history since 2002."]
@@ -180,7 +180,7 @@ developer_humor = [
   "\nHai provato a spegnere e riaccendere?\n",
   "\n99 piccoli bug nel codice...\n",
   "\nNon c'è posto come localhost.\n",
-  "\nDa me funziona.\n",
+  "\ngiuro che a me funzionava.\n",
   "\nUn bug corretto, due nuovi scoperti.\n",
   "\nI punti e virgola salvano vite.\n",
   "\nComportamento indefinito rilevato.\n",
@@ -190,9 +190,10 @@ developer_humor = [
 ]
 
 generics = [
-  "\"Inserire frase memorabile qui...\"\nVa bene, ciao {name}! 😉\n",
+  "\"Inserire frase memorabile...\"\noh, ciao {name}! 😉\n",
   "\nLorem ipsum sit... aspetta.\nCiao {name}!\n",
-  "\nNessuna frase brillante trovata.\nBenvenuta, {name}.\n"
+  "\nNessuna frase brillante trovata.\nBenvenuta, {name}.\n",
+
 ]
 
 [it.splashscreens.topics.greetings]

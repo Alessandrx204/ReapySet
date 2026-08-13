@@ -10,7 +10,7 @@ LOG_DIR = Path(user_log_dir(APP_NAME))
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 log_file_path: Path = LOG_DIR / "ReapySet.log"
 
-logger.remove()
+logger.remove() # removes from console further level data
 
 # 1. Output to screen (visible if you launch the app from the terminal or during development)
 logger.add(sys.stderr, level="INFO", colorize=True)
