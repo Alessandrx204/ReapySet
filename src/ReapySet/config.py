@@ -284,7 +284,7 @@ class MwConfig:
             img = self.images
             self.button_dict = {
                 "Python":                 ["PY",       img.python_logo],
-                "Ts/JavaScript (W.I.P.)": ["TSJS",     img.javascript_logo],
+                "Ts/JavaScript (W.I.P.)": ["JS",     img.javascript_logo],
                 "Rust (W.I.P.)":          ["RUST",     img.rust_logo],
                 ".NET (W.I.P.)":          ["DOTNET",   img.dotnet_logo],
                 "Kotlin/Java (W.I.P.)":   ["KT",       img.kotlin_logo],
@@ -426,10 +426,10 @@ class MwConfig:
             ("PY:FLASK", "Flask", "flask_logo.png",
              lang.MwConfig.Widget3.py_flask_tooltip),
 
-            ("PY:FASTAPI", "FastAPI", "fastapi_logo.png",
+            ("PY:FASTAPI", f"FastAPI{" "*6}", "fastapi_logo.png",
              lang.MwConfig.Widget3.py_fastapi_tooltip),
 
-            ("PY:STREAMLIT", "Streamlit", "streamlit_logo.png",
+            ("PY:STREAMLIT", f"Streamlit{" "*6}", "streamlit_logo.png",
              lang.MwConfig.Widget3.py_streamlit_tooltip),
 
             ("PY:PYSCRIPT", "PyScript", "pyscript_logo.png",
@@ -440,6 +440,8 @@ class MwConfig:
 
             ("PY:JUPYTER", "Jupyter N.book", "jupyter_logo.png",
              lang.MwConfig.Widget3.py_jupyter_tooltip),
+            ("PY:MARIMO", "Marimo N.book", "marimo_logo.png",
+             lang.MwConfig.Widget3.py_marimo_tooltip),
         ))
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)

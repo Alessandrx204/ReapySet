@@ -165,9 +165,10 @@ def get_python_interpreters() -> list[tuple[str, str]]:
 def populate_interpreter_combobox(combobox) -> None:  # type: ignore[no-untyped-def]
     """Populates a QComboBox with the found interpreters."""
     combobox.clear()
-    interpreters = get_python_interpreters()
+    interpreters: list[tuple[str, str]] = get_python_interpreters()
     if interpreters:
         for path, label in interpreters:
             combobox.addItem(label, userData=path)
+            combobox.setToolTip(f"{label} ({path})")
     else:
         combobox.addItem("No interpreter was found")

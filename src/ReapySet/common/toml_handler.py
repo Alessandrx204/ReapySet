@@ -146,6 +146,8 @@ class TomlHandler:
     def set_enabled_1lang(p_lang: str) -> None:
         toml_line: TOMLDocument = TomlHandler._toml_read()
         for lang in toml_line["languages"]:
+            if lang == "common":
+                continue  # avoids the `common` subsection
             toml_line["languages"][lang]["enabled"] = (lang == p_lang)
         TomlHandler._toml_write(toml_line)
 
@@ -153,6 +155,8 @@ class TomlHandler:
     def set_disabled_all_langs() -> None:
         toml_line: TOMLDocument = TomlHandler._toml_read()
         for lang in toml_line["languages"]:
+            if lang == "common":
+                continue # avoids the `common` subsection
             toml_line["languages"][lang]["enabled"] = False
         TomlHandler._toml_write(toml_line)
 

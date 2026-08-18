@@ -7,13 +7,14 @@ from pathlib import Path
 from subprocess import CompletedProcess
 from typing import Any
 
-from PySide6.QtCore import QThread, Signal, QUrl
-from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QMessageBox, QPushButton
+from PySide6.QtCore import QThread, Signal, QUrl, QRegularExpression
+from PySide6.QtGui import QDesktopServices, QRegularExpressionValidator
+from PySide6.QtWidgets import QMessageBox, QPushButton, QLineEdit, QGridLayout
 from cookiecutter.exceptions import CookiecutterException
 from cookiecutter.main import cookiecutter
 from tomlkit import TOMLDocument
 
+from ReapySet.common.MwFunctions import MwFuncs as Mwf
 from ReapySet.common.init_frameworks import InitFrameworks
 from ReapySet.common.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
@@ -158,7 +159,7 @@ class ConfirmButton2ndThread(QThread):
                 "disable_poetry_centralised_venvs"
             )
         )
-        if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "python") in {"PY:PYSCRIPT",}:
+        if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "common") in {"PY:PYSCRIPT",}:
             return True # NO venv option
 
         interp_ver: str | None = TomlHandler.toml_get(
@@ -356,8 +357,7 @@ class ConfirmButton2ndThread(QThread):
 
         return True
 
-    from collections.abc import Iterable
-    from pathlib import Path
+    #from collections.abc import Iterable
 
     def package_install(
             self,
@@ -578,6 +578,238 @@ class ConfirmButton2ndThread(QThread):
             p_first_cmd_outside_project=False,
         )
 
+    def run_project_command(
+            self,
+            p_command: str | Iterable[str],
+            p_proj_path: str | Path,
+            *,
+            p_error_code: str = "projectcommanderror",
+    ) -> bool:
+        """
+        Runs a command inside the Python environment of an existing project.
+
+        The correct execution method is selected automatically according to
+        the package manager configured for the project.
+
+        Examples:
+            ["python", "-m", "django", "startproject", "myapp", "."]
+            ["python", "manage.py", "migrate"]
+            ["pytest"]
+            ("python", "-m", "ruff", "check", ".")
+
+        Args:
+            :param p_command:
+                Command to execute.
+
+                It may be passed as a single string or as an iterable of
+                command arguments.
+
+                Prefer an iterable when arguments are already separated.
+
+            :param p_proj_path:
+                Path of the project in which the command must be executed.
+
+            :param p_error_code:
+                Error code emitted if command execution fails.
+
+        Returns:
+            True if the command succeeds, otherwise False.
+
+        Raises:
+            TypeError:
+                If command arguments are not strings.
+
+            ValueError:
+                If the command is empty, no package manager is configured,
+                or the configured package manager is unsupported.
+
+            FileNotFoundError:
+                If a local virtual environment executable cannot be found.
+        """
+
+        project_path = Path(p_proj_path)
+        current_proj_toml_path: Path = TomlHandler._dest_path()
+
+        pm: str | None = TomlHandler.toml_get(
+            current_proj_toml_path,
+            "languages",
+            "package_manager",
+            "python",
+        )
+
+        if pm is None:
+            raise ValueError(
+                "No Python package manager is configured for the project."
+            )
+
+        # Normalise the command.
+        if isinstance(p_command, str):
+            raw_command: Iterable[str] = (p_command,)
+        else:
+            raw_command = p_command
+
+        normalised_command: list[str] = []
+
+        for argument in raw_command:
+            if not isinstance(argument, str):
+                raise TypeError(
+                    "Every command argument must be a string, "
+                    f"not {type(argument).__name__}."
+                )
+
+            if argument:
+                normalised_command.append(argument)
+
+        if not normalised_command:
+            raise ValueError(
+                "The project command cannot be empty."
+            )
+
+        command: list[str]
+
+        match pm:
+
+            case "PY:UV":
+                command = [
+                    LcFg.PythonVars.py_uv_path,
+                    "run",
+                    *normalised_command,
+                ]
+
+            case "PY:POETRY":
+                command = [
+                    LcFg.PythonVars.py_poetry_path,
+                    "run",
+                    *normalised_command,
+                ]
+
+            case "PY:PDM":
+                command = [
+                    LcFg.PythonVars.py_pdm_path,
+                    "run",
+                    *normalised_command,
+                ]
+
+            case "PY:PIPENV":
+                command = [
+                    LcFg.PythonVars.py_pipenv_path,
+                    "run",
+                    *normalised_command,
+                ]
+
+            case "PY:PIXI":
+                command = [
+                    LcFg.PythonVars.py_pixi_path,
+                    "run",
+                    "--manifest-path",
+                    str(project_path),
+                    "--executable",
+                    *normalised_command,
+                ]
+
+            case "PY:CONDA":
+                conda_env_path = project_path / ".conda"
+
+                if not conda_env_path.is_dir():
+                    raise FileNotFoundError(
+                        f"Conda environment not found: {conda_env_path}"
+                    )
+
+                command = [
+                    LcFg.PythonVars.py_conda_path,
+                    "run",
+                    "--prefix",
+                    str(conda_env_path),
+                    "--",
+                    *normalised_command,
+                ]
+
+            case "PY:MAMBA":
+                mamba_env_path = project_path / ".mamba"
+
+                if not mamba_env_path.is_dir():
+                    raise FileNotFoundError(
+                        f"Mamba environment not found: {mamba_env_path}"
+                    )
+
+                command = [
+                    LcFg.PythonVars.py_mamba_path,
+                    "run",
+                    "--prefix",
+                    str(mamba_env_path),
+                    *normalised_command,
+                ]
+
+            case "PY:VENV" | "PY:VIRTUALENV":
+                venv_path = project_path / ".venv"
+
+                if os.name == "nt":
+                    bin_path = venv_path / "Scripts"
+                    python_path = bin_path / "python.exe"
+                else:
+                    bin_path = venv_path / "bin"
+                    python_path = bin_path / "python"
+
+                if not python_path.is_file():
+                    raise FileNotFoundError(
+                        f"Virtual environment Python not found: {python_path}"
+                    )
+
+                executable = normalised_command[0]
+
+                # "python ..." must explicitly use the project's interpreter.
+                if executable in {
+                    "python",
+                    "python3",
+                    "python.exe",
+                }:
+                    command = [
+                        str(python_path),
+                        *normalised_command[1:],
+                    ]
+
+                else:
+                    # Try to run an executable installed in the venv,
+                    # e.g. pytest, django-admin, ruff, etc.
+                    if os.name == "nt":
+                        executable_path = bin_path / (
+                            executable
+                            if executable.lower().endswith(".exe")
+                            else f"{executable}.exe"
+                        )
+                    else:
+                        executable_path = bin_path / executable
+
+                    if executable_path.is_file():
+                        command = [
+                            str(executable_path),
+                            *normalised_command[1:],
+                        ]
+
+                    else:
+                        raise FileNotFoundError(
+                            f"Executable {executable!r} was not found "
+                            f"in the virtual environment: {bin_path}"
+                        )
+
+            case "PY:HATCH":
+                command = [
+                    LcFg.PythonVars.py_hatch_path,
+                    "run",
+                    *normalised_command,
+                ]
+
+            case _:
+                raise ValueError(
+                    f"Unsupported Python package manager: {pm!r}"
+                )
+
+        return self._run_cmd_list(
+            [command],
+            p_error_code=p_error_code,
+            p_first_cmd_outside_project=False,
+        )
+
 
     def setup_cookiecutter(self) -> str | None:
         """
@@ -664,17 +896,19 @@ class ConfirmButton2ndThread(QThread):
         return True
 
     def _setup_selected_framework(self) -> bool:
-        py_config = self.data["languages"]["python"]  # Python frameworks
+        py_config = self.data["languages"]["python"]
 
         if not py_config["enabled"]:
             return True
 
-        selected_framework = py_config.get("selected_framework") # python fmks
+        selected_framework = self.data["languages"]["common"].get(
+            "selected_framework" # common fmks
+        )
 
         if not selected_framework:
             return True
 
-        install_packages = (
+        install_packages_on_project_creation: bool = (
                 TomlHandler.toml_get(
                     CONFIG_PATH,
                     "advanced",
@@ -696,7 +930,7 @@ class ConfirmButton2ndThread(QThread):
                         python_version,
                     )
 
-                    if install_packages:
+                    if install_packages_on_project_creation:
                         if not self.package_install(
                                 ("jupyterlab",),
                                 self.proj_path,
@@ -706,12 +940,121 @@ class ConfirmButton2ndThread(QThread):
                 case "PY:PYSIDE6":
                     InitFrameworks.init_pyside6(self.proj_path)
 
-                    if install_packages:
+                    if install_packages_on_project_creation:
                         if not self.package_install(
                                 ("pyside6",),
                                 self.proj_path,
                         ):
                             return False
+
+
+
+                case "PY:MARIMO":
+                    InitFrameworks.init_marimo(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.package_install(
+                                ("marimo",),
+                                self.proj_path,
+                        ):
+                            return False
+
+                case "PY:DJANGO":
+                    """
+                    Django project initialisation flow.
+
+                    Django requires some additional handling compared with the other supported frameworks
+                    because the project name is provided by the user at confirmation time
+                    and Django commands MUST be executed inside the environment managed by
+                    the currently selected Python package manager.
+
+                    The flow is as follows:
+
+                    1. When the user confirms project creation and Django happens to be the selected
+                       framework, an option popup is displayed containing a QLineEdit.
+                       (NOTE: it cannot use windows/macos/wayland... native style
+                        as message boxes natively dont support qilinedits
+                         so if the window has little to no animation and acts funny that's why)
+
+                    2. The value entered in the QLineEdit is validated and, when the user presses
+                       OK, is temporarily stored in the current project TOML as
+                       `languages.common.project_app_name`.
+
+                    3. The normal project creation worker starts and creates the Python
+                       environment using the selected package manager.
+
+                    4. If automatic framework package installation is enabled, Django is installed
+                       through `package_install()`. This keeps dependency installation independent
+                       of the specific package manager.
+
+                    5. The temporary `project_app_name` value is read from the project TOML and
+                       passed to `InitFrameworks.init_django()`.
+
+                    6. `InitFrameworks.init_django()` defines the Django-specific initialisation
+                       steps, such as removing the generic `main.py`, running `django startproject`,
+                       and applying the initial database migrations.
+
+                    7. Django commands are not executed directly by `init_django()`. They are
+                       delegated to `run_project_command()`, which translates a generic command
+                       into the correct execution method for the selected package manager
+                       (for example uv, Poetry, PDM, Pipenv, Pixi, Conda, Mamba, Hatch, venv or
+                       virtualenv).
+
+                    8. Once the Django setup attempt has completed, the temporary
+                       `languages.common.project_app_name` value is always cleared from
+                       the project TOML, regardless of whether the initialisation succeeds
+                       or fails.
+
+                    This separation keeps each component responsible for a single concern:
+                    the popup collects temporary user input, `package_install()` installs
+                    dependencies, `run_project_command()` handles package-manager-specific command
+                    execution, and `InitFrameworks.init_django()` contains only Django-specific
+                    initialisation logic.
+                    """
+                    try:
+
+                        if install_packages_on_project_creation:
+                            if not self.package_install(
+                                    ("django",),
+
+                                    self.proj_path,
+                            ):
+                                return False
+
+                        app_name: str | None = TomlHandler.toml_get(
+
+                            TomlHandler._dest_path(),
+
+                            "languages",
+
+                            "project_app_name",
+
+                            "common",
+
+                        )
+
+                        if not InitFrameworks.init_django(
+                                self.proj_path,
+
+                                app_name if app_name else "NAME_NOT_PROVIDED",
+
+                                self.run_project_command,
+                        ):
+                            return False
+
+                    finally: # whatever is the outcome clear it
+
+                        TomlHandler.toml_edit(
+
+                            "languages",
+
+                            "project_app_name",
+
+                            "",
+
+                            "common",
+
+                        )
 
 
                 case "PY:PYSCRIPT":
@@ -808,7 +1151,92 @@ class ConfirmButtonLogic:
 
         return clean_env
 
-    def _warn_missing_popup(self,p_tool_name: str,
+    @staticmethod
+    def _option_popup(p_tool_name: str,
+                            p_popup_icon: QMessageBox.Icon = QMessageBox.Icon.Information,
+                            p_learn_more_url: str = "about:blank",
+                            p_window_title: str = "Tool Not Found",
+                            p_qlidedit_placeholder_txt: str = "app name is..?",
+                            p_qlinedit_top_txt: str = "top text",
+                            p_msg_txt: str = "insert value",
+                            p_info_txt: str = "Make sure it is installed and the path is correct in config.toml"
+                            ) -> None:
+        """
+
+        :rtype: None
+        """
+        logger.info(f"{p_window_title}: {p_tool_name} {p_msg_txt} | {p_info_txt}")
+        msg = QMessageBox()
+        msg.setIcon(p_popup_icon)
+        msg.setWindowTitle(p_window_title)
+        msg.setText(f" {p_tool_name} {p_msg_txt}")
+        msg.setInformativeText(p_info_txt)
+        msg.setOption(
+
+            QMessageBox.Option.DontUseNativeDialog,
+
+            True # i doesnt support the qlinedit otherwise
+
+        )
+
+
+        qlinedit = QLineEdit(placeholderText=p_qlidedit_placeholder_txt)
+        labeled_widget = Mwf.labeled_field(widget=qlinedit, label_txt=p_qlinedit_top_txt)
+
+        regex_: QRegularExpressionValidator =\
+            QRegularExpressionValidator(
+            QRegularExpression(r"^[a-z_][a-z0-9_]*$"  )
+        )
+        qlinedit.setValidator(regex_)
+
+        layout = msg.layout()
+        if isinstance(layout, QGridLayout):
+
+            layout.addWidget(
+                labeled_widget if labeled_widget else qlinedit,
+                layout.rowCount(),  # new row
+                0,  # col 0
+                1,  # row 1
+                layout.columnCount()  # all thr colums
+            )
+
+        ok_button = msg.addButton("OK", QMessageBox.ButtonRole.AcceptRole)
+
+        learn_more: QPushButton | None = None
+
+
+        if p_learn_more_url:
+            learn_more: QPushButton = msg.addButton(f"{Mwc.learn_more_txt}", QMessageBox.ButtonRole.HelpRole)
+
+
+        msg.exec()
+
+        if learn_more is not None and msg.clickedButton() == learn_more:
+            QDesktopServices.openUrl(QUrl(p_learn_more_url))
+            return None
+
+
+        clicked_btn = msg.clickedButton()
+        if clicked_btn == ok_button:
+            TomlHandler.toml_edit(
+
+
+                "languages",
+
+                "project_app_name",
+
+                f"{qlinedit.text()}",
+
+                "common",
+
+
+
+            )
+
+
+
+
+    def _window_popup(self,p_tool_name: str,
                             p_popup_icon: QMessageBox.Icon = QMessageBox.Icon.Critical,
                             p_learn_more_url: str = "about:blank",
                             p_window_title: str = "Tool Not Found",
@@ -858,7 +1286,7 @@ class ConfirmButtonLogic:
         if cmd == "NOEDITOR":
             return True
         elif not cmd:
-            self._warn_missing_popup(p_editor)
+            self._window_popup(p_editor)
             return False
 
         executable = shlex.split(cmd, posix=NTV_POSIX)[0]
@@ -869,7 +1297,7 @@ class ConfirmButtonLogic:
         )
 
         if not resolved:
-            self._warn_missing_popup(p_editor)
+            self._window_popup(p_editor)
             return False
 
         return True
@@ -895,118 +1323,113 @@ class ConfirmButtonLogic:
                 env=self._make_clear_term_env1()
             )
         except OSError as exc:
-            self._warn_missing_popup(p_editor, p_info_txt=str(exc))
+            self._window_popup(p_editor, p_info_txt=str(exc))
     def handle_2thread_outcomes(self, outcome: str, error_info: str):
         match outcome:
             # --- CCOOKIECUTTER OUTCOMES---
             case "cc_template_missing":
-                self._warn_missing_popup("Cookiecutter",
-                                         p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/README.html",
-                                         p_msg_txt="template was not found",
-                                         p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}")
+                self._window_popup("Cookiecutter",
+                                   p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/README.html",
+                                   p_msg_txt="template was not found",
+                                   p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}")
                 return
             case "cc_json_missing":
-                self._warn_missing_popup("Cookiecutter.json",
-                                         p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/tutorials/tutorial2.html#step-2-create-cookiecutter-json",
-                                         p_msg_txt="Template is invalid :(",
-                                         p_info_txt="It looks like the selected directory does not contain any cookiecutter.json.")
+                self._window_popup("Cookiecutter.json",
+                                   p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/tutorials/tutorial2.html#step-2-create-cookiecutter-json",
+                                   p_msg_txt="Template is invalid :(",
+                                   p_info_txt="It looks like the selected directory does not contain any cookiecutter.json.")
                 return
             case "cc_generation_failed":
-                self._warn_missing_popup("cookiecutter",
-                                         p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/troubleshooting.html#i-created-a-cookiecutter-but-it-doesn-t-work-and-i-can-t-figure-out-why",
-                                         p_msg_txt="Project generation failed :(",
-                                         p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}: {error_info}")
+                self._window_popup("cookiecutter",
+                                   p_learn_more_url="https://cookiecutter.readthedocs.io/en/stable/troubleshooting.html#i-created-a-cookiecutter-but-it-doesn-t-work-and-i-can-t-figure-out-why",
+                                   p_msg_txt="Project generation failed :(",
+                                   p_info_txt=f"{Mwc.Widget1.cookiecutter_error_msg}: {error_info}")
                 return
 
             # --- PYTHON OUTCOMES ---
             case "uverror":
-                self._warn_missing_popup("uv", p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
-                                         p_window_title="uv: project initialisation or sync failed!", p_msg_txt="",
-                                         p_info_txt=(
-                                             f"{Mwc.Widget3.uv_error_msg}: {error_info}"
-                                         ))
+                self._window_popup("uv", p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
+                                   p_window_title="uv: project initialisation or sync failed!", p_msg_txt="",
+                                   p_info_txt=(
+                                       f"{Mwc.Widget3.uv_error_msg}: {error_info}"
+                                   ))
                 return
 
             case "poetryerror":
-                self._warn_missing_popup("poetry", p_learn_more_url="https://python-poetry.org/docs/configuration/",
-                                         p_window_title="poetry: project initialisation failed!",
-                                         p_has_download_button=True,
-                                         p_info_txt=(
-                                             ":( \nNote: make sure Poetry is installed, the Python interpreter is valid "
-                                             f"and the project path is usable.\nDetails:\n {error_info}"
-                                         ))
+                self._window_popup("poetry", p_learn_more_url="https://python-poetry.org/docs/configuration/",
+                                   p_window_title="poetry: project initialisation failed!", p_has_download_button=True,
+                                   p_info_txt=(
+                                       ":( \nNote: make sure Poetry is installed, the Python interpreter is valid "
+                                       f"and the project path is usable.\nDetails:\n {error_info}"
+                                   ))
                 return
 
             case "pixierror":
-                self._warn_missing_popup("pixi", p_learn_more_url="https://pixi.sh/latest/getting_started/",
-                                         p_window_title="pixi: project initialisation failed!", p_msg_txt="",
-                                         p_info_txt=(
-                                             ":( \nNote: make sure Pixi is installed and the Python version is valid "
-                                             f"and the project path is usable.\nDetails: \n{error_info}"
-                                         ))
+                self._window_popup("pixi", p_learn_more_url="https://pixi.sh/latest/getting_started/",
+                                   p_window_title="pixi: project initialisation failed!", p_msg_txt="", p_info_txt=(
+                        ":( \nNote: make sure Pixi is installed and the Python version is valid "
+                        f"and the project path is usable.\nDetails: \n{error_info}"
+                    ))
                 return
 
             case "condaerror":
-                self._warn_missing_popup("conda",
-                                         p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
-                                         p_window_title="conda: environment creation failed!", p_msg_txt="",
-                                         p_info_txt=(
-                                             ":( \nNote: make sure conda is installed and you've entered "
-                                             f"a valid Python interpreter version.\n\nDetails: {error_info}"
-                                         ))
+                self._window_popup("conda",
+                                   p_learn_more_url="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html",
+                                   p_window_title="conda: environment creation failed!", p_msg_txt="", p_info_txt=(
+                        ":( \nNote: make sure conda is installed and you've entered "
+                        f"a valid Python interpreter version.\n\nDetails: {error_info}"
+                    ))
                 return
 
             case "mambaerror":
-                self._warn_missing_popup("mamba",
-                                         p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
-                                         p_window_title="mamba: environment creation failed!", p_msg_txt="",
-                                         p_info_txt=(
-                                             ":( \nNote: make sure mamba is installed and you've entered "
-                                             f"a valid Python interpreter version.\n\nDetails: {error_info}"
-                                         ))
+                self._window_popup("mamba",
+                                   p_learn_more_url="https://mamba.readthedocs.io/en/latest/user_guide/mamba.html",
+                                   p_window_title="mamba: environment creation failed!", p_msg_txt="", p_info_txt=(
+                        ":( \nNote: make sure mamba is installed and you've entered "
+                        f"a valid Python interpreter version.\n\nDetails: {error_info}"
+                    ))
                 return
 
             case "hatcherror":
-                self._warn_missing_popup("Hatch", p_learn_more_url="https://hatch.pypa.io/latest/environment/",
-                                         p_window_title="Hatch: environment creation failed!")
+                self._window_popup("Hatch", p_learn_more_url="https://hatch.pypa.io/latest/environment/",
+                                   p_window_title="Hatch: environment creation failed!")
                 return
             case "hatcherr_pkg":
-                self._warn_missing_popup(p_tool_name="Hatch", p_popup_icon=QMessageBox.Icon.Information,
-                                         p_learn_more_url="https://github.com/pypa/hatch/issues/1599",
-                                         p_window_title="Hatch information",
-                                         p_msg_txt="Hatch does not provide a general command equivalent to 'pip install dependency'.\n Dependencies must be declared only in pyproject.toml manully")
+                self._window_popup(p_tool_name="Hatch", p_popup_icon=QMessageBox.Icon.Information,
+                                   p_learn_more_url="https://github.com/pypa/hatch/issues/1599",
+                                   p_window_title="Hatch information",
+                                   p_msg_txt="Hatch does not provide a general command equivalent to 'pip install dependency'.\n Dependencies must be declared only in pyproject.toml manully")
 
             case "venverror":
-                self._warn_missing_popup("venv", p_learn_more_url="https://docs.python.org/3/library/venv.html")
+                self._window_popup("venv", p_learn_more_url="https://docs.python.org/3/library/venv.html")
                 return
 
             case "pdmerror":
-                self._warn_missing_popup("pdm", p_learn_more_url="https://pdm-project.org/en/latest/usage/project/",
-                                         p_has_download_button=True)
+                self._window_popup("pdm", p_learn_more_url="https://pdm-project.org/en/latest/usage/project/",
+                                   p_has_download_button=True)
                 return
 
             case "pipenverror":
-                self._warn_missing_popup("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/",
-                                         p_window_title="pipenv: project initialisation failed!",
-                                         p_has_download_button=True)
+                self._window_popup("pipenv", p_learn_more_url="https://pipenv.pypa.io/en/latest/basics/",
+                                   p_window_title="pipenv: project initialisation failed!", p_has_download_button=True)
                 return
 
             case "virtualenverror":
-                self._warn_missing_popup("virtualenv",
-                                         p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html",
-                                         p_has_download_button=True)
+                self._window_popup("virtualenv",
+                                   p_learn_more_url="https://virtualenv.pypa.io/en/latest/user_guide.html",
+                                   p_has_download_button=True)
                 return
             case "package_install_success":
-                self._warn_missing_popup("", p_popup_icon=QMessageBox.Icon.Information,
-                                         p_learn_more_url="https://python-poetry.org/docs/basic-usage/",
-                                         p_msg_txt="tool Installation was successfull"
-                                                   "\nrestart ReapySet to see changes!")
+                self._window_popup("", p_popup_icon=QMessageBox.Icon.Information,
+                                   p_learn_more_url="https://python-poetry.org/docs/basic-usage/",
+                                   p_msg_txt="tool Installation was successfull"
+                                             "\nrestart ReapySet to see changes!")
                 return
             case "package_install_error":
-                self._warn_missing_popup("", p_popup_icon=QMessageBox.Icon.Warning,
-                                         p_learn_more_url="https://python-poetry.org/docs/1.8#installation",
-                                         p_msg_txt="tool Installation failed!"
-                                                   "\nTry again later or try a different tool.")
+                self._window_popup("", p_popup_icon=QMessageBox.Icon.Warning,
+                                   p_learn_more_url="https://python-poetry.org/docs/1.8#installation",
+                                   p_msg_txt="tool Installation failed!"
+                                             "\nTry again later or try a different tool.")
                 return
 
             case "success":
@@ -1046,6 +1469,12 @@ class ConfirmButtonLogic:
 
         project_path: str = data["global"]["project_path"]
         editor: str = data["global"]["fav_editor"]
+        active_framework: str = data["languages"]["common"]["selected_framework"]
+        if active_framework == "PY:DJANGO":
+            self._option_popup(p_window_title="Django", p_tool_name="Django",
+                               p_qlinedit_top_txt="Enter the name of the Django app:", p_qlidedit_placeholder_txt="App Name...?", p_msg_txt="")
+
+
 
         if not self._check_editor(editor):
             return

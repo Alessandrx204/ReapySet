@@ -1,5 +1,7 @@
 import json
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -94,3 +96,66 @@ class InitFrameworks:
 
             dirs_exist_ok=True,
         )
+
+    @staticmethod
+    def init_marimo(p_path: str | Path) -> None:
+        p_path = Path(p_path)
+        file_to_remove: Path = p_path / "main.py"
+        file_to_remove.unlink(missing_ok=True)  # doesnt crash if not found
+        source: Path = Path(__file__).parent / "fmk_templates" / "marimo_notebook"
+
+        shutil.copytree(
+
+            source,
+
+            p_path,
+
+            dirs_exist_ok=True,
+        )
+
+    @staticmethod
+    def init_django(
+            p_path: str | Path,
+            p_app_name: str,
+            p_runner,
+    ) -> bool:
+        p_path = Path(p_path)
+
+        (p_path / "main.py").unlink(missing_ok=True)
+        if not p_runner(
+                [
+                    "python",
+                    "-m",
+                    "django",
+                    "startproject",
+                    p_app_name,
+                    ".",
+                ],
+                p_path,
+                p_error_code="djangoerror",
+        ):
+            return False
+
+        if not p_runner(
+                [
+                    "python",
+                    "manage.py",
+                    "migrate",
+                ],
+                p_path,
+                p_error_code="djangoerror",
+        ):
+            return False
+
+        return True
+
+        """ source: Path = Path(__file__).parent / "fmk_templates" / "django_project"
+
+         shutil.copytree(
+
+             source,
+
+             p_path,
+
+             dirs_exist_ok=True,
+         )"""

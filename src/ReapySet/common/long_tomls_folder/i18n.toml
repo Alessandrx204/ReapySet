@@ -203,6 +203,15 @@ name = "Jupyter Notebook"
 tooltip = """Interactive notebooks for data analysis, visualisation,
 experimentation and machine learning."""
 
+
+[en.MwConfig.Widget3.Frameworks.marimo]
+name = "marimo"
+
+tooltip = """A modern, reactive alternative to Jupyter: notebooks executable as
+Python scripts, ideal for dashboards, data analysis, and reproducible research."""
+
+
+
 #-----------------------------------------------------------------------#
 [it.MwConfig]
 
@@ -422,3 +431,11 @@ name = "Jupyter Notebook"
 
 tooltip = """Notebook interattivi per analisi dei dati, visualizzazione,
 sperimentazione, ricerca e machine learning."""
+
+[it.MwConfig.Widget3.Frameworks.marimo]
+name = "marimo"
+
+tooltip = """Alternativa moderna e reattiva a Jupyter: notebook eseguibili come
+script Python, perfetti per dashboard, riproducibilità e analisi dati."""
+
+

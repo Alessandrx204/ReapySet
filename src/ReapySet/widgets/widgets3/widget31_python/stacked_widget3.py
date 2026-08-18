@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import MwConfig as Mwc
-from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
 from ReapySet.common.logging import logger
 
@@ -217,7 +217,7 @@ class PythonGenWidget(QWidget):
 
                 # Selects the package manager currently stored in the project TOML.
                 # If missing, it was initialised from the global default.
-            if i not in {4, 5, 6} :# a way to disable them
+            if i not in {0, 4, 5, 6, 7} :# a way to disable them
                 btn.setEnabled(False) #disables all except the last
                 btn.setToolTip("") # disables all tooltip for un-enabled buttons
 
@@ -232,10 +232,10 @@ class PythonGenWidget(QWidget):
         qbgroup: QButtonGroup = button.group()  # returns the qbgroup the button is part of
 
         if button.property("was_checked"):
-            Mwf.reset_qradio_group(qbgroup, "selected_framework", p_subsection="python")
+            Mwf.reset_qradio_group(qbgroup, "selected_framework", p_subsection="common")
         else:
             key = button.property("key")
-            TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="python")
+            TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="common")
 
             for btn in qbgroup.buttons():
                 btn.setProperty("was_checked", btn == button)

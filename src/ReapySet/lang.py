@@ -443,3 +443,5 @@ class MwConfig:
 
         py_jupyter_name: str = _frameworks["jupyter"]["name"]
         py_jupyter_tooltip: str = _frameworks["jupyter"]["tooltip"]
+        py_marimo_name: str = _frameworks["marimo"]["name"]
+        py_marimo_tooltip: str = _frameworks["marimo"]["tooltip"]

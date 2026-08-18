@@ -8,7 +8,7 @@ from ReapySet.common.confirm_button_logic import ConfirmButtonLogic
 from ReapySet.common.toml_handler import TomlHandler
 from ReapySet.config import MwConfig as Mwc
 from ReapySet.main_window import RpsMainWindow
-from ReapySet.widgets.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.floating_widgets import MwAdditions
 from ReapySet.common.logging import logger
 
@@ -75,8 +75,8 @@ class LogicMainWindow(RpsMainWindow):
             case "CPP":
                 print("testing cpp")
                 return
-            case "TSJS":
-                print("testing tsjs")
+            case "JS":
+                print("testing js")
                 return
             case "GO":
                 print("testing go")

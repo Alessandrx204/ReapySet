@@ -9,14 +9,19 @@ fav_editor = ""  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot
 github_repo_link = ""
 
 # ==============================================================================
-# DO NOT CHANGE THIS FILE MANUALLY UNLESS YOU KNOW WHAT YOU ARE DOING.
-# IT IS USED INTERNALLY BY THE REAPYSET FRAMEWORK.
+# DO NOT TRY TO CHANGE A SINGLE COMMA IN THIS FILE MANUALLY
+# UNLESS YOU KNOW WHAT YOU ARE DOING.
+# IT IS INTENDED TO BE EXCLUSIVELY INTERNALLY USED BY THE REAPYSET APPLICATION.
 # ==============================================================================
 [cookiecutter]
 template_path = ""
 # ==============================================================================
 # LANGUAGE SPECIFIC CONFIGURATIONS
 # ==============================================================================
+[languages.common]
+selected_framework = "" # PY:DJANGO PY:FASTAPI PY:PYSIDE6 PY:JUPYTER PY:FLASK JS:REACT JS:VUE
+project_app_name = "" # the name frameworks like django React etc are going to use
+
 
 [languages.python]
 enabled = false
@@ -25,10 +30,11 @@ unb_interpreter_version = ""
 interpreter_path = ""
 package_manager = ""  # venv is the Default fallback
 selected_framework = "" # PY:DJANGO PY:FASTAPI PY:PYSIDE6 PY:JUPYTER PY:FLASK
+project_app_name = "" # the name frameworks like django are going to use
 
 [languages.javascript] # NOT IMPLEMENTED YET
 enabled = false
-selected_runtime_path = "/usr/bin/rustc"
+selected_runtime_path = "/usr/bin/nodejs"
 
 [languages.rust] # NOT IMPLEMENTED YET
 enabled = false
@@ -49,6 +55,6 @@ enabled = false
 sdk_version = "21"                # JDK version (es. 17, 21)
 sdk_path = "/usr/lib/jvm/java-21" # JDK Path
 build_tool = "gradle"             # Options: Empty string means none it can be gradle, maven
-language = "kotlin"               # Options: kotlin, java
+jvm_language = "kotlin"           # Options: kotlin, java, spring, scala
 unit_test_library = ""            # Options: junit4, junit5, kotest, spock or none
 
