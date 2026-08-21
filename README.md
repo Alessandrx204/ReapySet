@@ -71,15 +71,15 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - `virtualenv`
 - `pdm`
 **available python franeworks/templates **
-- Django 
+- `Django` 
 (project initialisation app name selecion and a first migration)
-- PySide6
+- `PySide6`
 (basic gui app example build programmatically and folder structure)
-- Jupyter Notebooks 
+- `Jupyter Notebooks`
 (basic notebook template for easy copying)
-- Marimo Notebooks 
+- `Marimo Notebooks`
 (basically same as jupyter + readme for instructions)
-- Pyscript 
+- `Pyscript`
 (html css and python script + readme for instructions)
 
 ---
