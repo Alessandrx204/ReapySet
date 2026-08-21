@@ -70,7 +70,9 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - `pipenv`
 - `virtualenv`
 - `pdm`
+
 **available python franeworks/templates **
+
 - `Django` 
 (project initialisation app name selecion and a first migration)
 - `PySide6`
