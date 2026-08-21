@@ -71,7 +71,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - `virtualenv`
 - `pdm`
 
-**available python franeworks/templates **
+**Available python frameworks/templates**
 
 - `Django` 
 (project initialisation app name selecion and a first migration)
