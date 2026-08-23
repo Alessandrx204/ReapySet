@@ -122,14 +122,14 @@ class PythonGenWidget(QWidget):
         pm_layout.setSpacing(Mwc.Widget3.py_pkg_manager_rbtns_spacing)
         pm_layout.setContentsMargins(0, 0, 0, 0)
         pm_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        project_pm = TomlHandler.toml_get(
+        project_pm: str = TomlHandler.toml_get( # type: ignore it's always str
             p_file=TomlHandler._dest_path(),
             section="languages",
             subsection="python",
             key="package_manager"
         )
 
-        default_pm = TomlHandler.toml_get(
+        default_pm: str = TomlHandler.toml_get( # type: ignore it's always str
             p_file=CONFIG_PATH,
             section="python",
             key="default_pm"
@@ -227,18 +227,29 @@ class PythonGenWidget(QWidget):
 
         self.main_layout.addWidget(fmk_widget, row_offset, col_offset)
 
-    @staticmethod
-    def on_framework_changed(button: QRadioButton) -> None:
-        qbgroup: QButtonGroup = button.group()  # returns the qbgroup the button is part of
+    def on_framework_changed(self, button: QRadioButton) -> None:
+        fmk_qbgroup: QButtonGroup = button.group()  # returns the qbgroup the button is part of
 
-        if button.property("was_checked"):
-            Mwf.reset_qradio_group(qbgroup, "selected_framework", p_subsection="common")
+        if button.property("was_checked"):# resets
+            Mwf.reset_qradio_group(fmk_qbgroup, "selected_framework", p_subsection="common")
+            for i in self.pms_group.buttons():
+                i.setEnabled(True)
         else:
-            key = button.property("key")
+            key: str = button.property("key")
             TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="common")
 
-            for btn in qbgroup.buttons():
+            for btn in fmk_qbgroup.buttons():
                 btn.setProperty("was_checked", btn == button)
+
+            if button.property("key") == "PY:PYSCRIPT":
+                for i in self.pms_group.buttons(): #disables all pms if pyscript since its not compatible
+                    i.setEnabled(False)
+            elif button.property("key") == "PY:PLACEHOLDER":
+                ...
+            else:
+                for i in self.pms_group.buttons():
+                    i.setEnabled(True)
+
 
 
     def resizeEvent(self, event) -> None:
