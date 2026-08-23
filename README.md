@@ -101,6 +101,11 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 23/08/2026
 <img width="882" height="900" alt="Screenshot 2026-08-23 at 18 37 41" src="https://github.com/user-attachments/assets/7e94f69f-45e9-4e76-8cc2-2b9d43d32a8a" />
 
+Django support
+<img width="762" height="778" alt="Screenshot 2026-08-23 at 19 02 37" src="https://github.com/user-attachments/assets/371ddff6-fcac-432c-8fab-178c11c1c730" />
+
+<img width="1552" height="1149" alt="Screenshot 2026-08-23 at 19 00 32" src="https://github.com/user-attachments/assets/c6593a17-01bf-422d-9ae9-5b496ab21afa" />
+
 incompatible package managers for specific frameworks
 <img width="882" height="900" alt="Screenshot 2026-08-23 at 18 38 31" src="https://github.com/user-attachments/assets/29c164da-6488-492d-a0cc-172f33dfbba1" />
 
@@ -112,6 +117,9 @@ macOS native menubar support
 
 easy locate your files
 <img width="320" height="131" alt="Screenshot 2026-08-23 at 18 54 52" src="https://github.com/user-attachments/assets/594f3f03-6043-4c24-8269-b62ccb78feb0" />
+
+
+
 
 
 ---
