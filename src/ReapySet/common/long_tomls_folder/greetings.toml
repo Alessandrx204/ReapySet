@@ -9,14 +9,14 @@ thursday = []
 friday = []
 saturday = []
 sunday = [
-  "Easy Sunday, {name}.\n",
-  "Sunday reset in progress, {name}.\n",
-  "A quiet Sunday, a clear mind.\n",
-  "One more day before Monday, {name}.\n",
-  "Sunday mood: relaxed but dangerous.\n",
-  "Taking it slow today, {name}?\n",
-  "A little planning goes a long way.\n",
-  "Sunday is for ideas.\n"
+  "\nEasy Sunday, {name}.\n",
+  "\nSunday reset in progress, {name}.\n",
+  "\nA quiet Sunday, a clear mind.\n",
+  "\nOne more day before Monday, {name}.\n",
+  "\nSunday mood: relaxed but dangerous.\n",
+  "\nTaking it slow today, {name}?\n",
+  "\nA little planning goes a long way.\n",
+  "\nSunday is for ideas.\n"
 ]
 [en.memes]
 developer_humor = [

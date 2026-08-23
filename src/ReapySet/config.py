@@ -9,7 +9,7 @@ from pathlib import Path
 import tomlkit
 from PySide6.QtCore import QEasingCurve
 
-import lang
+from ReapySet import lang
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
 def _get_root() -> Path:

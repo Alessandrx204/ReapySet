@@ -20,7 +20,7 @@ from ReapySet.common.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
-from common.download_pkg import DownloadPkg
+from ReapySet.common.download_pkg import DownloadPkg
 
 NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 
