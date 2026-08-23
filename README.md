@@ -58,7 +58,7 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 | GDSsript |  TBD  |
 
 ### Python Workspace Configuration
-**available python package managers**
+**available python package/environment managers**
 
 - `uv`
 - `pip`
@@ -71,7 +71,18 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 - `virtualenv`
 - `pdm`
 
+**Available python frameworks/templates**
 
+- `Django` 
+(project initialisation app name selecion and a first migration)
+- `PySide6`
+(basic gui app example build programmatically and folder structure)
+- `Jupyter Notebooks`
+(basic notebook template for easy copying)
+- `Marimo Notebooks`
+(basically same as jupyter + readme for instructions)
+- `Pyscript`
+(html css and python script + readme for instructions)
 
 ---
 
