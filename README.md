@@ -98,6 +98,22 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 <img width="882" height="510" alt="Screenshot 2026-07-06 at 20 48 24" src="https://github.com/user-attachments/assets/9720e487-dbf1-4191-8e09-03104efb31ed" />
 06/07(2026
 
+23/08/2026
+<img width="882" height="900" alt="Screenshot 2026-08-23 at 18 37 41" src="https://github.com/user-attachments/assets/7e94f69f-45e9-4e76-8cc2-2b9d43d32a8a" />
+
+incompatible package managers for specific frameworks
+<img width="882" height="900" alt="Screenshot 2026-08-23 at 18 38 31" src="https://github.com/user-attachments/assets/29c164da-6488-492d-a0cc-172f33dfbba1" />
+
+tooltips 🙂
+<img width="598" height="107" alt="Screenshot 2026-08-23 at 18 39 08" src="https://github.com/user-attachments/assets/7c3616d7-23b5-4cd0-9fd2-9754d1d0ba1f" />
+
+macOS native menubar support
+<img width="281" height="30" alt="Screenshot 2026-08-23 at 18 49 10" src="https://github.com/user-attachments/assets/dd8accd0-db24-4524-9753-389c18a736af" />
+
+easy locate your files
+<img width="320" height="131" alt="Screenshot 2026-08-23 at 18 54 52" src="https://github.com/user-attachments/assets/594f3f03-6043-4c24-8269-b62ccb78feb0" />
+
+
 ---
 
 ## Installation
@@ -156,7 +172,7 @@ Current development state:
 ## Roadmap
 
 - [X] Better UI and UX
-- [ ] Python frameworks support
+- [X] Python frameworks support
 - [ ] keyboard navigation
 - [ ] GitHub project import (It's surprisignly extremely harder than expected)
 - [ ] CookieCutter Boilerplates support (i hate writing those)
