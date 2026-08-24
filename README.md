@@ -90,32 +90,39 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 
 
 <img width="1705" height="970" alt="Screenshot 2026-06-17 at 15 50 10" src="https://github.com/user-attachments/assets/67850eb0-0b2d-420c-bad2-2f522630ce0d" />
+17/06/26
 
 <img width="882" height="790" alt="Screenshot 2026-06-17 at 15 44 42" src="https://github.com/user-attachments/assets/16cf70d1-8e58-4a51-b825-4e7e40a8b126" />
 
-17/06/26
 
-<img width="882" height="510" alt="Screenshot 2026-07-06 at 20 48 24" src="https://github.com/user-attachments/assets/9720e487-dbf1-4191-8e09-03104efb31ed" />
 06/07(2026
+<img width="882" height="510" alt="Screenshot 2026-07-06 at 20 48 24" src="https://github.com/user-attachments/assets/9720e487-dbf1-4191-8e09-03104efb31ed" />
+
 
 23/08/2026
+
 <img width="882" height="900" alt="Screenshot 2026-08-23 at 18 37 41" src="https://github.com/user-attachments/assets/7e94f69f-45e9-4e76-8cc2-2b9d43d32a8a" />
 
 Django support
-<img width="762" height="778" alt="Screenshot 2026-08-23 at 19 02 37" src="https://github.com/user-attachments/assets/371ddff6-fcac-432c-8fab-178c11c1c730" />
+
+<img width="769" height="790" alt="Screenshot 2026-08-24 at 16 08 38" src="https://github.com/user-attachments/assets/86c39cbb-5983-4a3f-b99c-42bcace223d0" />
 
 <img width="1552" height="1149" alt="Screenshot 2026-08-23 at 19 00 32" src="https://github.com/user-attachments/assets/c6593a17-01bf-422d-9ae9-5b496ab21afa" />
 
-incompatible package managers for specific frameworks
+incompatible package managers for specific frameworks are shown
+
 <img width="882" height="900" alt="Screenshot 2026-08-23 at 18 38 31" src="https://github.com/user-attachments/assets/29c164da-6488-492d-a0cc-172f33dfbba1" />
 
 tooltips 🙂
+
 <img width="598" height="107" alt="Screenshot 2026-08-23 at 18 39 08" src="https://github.com/user-attachments/assets/7c3616d7-23b5-4cd0-9fd2-9754d1d0ba1f" />
 
 macOS native menubar support
+
 <img width="281" height="30" alt="Screenshot 2026-08-23 at 18 49 10" src="https://github.com/user-attachments/assets/dd8accd0-db24-4524-9753-389c18a736af" />
 
 easy locate your files
+
 <img width="320" height="131" alt="Screenshot 2026-08-23 at 18 54 52" src="https://github.com/user-attachments/assets/594f3f03-6043-4c24-8269-b62ccb78feb0" />
 
 
