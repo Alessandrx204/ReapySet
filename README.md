@@ -105,7 +105,8 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 
 Django support
 
-<img width="769" height="790" alt="Screenshot 2026-08-24 at 16 08 38" src="https://github.com/user-attachments/assets/86c39cbb-5983-4a3f-b99c-42bcace223d0" />
+ <img width="768" height="788" alt="Screenshot 2026-08-24 at 16 31 24" src="https://github.com/user-attachments/assets/1b148d64-6b56-411d-890f-21f4090dce2d" />
+
 
 <img width="1552" height="1149" alt="Screenshot 2026-08-23 at 19 00 32" src="https://github.com/user-attachments/assets/c6593a17-01bf-422d-9ae9-5b496ab21afa" />
 
