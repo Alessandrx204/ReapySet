@@ -74,11 +74,11 @@ class InitFrameworks:
             "nbformat_minor": 5
         }
 
-        full_path = Path(p_path) / "jupyter.ipynb"
+        nb_path = Path(p_path) / "jupyter.ipynb"
 
-        full_path.parent.mkdir(parents=True, exist_ok=True)
+        nb_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(full_path, "w", encoding="utf-8") as f:
+        with open(nb_path, "w", encoding="utf-8") as f:
             json.dump(template_notebook, f, indent=2)
 
     @staticmethod
@@ -159,3 +159,25 @@ class InitFrameworks:
 
              dirs_exist_ok=True,
          )"""
+    @staticmethod
+    def init_pytest(p_path: str | Path) -> None:
+        #if pytest is enabled
+        p_path = Path(p_path)
+        test_path = Path(p_path) / "tests"
+        test_path.mkdir(parents=True, exist_ok=True)
+
+        for filename in ("test_main.py", "__init__.py"):
+            with open(test_path / filename, "w", encoding="utf-8") as f:
+                if filename == "test_main.py":
+                    f.write("""
+def add(a: int, b: int) -> int:
+
+    return a + b
+
+def test_add() -> None:
+
+    \"\"\"Test the add function.\"\"\"
+
+    assert add(2, 3) == 5
+
+                            """)

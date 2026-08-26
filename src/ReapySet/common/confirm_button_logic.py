@@ -161,6 +161,17 @@ class ConfirmButton2ndThread(QThread):
         )
         if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "common") in {"PY:PYSCRIPT",}:
             return True # NO venv option
+        """project_path = Path(p_proj_path)
+
+        source_path = (
+            project_path / "src"
+            if TomlHandler.toml_get(
+                current_proj_toml_path,
+                "global",
+                "add_src_to_path",
+            )# == true
+            else project_path
+        )"""
 
         interp_ver: str | None = TomlHandler.toml_get(
             current_proj_toml_path,
@@ -359,7 +370,7 @@ class ConfirmButton2ndThread(QThread):
 
     #from collections.abc import Iterable
 
-    def package_install(
+    def python_package_install(
             self,
             p_packages: str | Iterable[str],
             p_proj_path: str | Path,
@@ -895,6 +906,7 @@ class ConfirmButton2ndThread(QThread):
 
         return True
 
+
     def _setup_selected_framework(self) -> bool:
         py_config = self.data["languages"]["python"]
 
@@ -931,20 +943,14 @@ class ConfirmButton2ndThread(QThread):
                     )
 
                     if install_packages_on_project_creation:
-                        if not self.package_install(
-                                ("jupyterlab",),
-                                self.proj_path,
-                        ):
+                        if not self.python_package_install(("jupyterlab",), self.proj_path):
                             return False
 
                 case "PY:PYSIDE6":
                     InitFrameworks.init_pyside6(self.proj_path)
 
                     if install_packages_on_project_creation:
-                        if not self.package_install(
-                                ("pyside6",),
-                                self.proj_path,
-                        ):
+                        if not self.python_package_install(("pyside6",), self.proj_path):
                             return False
 
 
@@ -953,10 +959,7 @@ class ConfirmButton2ndThread(QThread):
                     InitFrameworks.init_marimo(self.proj_path)
 
                     if install_packages_on_project_creation:
-                        if not self.package_install(
-                                ("marimo",),
-                                self.proj_path,
-                        ):
+                        if not self.python_package_install(("marimo",), self.proj_path):
                             return False
 
                 case "PY:DJANGO":
@@ -1014,11 +1017,7 @@ class ConfirmButton2ndThread(QThread):
                     try:
 
                         if install_packages_on_project_creation:
-                            if not self.package_install(
-                                    ("django",),
-
-                                    self.proj_path,
-                            ):
+                            if not self.python_package_install(("django",), self.proj_path):
                                 return False
 
                         app_name: str | None = TomlHandler.toml_get(
@@ -1077,25 +1076,26 @@ class ConfirmButton2ndThread(QThread):
             return False
 
         return True
-    def run(self) -> None: # params are passed from the init here because qt handles thme this way
+
+    def run(self) -> None:  # params are passed from the init here because qt handles them this way
         if self.package_to_install: # oif the pkg is specified run this
             install_outcome = DownloadPkg.install_package(
                 self.package_to_install
             )
+
             if install_outcome:
                 self.status_emitted.emit(
                     "package_install_success",
-                    ""
+                    "",
                 )
-
-
-
             else:
                 self.status_emitted.emit(
                     "package_install_error",
-                    ""
+                    "",
                 )
+
             return
+
         if not self._setup_cc_project():
             return
 
@@ -1105,8 +1105,36 @@ class ConfirmButton2ndThread(QThread):
         if not self._setup_selected_framework():
             return
 
+        if (
+                self.data["languages"]["common"]["unit_test_lib"] == "PY:PYTEST"
+                and TomlHandler.toml_get(
+            CONFIG_PATH,
+            "advanced",
+            "install_packages_on_project_creation",
+        ) is not False
+        ):
+            InitFrameworks.init_pytest(self.proj_path)
+
+            try:
+                if not self.python_package_install(
+                        "pytest",
+                        self.proj_path,
+                        p_dev=True,
+                ):
+                    return
+
+            except ValueError:
+                if not self.python_package_install(
+                        "pytest",
+                        self.proj_path,
+                        p_dev=False,
+                ):
+                    return
 
         self.status_emitted.emit("success", "")
+
+
+
 class ConfirmButtonLogic:
     def __init__(self) -> None:
         self.worker: ConfirmButton2ndThread | None = None
@@ -1472,7 +1500,8 @@ class ConfirmButtonLogic:
         active_framework: str = data["languages"]["common"]["selected_framework"]
         if active_framework == "PY:DJANGO":
             self._option_popup(p_window_title="Django", p_tool_name="Django",
-                               p_qlinedit_top_txt="Enter the name of the Django app:", p_qlidedit_placeholder_txt="App Name...?", p_msg_txt="")
+                               p_qlinedit_top_txt="Enter the name of the Django app:", p_qlidedit_placeholder_txt="App Name...?", p_msg_txt="",
+                               p_info_txt="Using snake_case is recommended.", p_learn_more_url="https://www.djangoproject.com/start/")
 
 
 

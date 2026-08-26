@@ -7,7 +7,7 @@ project_path = ""
 folder_name = ""
 fav_editor = ""  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot, sublimetext.
 github_repo_link = ""
-
+add_src_to_path = false #currntly not used
 # ==============================================================================
 # DO NOT TRY TO CHANGE A SINGLE COMMA IN THIS FILE MANUALLY
 # UNLESS YOU KNOW WHAT YOU ARE DOING.
@@ -21,7 +21,7 @@ template_path = ""
 [languages.common]
 selected_framework = "" # PY:DJANGO PY:FASTAPI PY:PYSIDE6 PY:JUPYTER PY:FLASK JS:REACT JS:VUE
 project_app_name = "" # the name frameworks like django React etc are going to use
-
+unit_test_lib = "" # PY:PYTEST CS:XUNIT CS:NUNIT KT:JUNIT...
 
 [languages.python]
 enabled = false

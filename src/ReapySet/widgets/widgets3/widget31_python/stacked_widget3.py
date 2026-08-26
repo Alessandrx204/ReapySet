@@ -1,17 +1,16 @@
-
-
+from pathlib import Path
 
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon, QPixmap, Qt
 from PySide6.QtWidgets import (
-    QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit
+    QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit, QCheckBox
 )
 
+from ReapySet.common.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import MwConfig as Mwc
-from ReapySet.common.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
-from ReapySet.common.logging import logger
 
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
@@ -53,6 +52,43 @@ class PythonGenWidget(QWidget):
 
         self.main_layout.addWidget(self.py_frameworks_sep_label, Mwc.Widget3.py_frameworks_sep_label_coords[0],
                                    Mwc.Widget3.py_frameworks_sep_label_coords[1])
+        self.pytest_qcbox = QCheckBox(self)
+        self.pytest_qcbox.setText("PyTest (W.I.P.)")
+        self.pytest_qcbox.setStyleSheet("""
+                                    QCheckBox {
+                                        font-family: "Arial";
+                                        font-size: 13pt;
+                                        font-weight: 300;
+                                        letter-spacing: 2px;
+                                        color: white;
+                                    
+                                        spacing: 5px;
+                                        padding: 0px;
+                                    }
+                                    
+                                    QCheckBox:hover {
+                                        color: rgba(230, 190, 255, 0.90);
+                                    }
+                                    
+                                    QCheckBox:checked {
+                                        color: rgba(255, 170, 220, 1.0);
+                                    }
+                                    
+                                    QCheckBox:checked:hover {
+                                        color: rgba(255, 190, 235, 1.0);
+                                    }
+                                    
+                                    QCheckBox:disabled {
+                                        color: gray;
+                                    }
+                                                      """)
+        self.pytest_qcbox.setToolTip("PyTest is a unit testing framework for Python,\n"
+                                     "it allows you to write and run tests for your Python code.")
+        self.pytest_qcbox.toggled.connect(
+            lambda checked: self._add_src_to_path(p_checked=checked)
+        )
+        self.main_layout.addWidget(self.pytest_qcbox, 1,4)
+
 
         self.setup_interpreter_selector(Mwc.Widget3.py_interpreter_qcombobox_coords[0],
                                         Mwc.Widget3.py_interpreter_qcombobox_coords[1])
@@ -234,6 +270,9 @@ class PythonGenWidget(QWidget):
             Mwf.reset_qradio_group(fmk_qbgroup, "selected_framework", p_subsection="common")
             for i in self.pms_group.buttons():
                 i.setEnabled(True)
+            self.pytest_qcbox.setEnabled(True)#updates the checkbox on fmk de-pression
+
+
         else:
             key: str = button.property("key")
             TomlHandler.toml_edit("languages", "selected_framework", str(key), subsection="common")
@@ -242,13 +281,19 @@ class PythonGenWidget(QWidget):
                 btn.setProperty("was_checked", btn == button)
 
             if button.property("key") == "PY:PYSCRIPT":
-                for i in self.pms_group.buttons(): #disables all pms if pyscript since its not compatible
+                for i in self.pms_group.buttons(): #disables all pms if pyscript since it's not compatible
                     i.setEnabled(False)
+                self.pytest_qcbox.setEnabled(False)
+                self.pytest_qcbox.setChecked(False)
+                TomlHandler.toml_edit("languages", "unit_test_lib", "", subsection="common")
+
             elif button.property("key") == "PY:PLACEHOLDER":
                 ...
             else:
                 for i in self.pms_group.buttons():
                     i.setEnabled(True)
+                self.pytest_qcbox.setEnabled(True)
+
 
 
 
@@ -270,6 +315,40 @@ class PythonGenWidget(QWidget):
         logger.info(f"{label} interpreter was selected, path: {path}")
         TomlHandler.toml_edit("languages", "interpreter_version", label, subsection="python")
         TomlHandler.toml_edit("languages", "interpreter_path", path, subsection="python")
+
+
+    def _add_src_to_path(self, p_checked)->None:
+
+        proj_path: str = TomlHandler.toml_get(TomlHandler._dest_path(), #type: ignore
+                             "global",
+                             "project_path"
+
+                            )
+        path = Path(proj_path)
+
+        if p_checked:
+            TomlHandler.toml_edit(
+                "global",
+                "add_src_to_path",
+                True,
+
+            )
+
+        else:
+
+            TomlHandler.toml_edit(
+                "global",
+                "add_src_to_path",
+                False,
+
+                                    )
+        TomlHandler.toml_edit(
+            "languages",
+            "unit_test_lib",
+            "PY:PYTEST" if p_checked else "",
+            subsection="common",
+
+                                )
 
 
 
