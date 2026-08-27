@@ -83,6 +83,8 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 (basically same as jupyter + readme for instructions)
 - `Pyscript`
 (html css and python script + readme for instructions)
+- `PyTest`
+(library intallation as dev dependency if allowed by the packge manager Tests filder creation and little boilerplates files)
 
 ---
 
