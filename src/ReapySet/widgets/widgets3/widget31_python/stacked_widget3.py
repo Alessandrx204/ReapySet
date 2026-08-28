@@ -64,6 +64,7 @@ class PythonGenWidget(QWidget):
                                     
                                         spacing: 5px;
                                         padding: 0px;
+                                        margin-left: 7px; /* 7 px on the right to be aligned with the interpt. qcheckbox*/
                                     }
                                     
                                     QCheckBox:hover {
