@@ -19,7 +19,7 @@ def main() -> None:
     from ReapySet.config import MwConfig as Mwc
     from ReapySet.common.toml_handler import TomlHandler
     from ReapySet.logic_mainwindow import LogicMainWindow
-    from ReapySet.common.logging import logger
+    from ReapySet.common.core_logic.logging import logger
 
     TomlHandler.ensure_config_exists()
     TomlHandler.initialise_sandbox()

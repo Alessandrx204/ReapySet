@@ -16,7 +16,7 @@ from PySide6.QtCore import QRegularExpression, QRegularExpressionMatchIterator, 
 from PySide6.QtGui import QShortcut, QKeySequence, QSyntaxHighlighter, QTextCharFormat, QColor, QFont
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QPlainTextEdit, QVBoxLayout, QMessageBox
 from ReapySet.config import MwConfig as Mwc
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.logging import logger
 
 class TomlEditorDialog(QDialog):
     def __init__(self, config_path: Path, parent=None):

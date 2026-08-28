@@ -11,7 +11,7 @@ import tomlkit
 from platformdirs import PlatformDirs
 from tomlkit import TOMLDocument
 
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.logging import logger
 
 TomlReadable = Path | Traversable
 

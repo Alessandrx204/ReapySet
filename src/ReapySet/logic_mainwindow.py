@@ -4,13 +4,13 @@ from PySide6.QtWidgets import QMenuBar
 from tomlkit import TOMLDocument
 
 import ReapySet.widgets.widgets3.widget31_python.stacked_widget3 as SW3  # noqa
-from ReapySet.common.confirm_button_logic import ConfirmButtonLogic
+from ReapySet.common.core_logic.confirm_button_logic import ConfirmButtonLogic
 from ReapySet.common.toml_handler import TomlHandler
 from ReapySet.config import MwConfig as Mwc
 from ReapySet.main_window import RpsMainWindow
-from ReapySet.common.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.floating_widgets import MwAdditions
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.logging import logger
 
 
 def switch_stacked_widget():

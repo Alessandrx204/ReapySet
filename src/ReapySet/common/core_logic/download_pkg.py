@@ -2,7 +2,7 @@ import shutil
 import subprocess
 import sys
 from subprocess import CompletedProcess
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.logging import logger
 
 class DownloadPkg:
     """it doesn't check if the package exists since its already set"""

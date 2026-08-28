@@ -42,8 +42,8 @@ from ReapySet.widgets.the_label_widget0 import (
     get_label_stylesheet,
 )
 from ReapySet.config import MwConfig as Mwc, LogicVariables
-from ReapySet.common.MwFunctions import MwFuncs as Mwf
-from ReapySet.common.logging import log_file_path, logger
+from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.core_logic.logging import log_file_path, logger
 
 
 #mainwindow

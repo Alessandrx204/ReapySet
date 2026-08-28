@@ -1,7 +1,5 @@
 import json
 import shutil
-import subprocess
-import sys
 from pathlib import Path
 
 
@@ -13,7 +11,7 @@ class InitFrameworks:
         p_path = Path(p_path)
         file_to_remove: Path = p_path / "main.py"
         file_to_remove.unlink(missing_ok=True) # doesnt crash if not found
-        source: Path = Path(__file__).parent / "fmk_templates" / "pyside6"
+        source: Path = Path(__file__).parents[1] / "fmk_templates" / "pyside6"
 
 
         shutil.copytree(
@@ -86,7 +84,7 @@ class InitFrameworks:
         p_path = Path(p_path)
         file_to_remove: Path = p_path / "main.py"
         file_to_remove.unlink(missing_ok=True)  # doesnt crash if not found
-        source: Path = Path(__file__).parent / "fmk_templates" / "pyscript"
+        source: Path = Path(__file__).parents[1] / "fmk_templates" / "pyscript"
 
         shutil.copytree(
 
@@ -102,7 +100,7 @@ class InitFrameworks:
         p_path = Path(p_path)
         file_to_remove: Path = p_path / "main.py"
         file_to_remove.unlink(missing_ok=True)  # doesnt crash if not found
-        source: Path = Path(__file__).parent / "fmk_templates" / "marimo_notebook"
+        source: Path = Path(__file__).parents[1] / "fmk_templates" / "marimo_notebook"
 
         shutil.copytree(
 
@@ -149,7 +147,7 @@ class InitFrameworks:
 
         return True
 
-        """ source: Path = Path(__file__).parent / "fmk_templates" / "django_project"
+        """ source: Path = Path(__file__).parents[1] / "fmk_templates" / "django_project"
 
          shutil.copytree(
 

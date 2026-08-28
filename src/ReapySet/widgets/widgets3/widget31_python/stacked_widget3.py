@@ -6,8 +6,8 @@ from PySide6.QtWidgets import (
     QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit, QCheckBox
 )
 
-from ReapySet.common.MwFunctions import MwFuncs as Mwf
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.core_logic.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import MwConfig as Mwc
 from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
@@ -53,7 +53,7 @@ class PythonGenWidget(QWidget):
         self.main_layout.addWidget(self.py_frameworks_sep_label, Mwc.Widget3.py_frameworks_sep_label_coords[0],
                                    Mwc.Widget3.py_frameworks_sep_label_coords[1])
         self.pytest_qcbox = QCheckBox(self)
-        self.pytest_qcbox.setText("PyTest (W.I.P.)")
+        self.pytest_qcbox.setText("PyTest")
         self.pytest_qcbox.setStyleSheet("""
                                     QCheckBox {
                                         font-family: "Arial";
@@ -64,7 +64,7 @@ class PythonGenWidget(QWidget):
                                     
                                         spacing: 5px;
                                         padding: 0px;
-                                        margin-left: 7px; /* 7 px on the right to be aligned with the interpt. qcheckbox*/
+                                        margin-left: 57px; /* 7 px on the right to be aligned with the interpt. qcheckbox*/
                                     }
                                     
                                     QCheckBox:hover {

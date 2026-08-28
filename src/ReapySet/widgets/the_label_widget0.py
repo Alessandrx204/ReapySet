@@ -4,7 +4,7 @@ import random
 from typing import Any
 
 from ReapySet.common.toml_handler import TomlHandler, GREETINGS_PATH, CONFIG_PATH
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.logging import logger
 
 
 

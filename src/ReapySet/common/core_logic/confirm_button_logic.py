@@ -14,13 +14,13 @@ from cookiecutter.exceptions import CookiecutterException
 from cookiecutter.main import cookiecutter
 from tomlkit import TOMLDocument
 
-from ReapySet.common.MwFunctions import MwFuncs as Mwf
-from ReapySet.common.init_frameworks import InitFrameworks
-from ReapySet.common.logging import logger
+from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
+from ReapySet.common.core_logic.init_frameworks import InitFrameworks
+from ReapySet.common.core_logic.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
-from ReapySet.common.download_pkg import DownloadPkg
+from ReapySet.common.core_logic.download_pkg import DownloadPkg
 
 NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 
@@ -147,7 +147,7 @@ class ConfirmButton2ndThread(QThread):
         return True
     def setup_python(self, p_py_config: dict[str, Any], p_proj_path: str, *,
                      p_project_already: bool = False) -> bool:
-        current_proj_toml_path: Path = TomlHandler._dest_path()
+        current_rpsproj_toml_path: Path = TomlHandler._dest_path()
 
             # post conditional mkdir
         pm: str = p_py_config["package_manager"]
@@ -159,14 +159,14 @@ class ConfirmButton2ndThread(QThread):
                 "disable_poetry_centralised_venvs"
             )
         )
-        if TomlHandler.toml_get(current_proj_toml_path, "languages", "selected_framework", "common") in {"PY:PYSCRIPT",}:
+        if TomlHandler.toml_get(current_rpsproj_toml_path, "languages", "selected_framework", "common") in {"PY:PYSCRIPT", }:
             return True # NO venv option
         """project_path = Path(p_proj_path)
 
         source_path = (
             project_path / "src"
             if TomlHandler.toml_get(
-                current_proj_toml_path,
+                current_rpsproj_toml_path,
                 "global",
                 "add_src_to_path",
             )# == true
@@ -174,14 +174,14 @@ class ConfirmButton2ndThread(QThread):
         )"""
 
         interp_ver: str | None = TomlHandler.toml_get(
-            current_proj_toml_path,
+            current_rpsproj_toml_path,
             "languages",
             "interpreter_version",
             "python"
         )
 
         unb_interp_ver: str | None = TomlHandler.toml_get(
-            current_proj_toml_path,
+            current_rpsproj_toml_path,
             "languages",
             "unb_interpreter_version",
             "python"
@@ -1064,15 +1064,18 @@ class ConfirmButton2ndThread(QThread):
                 case _:
                     return True
 
+
         except (
                 OSError,
                 subprocess.SubprocessError,
                 ValueError,
         ) as exc:
+            logger.critical("FRAMEWORK ERROR:", type(exc).__name__, str(exc))
             self.status_emitted.emit(
                 "frameworkerror",
                 str(exc),
             )
+
             return False
 
         return True
@@ -1096,17 +1099,23 @@ class ConfirmButton2ndThread(QThread):
 
             return
 
+        logger.info("--> START: Setup Cookiecutter...")
         if not self._setup_cc_project():
+            logger.critical("FAIL: Cookiecutter")
             return
 
+        logger.info("--> START: Setup Language...")
         if not self._setup_selected_language():
+            logger.critical("FAIL: Setup Language")
             return
 
+        logger.info("--> START: Setup Framework...")
         if not self._setup_selected_framework():
+            logger.critical("FAIL: Setup Framework")
             return
 
-        if (
-                self.data["languages"]["common"]["unit_test_lib"] == "PY:PYTEST"
+        if ( TomlHandler.toml_get(TomlHandler._dest_path(), "languages", "unit_test_lib", "common") == "PY:PYTEST"
+
                 and TomlHandler.toml_get(
             CONFIG_PATH,
             "advanced",
