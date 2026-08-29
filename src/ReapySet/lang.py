@@ -17,12 +17,6 @@ _LANGUAGE: str = (
 
 )
 
-_CONFIG_DOC: TOMLDocument = TomlHandler._toml_read(CONFIG_PATH)
-
-_raw_lang = _CONFIG_DOC.get("personal", {}).get("language") or "en"
-
-_LANGUAGE = _raw_lang if _raw_lang in _I18N else "en"
-
 _lang = _I18N[_LANGUAGE]
 
 class MwConfig:

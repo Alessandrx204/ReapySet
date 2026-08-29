@@ -4,7 +4,10 @@ import subprocess
 import os
 import sys
 from pathlib import Path
+from subprocess import CompletedProcess
 from typing import Any
+
+from PySide6.QtCore import Qt
 
 """
 python_interpreter_find.py
@@ -36,35 +39,35 @@ populate_interpreter_combobox(combobox)
 def get_python_interpreters() -> list[tuple[str, str]]:
     """Returns a list of (label, path) pairs for the found Python interpreters."""
     found: dict[str, str] = {}
-    is_windows = sys.platform == "win32"
+    is_windows: bool = sys.platform == "win32"
 
     # 1. looks for the PATH
     candidates: list[str] = ["python", "python3"] if not is_windows else ["python"]
-    if not is_windows:
-        candidates += [f"python3.{v}" for v in range(6, 20)] #note my need to work around and remove the limit
+    if not is_windows:# makes a list of possible canditates from 3.6 to 3.20
+        candidates += [f"python3.{v}" for v in range(6, 20)] #note may need to work around and remove the limit
 
     for cmd in candidates:
-        path = shutil.which(cmd)
+        path: str | None = shutil.which(cmd) # looks for those
         if path is None:
             continue
-        real_path = str(Path(path).resolve())  # ← avoids symlink
+        real_path: str = str(Path(path).resolve())  # ← avoids symlink
         if real_path in found:
             continue
         try:
-            r = subprocess.run([real_path, "--version"], capture_output=True, text=True, timeout=2)
-            version = (r.stdout or r.stderr).strip()
+            r: CompletedProcess[str] = subprocess.run([real_path, "--version"], capture_output=True, text=True, timeout=2)
+            version: str = (r.stdout or r.stderr).strip() # make them run --version and capture the output
             found[real_path] = f"{version}"
         except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
             pass
 
     # 2. macOS: searches into macos standard directories
-    if sys.platform == "darwin": # otherwise the bundled app couldnt locate interpreters on macos
+    if sys.platform == "darwin": # otherwise the bundled app couldn't locate interpreters on macos
         osx_python_paths: list[pathlib.Path] = [
             Path("/opt/homebrew/bin"),  # Homebrew Apple Silicon
             Path("/usr/local/bin"),  # Homebrew Intel
             Path.home() / ".local" / "bin",
         ]
-        valid_names: set[str | Any] = {"python", "python3",
+        valid_names: set[str | str] = {"python", "python3",
                        *{f"python3.{version}" for version in range(6, 50)},}
 
         for directory in osx_python_paths:
@@ -134,7 +137,7 @@ def get_python_interpreters() -> list[tuple[str, str]]:
                         path = r3.stdout.strip()
                         real_path = str(Path(path).resolve())  # ← fixes symlink
                         if path and real_path not in found:
-                            found[real_path] = f"{version}  ({real_path})"
+                            found[real_path] = f"{version}  "#({real_path})
                     except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
                         pass
             except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
@@ -169,6 +172,13 @@ def populate_interpreter_combobox(combobox) -> None:  # type: ignore[no-untyped-
     if interpreters:
         for path, label in interpreters:
             combobox.addItem(label, userData=path)
-            combobox.setToolTip(f"{label} ({path})")
+            combobox.setItemData(combobox.count() - 1,
+                                 path,
+                                 Qt.ItemDataRole.ToolTipRole)
+            combobox.setToolTip(str(combobox.currentData()))
+            combobox.currentIndexChanged.connect(
+                lambda: combobox.setToolTip(str(combobox.currentData())))
+
     else:
         combobox.addItem("No interpreter was found")
+        combobox.setToolTip("")

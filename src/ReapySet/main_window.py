@@ -391,10 +391,18 @@ class RpsMainWindow(QMainWindow):
         self.statusBar().addPermanentWidget(self.button_box)  # on the right ( for whatever reason)
         # ------------------- END TOOLBAR / STATUSBAR BUTTONS ------------------#
 
-        Mwf.connect_qlineedit(self.w1_path_input, "global", "project_path",
-                              # only allow '\' on Windows'/' on Linux/macOS
-                              p_regex_validation=r"^[\w/\\-]*$" if platform.system() == "Windows" else r"^[\w/-]*$"
-)
+        Mwf.connect_qlineedit(
+            self.w1_path_input,
+            "global",
+            "project_path",
+            # Allow Windows path characters, including drive letters such as C:\
+            p_regex_validation=(
+                r"^(?:[A-Za-z](?::(?:\\[\w\s.-]*)*)?)?$"
+                if platform.system() == "Windows"
+                else r"^[\w\s./-]*$"
+            ),
+        )
+
 
         # TODO: decide if this is worth keeping or not (most likely not)
         self.w1_path_input.textChanged.connect(
