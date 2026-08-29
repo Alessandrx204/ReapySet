@@ -1,20 +1,28 @@
-from typing import cast
 from tomlkit import TOMLDocument
 from ReapySet.common.toml_handler import TomlHandler, I18N_FILE_PATH, CONFIG_PATH
 
 
+TomlHandler.ensure_config_exists() # Ensures the config file exists, creating it if missing on first boot.
+
 _I18N: TOMLDocument = TomlHandler._toml_read(I18N_FILE_PATH)
-_LANGUAGE: str = cast(str, lang # the linter thinks it knows it may be nonìe but its false
-    if (lang := TomlHandler.toml_get(CONFIG_PATH, "personal", "language")) in _I18N
-    else "en"# := assigns a temp val
+lang = TomlHandler.toml_get(
+    CONFIG_PATH,
+    "personal",
+    "language",
 )
-_CONFIG_DOC = TomlHandler._toml_read(CONFIG_PATH)
+_LANGUAGE: str = (
+    lang
+    if isinstance(lang, str) and lang in _I18N
+    else "en"
 
-# 2. Extracts the language from the documentin memory :
+)
+
+_CONFIG_DOC: TOMLDocument = TomlHandler._toml_read(CONFIG_PATH)
+
 _raw_lang = _CONFIG_DOC.get("personal", {}).get("language") or "en"
-_LANGUAGE: str = _raw_lang if _raw_lang in _I18N else "en"
 
-# 3. Saves the current i18n section:
+_LANGUAGE = _raw_lang if _raw_lang in _I18N else "en"
+
 _lang = _I18N[_LANGUAGE]
 
 class MwConfig:
