@@ -22,7 +22,6 @@ from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
 from ReapySet.common.core_logic.download_pkg import DownloadPkg
 
-NTV_POSIX: bool = LcFg.ConstantUtils.IS_POSIX
 
 #common/confirm_button.py
 
@@ -119,7 +118,7 @@ class ConfirmButton2ndThread(QThread):
                             if fails:
                             return False
 
-                        if alll successful:
+                        if all successful:
                             return True
         """
         for index, cmd in enumerate(cmd_list):
@@ -187,11 +186,11 @@ class ConfirmButton2ndThread(QThread):
             "python"
         )  # unbound interpreter
 
-        # pm_python_ver: used by conda / mamba / pixi, which can download the interpreter themselves. they  need a string value son it have to be extracted first
-        # eitehr user gets fooled, by passint them a version extracted from the path so already installed, even if the versuin needs o be downlaoded
+        # pm_python_ver: used by conda / mamba / pixi, which can download the interpreter themselves. they  need a string value son it has to be extracted first
+        # either user gets fooled, by passing them a version extracted from the path so already installed, even if the version needs to be downloaded
         #   - passes a version string like "3.11" if available, otherwise None (they'll use their default).
         pm_python_ver: str | None = unb_interp_ver or interp_ver
-        # uv on the otehr hanbd acceps a path or a specifice version (unboud indeed)
+        # uv on the other hand accepts a path or a specific version (unbound indeed)
         # uvs_python: used by uv, which accepts both a version string AND an absolute path.
         #   - always has a value: prefers unbound version > bound version > interpreter path.
         #   - the interpreter path is a valid fallback because uv knows how to handle it.
@@ -1326,10 +1325,13 @@ class ConfirmButtonLogic:
             self._window_popup(p_editor)
             return False
 
-        executable = shlex.split(cmd, posix=NTV_POSIX)[0]
+        executable = shlex.split(
+            cmd.replace("\\", "/"),
+            posix=True
+                )[0]
 
-        resolved = (
-                shutil.which(executable) # noqa it'll never run on 3.12
+        resolved: str | None = (
+                shutil.which(executable) # noqa: Python 3.12 Windows warning; project requires 3.13+
                 or (executable if Path(executable).is_file() else None)
         )
 
@@ -1348,14 +1350,14 @@ class ConfirmButtonLogic:
 
         if not cmd or cmd.upper() == "NOEDITOR":
             return
-
-        editor_openin_cmd = cmd.format(path=p_proj_path)
+        proj_path = Path(p_proj_path).as_posix()
+        editor_openin_cmd = cmd.format(path=proj_path)
 
         try:
             subprocess.Popen(
                 shlex.split(
                     editor_openin_cmd,
-                    posix=NTV_POSIX,
+                    posix=True,
                 ),
                 env=self._make_clear_term_env1()
             )
