@@ -151,7 +151,7 @@ easy locate your files
 
 ```bash/zsh
 git clone https://github.com/yourname/reapyset.git
-cd reapyset
+cd reapyset/src
 ```
 
 ### Install dependencies
