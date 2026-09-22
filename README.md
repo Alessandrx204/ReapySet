@@ -151,7 +151,7 @@ easy locate your files
 
 ```bash/zsh
 git clone https://github.com/yourname/reapyset.git
-cd reapyset
+cd reapyset/src
 ```
 
 ### Install dependencies
@@ -169,13 +169,13 @@ pip install -r requirements.txt
 ### Run
 using uv (recommended)
 ```bash/zsh
-uv run main.py
+uv run python -m ReapySet.main
 ```
 
 or
 
 ```bash/zsh
-python main.py
+python -m ReapySet.main
 ```
 
 ---
