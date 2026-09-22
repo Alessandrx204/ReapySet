@@ -83,7 +83,7 @@ py_unb_interp_qlinedit_top_txt = "exact Interp. version\n(only uv & conda based 
 
 py_unb_interp_qlinedit_inner_txt = "e.g. 3.13.5"
 
-py_frameworks_sep_label_txt = " (W.I.P.) Python Frameworks & Templates :3  "
+py_frameworks_sep_label_txt = " Python Frameworks & Templates :3  "
 
 
 [en.MwConfig.Widget3.PackageManagers.uv]

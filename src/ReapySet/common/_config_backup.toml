@@ -26,7 +26,7 @@ grammatical_gender = "F" # soon
 # Grammatical gender for localisation. Supported values: "F", "M", "X".
 # Default fallback is "F". Used for basic string agreement instead of full pronoun mapping.
 # NOTE: Certain localised strings may still exhibit minor grammatical mismatches.
-
+application_theme = "auto" # "dark", "light", or "auto" (Light theme is still a bit off yet)
 language = "en" # defaults to enUK/Ca
 enabled_greetings = true
 

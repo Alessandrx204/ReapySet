@@ -4,6 +4,7 @@ import sys
 import time
 
 import ReapySet.init_shell as i_sh
+from ReapySet.theme_manager import ThemeManager
 
 start_time: float | int = time.perf_counter()
 
@@ -25,23 +26,30 @@ def main() -> None:
     TomlHandler.initialise_sandbox()
 
     app = QApplication(sys.argv)
+    theme_manager = ThemeManager(app)
+    print(QApplication.styleHints().colorScheme())
+
     app.setApplicationName("ReapySet")
     app.setApplicationVersion("beta: 5.0")
     app.setOrganizationName("Alessandrx")
-    app.setStyle("Fusion" if os.name == "nt" else "")
-    app.styleHints().setColorScheme(Qt.ColorScheme.Dark) # ENFORCES MANDATORY DARK MODE
-    app.setPalette(
-    qdarktheme.load_palette(
-        theme="dark",
-        custom_colors={
-            "primary": "#FCE3F0", # pink-ish
-            "background": "#202124",
-            "foreground": "#E8EAED",
+    app.setStyle("Fusion" if sys.platform == "win32" else "")
+    app.styleHints().setColorScheme(Qt.ColorScheme.Dark) if theme_manager.get_set_theme() == "dark" else None # ENFORCES MANDATORY DARK MODE
+    if theme_manager.current_theme == "DISABLED":
+        app.setPalette(
+            qdarktheme.load_palette(
+                theme="dark",
+                custom_colors={
+                    "primary": "#FCE3F0", # pink-ish
+                    "background": "#202124",
+                    "foreground": "#E8EAED",
 
-        }
-    )
-)
-    m_window: LogicMainWindow = LogicMainWindow()
+                },
+            )
+            )
+
+
+
+    m_window: LogicMainWindow = LogicMainWindow(theme_manager)
     #qdarktheme.setup_theme()
 
 

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from PySide6.QtCore import QSize
-from PySide6.QtGui import QIcon, QPixmap, Qt
+from PySide6.QtGui import QIcon, QPixmap, Qt, QColor, QPalette
 from PySide6.QtWidgets import (
     QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit, QCheckBox
 )
@@ -9,8 +9,9 @@ from PySide6.QtWidgets import (
 from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
 from ReapySet.common.core_logic.logging import logger
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
-from ReapySet.config import MwConfig as Mwc
+from ReapySet.config import MwConfig as Mwc, ThemeColors
 from ReapySet.widgets.widgets3.widget31_python.python_interpreter_find import populate_interpreter_combobox
+from ReapySet.theme_manager import ThemeManager
 
 # from pathlib import Path
 # --- Data: (key, button txt, icon path) ---
@@ -25,7 +26,8 @@ QSS: str = Mwc.Widget3.py_radiobutton_qss
 
 
 class PythonGenWidget(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, theme_manager: ThemeManager
+                 , parent=None):
         super().__init__(parent)
         self.pms_group: QButtonGroup = QButtonGroup(self)
         self.frameworks_group: QButtonGroup = QButtonGroup(self)
@@ -42,7 +44,7 @@ class PythonGenWidget(QWidget):
         self.py_frameworks_sep_label.setStyleSheet(Mwc.Widget3.py_qlabel_qss)
 
 
-        self.bg_image_path = str(Mwc.Images().python_wallpaper)
+        self.bg_image_path = str(Mwc.Images().python_wallpaper_dark)
         self.bg_pixmap = QPixmap(self.bg_image_path)
         self.bg_label = QLabel(self)
         self.bg_label.lower()
@@ -54,41 +56,14 @@ class PythonGenWidget(QWidget):
                                    Mwc.Widget3.py_frameworks_sep_label_coords[1])
         self.pytest_qcbox = QCheckBox(self)
         self.pytest_qcbox.setText("PyTest")
-        self.pytest_qcbox.setStyleSheet("""
-                                    QCheckBox {
-                                        font-family: "Arial";
-                                        font-size: 13pt;
-                                        font-weight: 300;
-                                        letter-spacing: 2px;
-                                        color: white;
-                                    
-                                        spacing: 5px;
-                                        padding: 0px;
-                                        margin-left: 57px; /* 7 px on the right to be aligned with the interpt. qcheckbox*/
-                                    }
-                                    
-                                    QCheckBox:hover {
-                                        color: rgba(230, 190, 255, 0.90);
-                                    }
-                                    
-                                    QCheckBox:checked {
-                                        color: rgba(255, 170, 220, 1.0);
-                                    }
-                                    
-                                    QCheckBox:checked:hover {
-                                        color: rgba(255, 190, 235, 1.0);
-                                    }
-                                    
-                                    QCheckBox:disabled {
-                                        color: gray;
-                                    }
-                                                      """)
+        self.pytest_qcbox.setStyleSheet(Mwc.Widget3.py_qcheckbox_qss)
         self.pytest_qcbox.setToolTip("PyTest is a unit testing framework for Python,\n"
                                      "it allows you to write and run tests for your Python code.")
         self.pytest_qcbox.toggled.connect(
             lambda checked: self._add_src_to_path(p_checked=checked)
         )
-        self.main_layout.addWidget(self.pytest_qcbox, 1,4)
+        self.main_layout.addWidget(self.pytest_qcbox, Mwc.Widget3.py_pytest_qcheckbox_coords[0],
+                                   Mwc.Widget3.py_pytest_qcheckbox_coords[1])
 
 
         self.setup_interpreter_selector(Mwc.Widget3.py_interpreter_qcombobox_coords[0],
@@ -117,16 +92,19 @@ class PythonGenWidget(QWidget):
             alignment=Qt.AlignmentFlag.AlignVCenter)
         self.unb_interp_qlinedit.setPlaceholderText(Mwc.Widget3.py_unb_interp_qlinedit_inner_txt)
 
+        self.theme_manager = theme_manager
+        self.theme_manager.theme_changed.connect(
+
+            self.apply_theme
+
+        )
+        self.apply_theme(self.theme_manager.current_theme)
+
     def setup_interpreter_selector(self, p_row: int, p_col: int) -> None:
         populate_interpreter_combobox(self.select_interpreter)
 
         self.main_layout.addWidget(
-            Mwf.labeled_field(Mwc.Widget3.py_interp_qcbox_top_txt, self.select_interpreter, w1qss="", gqss="""QLabel { 
-                                                                                                                                font-family: Arial;
-                                                                                                                                font-weight: bold; 
-                                                                                                                                font-size: 10px;
-                                                                                                                                color: #efebf0; /* grey */
-                                                                                                                                                }"""
+            Mwf.labeled_field(Mwc.Widget3.py_interp_qcbox_top_txt, self.select_interpreter, w1qss="", gqss=Mwc.Widget3.py_qccombobox_toptxt_qss
                                                                                                                                                 ),
             p_row,
             p_col,
@@ -295,17 +273,8 @@ class PythonGenWidget(QWidget):
                     i.setEnabled(True)
                 self.pytest_qcbox.setEnabled(True)
 
-
-
-
     def resizeEvent(self, event) -> None:
-        self.bg_label.setPixmap(
-            self.bg_pixmap.scaled(
-                self.size(),
-                Qt.AspectRatioMode.IgnoreAspectRatio,
-                Qt.TransformationMode.SmoothTransformation
-            )
-        )
+        self._update_background()
         self.bg_label.setGeometry(self.rect())
         super().resizeEvent(event)
 
@@ -350,6 +319,42 @@ class PythonGenWidget(QWidget):
             subsection="common",
 
                                 )
+
+    def _update_background(self) -> None:
+        self.bg_label.setPixmap(
+            self.bg_pixmap.scaled(
+                self.size(),
+                Qt.AspectRatioMode.IgnoreAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
+        )
+
+    def apply_theme(self, p_theme: str) -> None:
+        c = ThemeColors.get(p_theme)
+
+        # QComboBox text
+        rgb = c["text"].removeprefix("rgb(").removesuffix(")")
+        color = QColor(*map(int, rgb.split(",")))
+
+        palette = self.select_interpreter.palette()
+        palette.setColor(QPalette.ColorRole.Text, color)
+        palette.setColor(QPalette.ColorRole.ButtonText, color)
+        palette.setColor(QPalette.ColorRole.WindowText, color)
+        self.select_interpreter.setPalette(palette)
+
+        # QLineEdit
+        """self.unb_interp_qlinedit.setStyleSheet(
+            Mwc.Widget1.qlineedit_qss(p_theme)
+        )"""
+
+        # Background
+        if p_theme == "dark":
+            self.bg_pixmap = QPixmap(str(Mwc.Images().python_wallpaper_dark))
+        else:
+            self.bg_pixmap = QPixmap(str(Mwc.Images().python_wallpaper_light))
+            pass
+
+        self._update_background()
 
 
 

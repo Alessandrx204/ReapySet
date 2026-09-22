@@ -11,14 +11,15 @@ from ReapySet.main_window import RpsMainWindow
 from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
 from ReapySet.widgets.floating_widgets import MwAdditions
 from ReapySet.common.core_logic.logging import logger
+from ReapySet.theme_manager import ThemeManager
 
 
 def switch_stacked_widget():
     ...
 
 class LogicMainWindow(RpsMainWindow):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, theme_manager: ThemeManager):
+        super().__init__(theme_manager)
         self.anim = QPropertyAnimation(self, b"geometry") #type: ignore
         self.original_geometry = self.geometry()
         self.og_height = self.height()
@@ -52,7 +53,10 @@ class LogicMainWindow(RpsMainWindow):
         match lang_id:
             case "PY":
                 TomlHandler.set_enabled_1lang("python")
-                self._lang_widget = SW3.PythonGenWidget(self)
+                self._lang_widget = SW3.PythonGenWidget(
+                                                    theme_manager=self.theme_manager,
+                                                    parent=self,
+                                                        )
                 Mwf.connect_qlineedit(
                     self._lang_widget.unb_interp_qlinedit,
                     "languages",

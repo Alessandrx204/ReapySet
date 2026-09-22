@@ -8,6 +8,7 @@ folder_name = ""
 fav_editor = ""  # Options: pycharm, clion, rider, vscode, zed, notepad++, godot, sublimetext.
 github_repo_link = ""
 add_src_to_path = false #currntly not used
+current_theme = ""  # Options: light, dark unknown
 # ==============================================================================
 # DO NOT TRY TO CHANGE A SINGLE COMMA IN THIS FILE MANUALLY
 # UNLESS YOU KNOW WHAT YOU ARE DOING.

@@ -16,7 +16,7 @@ from PySide6.QtGui import (
     QPainterPath,
     QRegion,
     QShortcut,
-    QShowEvent,
+    QShowEvent, QPalette, QColor,
 )
 from PySide6.QtWidgets import (
     QApplication,
@@ -41,14 +41,15 @@ from ReapySet.widgets.the_label_widget0 import (
     the_label_txt,
     get_label_stylesheet,
 )
-from ReapySet.config import MwConfig as Mwc, LogicVariables
+from ReapySet.config import MwConfig as Mwc, LogicVariables, ThemeColors
 from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
 from ReapySet.common.core_logic.logging import log_file_path, logger
+from ReapySet.theme_manager import ThemeManager
 
 
 #mainwindow
 class RpsMainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, theme_manager: ThemeManager):
         super().__init__()
         self._language_buttons: list[QPushButton] = []
         self.setWindowTitle(Mwc.mw_title)
@@ -78,6 +79,12 @@ class RpsMainWindow(QMainWindow):
         self.setWindowFlags(flags)
             # ----------------- PALETTE --------------------------#
         """Disabled due inability to work on os theme changes"""
+        self.theme_manager = theme_manager
+        self.theme_manager.theme_changed.connect(
+
+            self.apply_theme
+
+        )
 
         #std_palette: QPalette = self.palette()
         #std_palette.setColor(QPalette.ColorRole.Window, QColor(248, 248, 245))
@@ -85,6 +92,7 @@ class RpsMainWindow(QMainWindow):
         #self.setPalette(std_palette)
 
         #self.setAutoFillBackground(True)
+
         # -------------------- END-PALETTE -----------------------------#
         # ---------------------- MENUBAR -------------------------------#
         mw_menubar: QMenuBar = self.menuBar()
@@ -196,12 +204,13 @@ class RpsMainWindow(QMainWindow):
         self.central_widget2 = QWidget()  # <-- QMainWindow needs a central window
         self.widget3_stacked = QStackedWidget()  # <-- Widget for the lower part of the Window
         self.main_layout = QGridLayout(self.central_widget2)
-        # ------------------- TOOLBAR / STATUSBAR BUTTONS ------------------#
+        # ------------------- BAR / STATUSBAR BUTTONS ------------------#
         self.central_widget2.setFixedHeight(Mwc.LangBtnWidget.cw_height)
         #self.widget1.setFixedHeight(Mwc.Widget1.w1_height)
         # ------------------------ WIDGET SET --------------------------#
-        wrapper = QWidget()
-        outer_layout: QVBoxLayout = QVBoxLayout(wrapper)
+        self.wrapper = QWidget()
+        self.wrapper.setObjectName("mainwrapper")
+        outer_layout: QVBoxLayout = QVBoxLayout(self.wrapper)
         big_label = QLabel(the_label_txt)
 
         big_label.setStyleSheet(get_label_stylesheet())  #src/the_label_widget0.py
@@ -218,7 +227,9 @@ class RpsMainWindow(QMainWindow):
             Mwc.Widget1.github_box_placeholder_txt
         )
 
-        self.w1_github_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
+        """self.w1_github_input.setStyleSheet(
+            Mwc.Widget1.qlineedit_qss(ThemeManager.current_theme)
+        )"""
         github_field = Mwf.labeled_field(
             Mwc.Widget1.github_box_top_label,
             self.w1_github_input,
@@ -236,7 +247,7 @@ class RpsMainWindow(QMainWindow):
 
         )
 
-        self.w1_path_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
+        #self.w1_path_input.setStyleSheet(Mwc.Widget1.QlineEditQSS)
 
         path_field = Mwf.labeled_field(
 
@@ -248,7 +259,7 @@ class RpsMainWindow(QMainWindow):
 
         self.widget1Layout.addWidget(path_field)
         self.w1_path_input.setPlaceholderText(Mwc.Widget1.path_box_placeholder_txt)
-        self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
+        #self.w1_path_input.setStyleSheet(f"{Mwc.Widget1.QlineEditQSS}")
 
         raw_default_path: Any | None = TomlHandler.toml_get(
             CONFIG_PATH,
@@ -286,9 +297,9 @@ class RpsMainWindow(QMainWindow):
         self.w1_cookiecutter_boilerplates_box.setPlaceholderText(
             Mwc.Widget1.ccboilerplates_box_placeholder_txt
         )
-        self.w1_cookiecutter_boilerplates_box.setStyleSheet(
+        """self.w1_cookiecutter_boilerplates_box.setStyleSheet(
             Mwc.Widget1.QlineEditQSS
-        )
+        )"""
         cc_path_field = Mwf.labeled_field(
             Mwc.Widget1.sample_box_top_label,
             self.w1_cookiecutter_boilerplates_box,
@@ -337,7 +348,7 @@ class RpsMainWindow(QMainWindow):
         outer_layout.addWidget(self.widget3_stacked, 1)
         self.widget3_stacked.setStyleSheet(Mwc.Widget3.widget3_qss)
         self.widget3_stacked.setVisible(True)
-        self.setCentralWidget(wrapper)
+        self.setCentralWidget(self.wrapper)
 
         # ------------------------ END TOP WIDGET --------------------------#
         # ------------------- TOOLBAR / STATUSBAR BUTTONS ------------------#
@@ -348,6 +359,7 @@ class RpsMainWindow(QMainWindow):
             #| QDialogButtonBox.StandardButton.Cancel
         )
 
+
         # 2. gets reference to internal buttons to configure them
         self.confirm_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Ok)
         self.confirm_button.setText("Confirm")
@@ -356,6 +368,9 @@ class RpsMainWindow(QMainWindow):
             self.handle_confirm_clicked # it will be called in confirm_button_logic.py
 
         )
+        confirm_btn_palette: QPalette = self.confirm_button.palette()
+        confirm_btn_palette.setColor(QPalette.ColorRole.Button, QColor(230, 51, 139))
+        self.confirm_button.setPalette(confirm_btn_palette)
 
         self.confirm_shortcut: QShortcut = QShortcut(QKeySequence("Ctrl+Return"), self)
         self.confirm_shortcut.setContext(Qt.ShortcutContext.ApplicationShortcut)
@@ -414,6 +429,9 @@ class RpsMainWindow(QMainWindow):
         Mwf.connect_qlineedit(self.w1_cookiecutter_boilerplates_box, "cookiecutter", "template_path")
         Mwf.connect_qlineedit(self.w1_github_input, "global", "github_repo_link")
         self.setMinimumSize(Mwc.mw_width, Mwc.mw_height())
+        #------------------ THEME -----------------------#
+        self.apply_theme(self.theme_manager.current_theme)
+
 
 
 
@@ -508,7 +526,7 @@ class RpsMainWindow(QMainWindow):
             button = QPushButton(name)
             button.setProperty("lang_id", abbrev)
             button.setProperty("selected", False)
-            button.setStyleSheet(Mwc.LangBtnWidget.lang_btns_qss)#?
+            button.setStyleSheet(Mwc.LangBtnWidget.lang_btns_qss(self.theme_manager.current_theme))#?
             if logo_path is not None:
                 button.setIcon(QIcon(str(logo_path)))
                 button.setIconSize(QSize(25, 15))
@@ -537,6 +555,83 @@ class RpsMainWindow(QMainWindow):
             Mwc.about_txt_title,
             Mwc.about_txt
         )
+
+    def _apply_combobox_palette(
+            self,
+            p_combobox: QComboBox,
+            p_theme: str,
+    ) -> None:
+        c: dict[str, str] = ThemeColors.get(p_theme)
+
+        rgb_str: str = c["text"].removeprefix("rgb(").removesuffix(")")
+        r, g, b = map(int, rgb_str.split(","))
+
+        color = QColor(r, g, b)
+
+        palette: QPalette = p_combobox.palette()
+
+        palette.setColor(QPalette.ColorRole.Text, color)
+        palette.setColor(QPalette.ColorRole.ButtonText, color)
+        palette.setColor(QPalette.ColorRole.WindowText, color)
+
+        p_combobox.setPalette(palette)
+
+
+    def apply_theme(self, p_theme: str) -> None:
+        """Apply all theme-dependent stylesheets to the main window."""
+        # ---------------- Background ---------------- #
+
+
+        c: dict[str, str] = ThemeColors.get(p_theme)
+
+        # Main window background
+
+        self.wrapper.setStyleSheet(
+            f"""
+              #mainwrapper {{
+                  background-color: {c["window_background"]};
+              }}
+              """)
+
+        # ---------------- Widget 1: QLineEdits ---------------- #
+
+        line_edit_qss: str = Mwc.Widget1.qlineedit_qss(p_theme)
+
+        self.w1_github_input.setStyleSheet(line_edit_qss)
+        print("THEME:", p_theme)
+
+        #print("QSS GENERATED:")
+        self.w1_path_input.setStyleSheet(line_edit_qss)
+
+        #print("QSS ACTUALLY SET:")
+
+        self.w1_cookiecutter_boilerplates_box.setStyleSheet(line_edit_qss)
+
+
+        # ---------------- Language buttons ---------------- #
+
+        lang_buttons_qss: str = Mwc.LangBtnWidget.lang_btns_qss(p_theme)
+
+        for button in self._language_buttons:
+            button.setStyleSheet(lang_buttons_qss)
+
+        self._apply_combobox_palette(self.w1_select_editor, p_theme)
+
+        # -------------------- QStatusBar ------------------ #
+
+        #self.statusBar().setStyleSheet(Mwc.Widget1.qstatusbar_qss(p_theme))
+        qstatusbar_palette = self.statusBar().palette()
+
+        if p_theme == "dark":
+            bg = QColor(c["QStatusBar"])
+        else:
+            bg = QColor(c["QStatusBar"])
+
+        qstatusbar_palette.setColor(QPalette.ColorRole.Window, bg)
+        self.statusBar().setPalette(qstatusbar_palette)
+        self.statusBar().setAutoFillBackground(True)
+
+
 
 
 

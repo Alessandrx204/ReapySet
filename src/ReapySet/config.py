@@ -12,6 +12,288 @@ from PySide6.QtCore import QEasingCurve
 from ReapySet import lang
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
+
+
+
+class ThemeColors:
+    DARK: dict[str, str] = {
+        #QStatusBar
+        "QStatusBar": "#202126",# QPallette only accepts hexes
+
+        # Qlinedits
+        "background": "rgb(30, 30, 28)",
+        "background_hover": "rgb(38, 38, 36)",
+        "background_focus": "rgb(44, 44, 42)",
+
+        # Text
+        "text": "rgb(220, 220, 220)",
+        "text_strong": "white",
+        "text_disabled": "gray",
+        "label": "#efebf0",
+
+        # Borders
+        "border": "rgb(65, 65, 63)",
+        "border_hover": "rgb(150, 60, 105)",
+        "border_focus": "rgb(236, 100, 175)",
+
+        # Accent
+        "accent": "rgba(255, 170, 220, 1.0)",
+        "accent_hover": "rgba(255, 190, 235, 1.0)",
+        "accent_soft": "rgba(230, 190, 255, 0.90)",
+
+        # Button surfaces
+        "button_top": "#66676b",
+        "button_mid": "#5f6063",
+        "button_bottom": "#57585a",
+
+        "button_hover_top": "#96788f",
+        "button_hover_mid": "#896d84",
+        "button_hover_bottom": "#80637a",
+
+        "button_checked_top": "#734860",
+        "button_checked_mid": "#643a52",
+        "button_checked_bottom": "#593047",
+
+        # Language buttons - normal
+
+        "lang_btn_top": "#66676b",
+
+        "lang_btn_mid": "#5f6063",
+
+        "lang_btn_bottom": "#57585a",
+
+        "lang_btn_text": "#f3eaf0",
+
+        "lang_btn_border_top": "#c28cb7",
+
+        "lang_btn_border_side": "#9e8299",
+
+        "lang_btn_border_bottom": "#736473",
+
+        # Hover
+
+        "lang_btn_hover_top": "#96788f",
+
+        "lang_btn_hover_mid": "#896d84",
+
+        "lang_btn_hover_bottom": "#80637a",
+
+        "lang_btn_hover_text": "#ffd9e9",
+
+        "lang_btn_hover_border_top": "#ffc5df",
+
+        "lang_btn_hover_border_left": "#f0a2c5",
+
+        "lang_btn_hover_border_right": "#d989b0",
+
+        "lang_btn_hover_border_bottom": "#8d627d",
+
+        # Pressed
+
+        "lang_btn_pressed_top": "#4d424b",
+
+        "lang_btn_pressed_bottom": "#433841",
+
+        "lang_btn_pressed_text": "#ffe3ef",
+
+        "lang_btn_pressed_border_top": "#6d5565",
+
+        "lang_btn_pressed_border_side": "#8e647d",
+
+        "lang_btn_pressed_border_bottom": "#b97e9e",
+
+        # Checked
+
+        "lang_btn_checked_top": "#734860",
+
+        "lang_btn_checked_mid": "#643a52",
+
+        "lang_btn_checked_bottom": "#593047",
+
+        "lang_btn_checked_text": "#ffe0ec",
+
+        "lang_btn_checked_border_top": "#ffc8de",
+
+        "lang_btn_checked_border_left": "#f1a5c8",
+
+        "lang_btn_checked_border_right": "#d887ad",
+
+        "lang_btn_checked_border_bottom": "#8d5c77",
+
+        # Checked + hover
+
+        "lang_btn_checked_hover_top": "#81506a",
+
+        "lang_btn_checked_hover_mid": "#74455e",
+
+        "lang_btn_checked_hover_bottom": "#673a53",
+
+        "lang_btn_checked_hover_text": "#fff0f7",
+
+        "lang_btn_checked_hover_border_top": "#ffd9ea",
+
+        "lang_btn_checked_hover_border_left": "#ffb7d3",
+
+        "lang_btn_checked_hover_border_right": "#e092b7",
+
+        "lang_btn_checked_hover_border_bottom": "#99657f",
+
+        # Disabled
+
+        "lang_btn_disabled_top": "#444548",
+
+        "lang_btn_disabled_bottom": "#37383b",
+
+        "lang_btn_disabled_text": "#7f7178",
+
+        "lang_btn_disabled_border": "#534a52",
+
+        "window_background": "#202124",
+    }
+
+    LIGHT: dict[str, str] = {
+
+        # QStatusBar
+        "QStatusBar": "#a0948a",# QPallette only accepts hexes
+
+        # Qlinedits
+        "background": "rgb(246, 246, 250)",#"rgb(216, 206, 192)",
+        "background_hover": "rgb(234, 204, 202)",
+        "background_focus": "rgb(238, 228, 222)",
+
+        # Text
+        "text": "rgb(45, 42, 40)",
+        "text_strong": "rgb(25, 23, 22)",
+        "text_disabled": "rgb(33, 33, 33)",
+        "label": "rgb(48, 43, 46)",
+
+        # Borders
+        "border": "rgb(160, 148, 138)",
+        "border_hover": "rgb(150, 60, 105)",
+        "border_focus": "rgb(210, 70, 145)",
+
+        # Accent
+        "accent": "rgb(180, 70, 130)",
+        "accent_hover": "rgb(205, 90, 155)",
+        "accent_soft": "rgb(205, 90, 155)",
+
+
+        # Button surfaces
+        "button_top": "rgb(232, 223, 212)",
+        "button_mid": "rgb(222, 212, 200)",
+        "button_bottom": "rgb(210, 199, 186)",
+
+        "button_hover_top": "rgb(228, 198, 214)",
+        "button_hover_mid": "rgb(218, 184, 203)",
+        "button_hover_bottom": "rgb(205, 171, 190)",
+
+        "button_checked_top": "rgb(190, 135, 164)",
+        "button_checked_mid": "rgb(177, 119, 150)",
+        "button_checked_bottom": "rgb(162, 104, 136)",
+        "lang_btn_top": "rgb(235, 226, 216)",
+
+        "lang_btn_mid": "rgb(224, 214, 202)",
+
+        "lang_btn_bottom": "rgb(212, 201, 188)",
+
+        "lang_btn_text": "rgb(55, 48, 52)",
+
+        "lang_btn_border_top": "rgb(193, 151, 178)",
+
+        "lang_btn_border_side": "rgb(171, 145, 160)",
+
+        "lang_btn_border_bottom": "rgb(145, 122, 136)",
+
+        # Hover
+
+        "lang_btn_hover_top": "rgb(229, 197, 214)",
+
+        "lang_btn_hover_mid": "rgb(218, 181, 202)",
+
+        "lang_btn_hover_bottom": "rgb(205, 166, 190)",
+
+        "lang_btn_hover_text": "rgb(72, 38, 57)",
+
+        "lang_btn_hover_border_top": "rgb(220, 115, 169)",
+
+        "lang_btn_hover_border_left": "rgb(206, 102, 158)",
+
+        "lang_btn_hover_border_right": "rgb(190, 88, 143)",
+
+        "lang_btn_hover_border_bottom": "rgb(153, 92, 125)",
+
+        # Pressed
+
+        "lang_btn_pressed_top": "rgb(184, 158, 172)",
+
+        "lang_btn_pressed_bottom": "rgb(169, 143, 157)",
+
+        "lang_btn_pressed_text": "rgb(55, 30, 45)",
+
+        "lang_btn_pressed_border_top": "rgb(135, 103, 120)",
+
+        "lang_btn_pressed_border_side": "rgb(157, 110, 137)",
+
+        "lang_btn_pressed_border_bottom": "rgb(181, 105, 146)",
+
+        # Checked
+
+        "lang_btn_checked_top": "rgb(190, 135, 164)",
+
+        "lang_btn_checked_mid": "rgb(177, 119, 150)",
+
+        "lang_btn_checked_bottom": "rgb(162, 104, 136)",
+
+        "lang_btn_checked_text": "rgb(54, 28, 43)",
+
+        "lang_btn_checked_border_top": "rgb(220, 123, 173)",
+
+        "lang_btn_checked_border_left": "rgb(207, 105, 160)",
+
+        "lang_btn_checked_border_right": "rgb(190, 88, 143)",
+
+        "lang_btn_checked_border_bottom": "rgb(143, 82, 115)",
+
+        # Checked + hover
+
+        "lang_btn_checked_hover_top": "rgb(204, 148, 177)",
+
+        "lang_btn_checked_hover_mid": "rgb(192, 130, 162)",
+
+        "lang_btn_checked_hover_bottom": "rgb(177, 114, 149)",
+
+        "lang_btn_checked_hover_text": "rgb(45, 22, 35)",
+
+        "lang_btn_checked_hover_border_top": "rgb(229, 137, 183)",
+
+        "lang_btn_checked_hover_border_left": "rgb(216, 118, 171)",
+
+        "lang_btn_checked_hover_border_right": "rgb(199, 98, 153)",
+
+        "lang_btn_checked_hover_border_bottom": "rgb(154, 90, 124)",
+
+        # Disabled
+
+        "lang_btn_disabled_top": "rgb(205, 196, 186)",
+
+        "lang_btn_disabled_bottom": "rgb(192, 182, 171)",
+
+        "lang_btn_disabled_text": "rgb(145, 135, 139)",
+
+        "lang_btn_disabled_border": "rgb(174, 160, 166)",
+
+        "window_background": "rgb(216, 205, 192)",
+
+    }
+
+
+
+    @classmethod
+    def get(cls, theme: str) -> dict[str, str]:
+        return cls.LIGHT if theme == "light" else cls.DARK
+
+
+
 def _get_root() -> Path:
     if hasattr(sys, "frozen"):
         return Path(os.path.dirname(sys.executable))
@@ -111,30 +393,69 @@ class MwConfig:
         @property
         def cpp_logo(self)        -> Path: return self.res / "cpp_logo.svg"
         @property
-        def python_wallpaper(self) -> Path: return self.res / "python_free_wallpaper.png"
-
+        def python_wallpaper_dark(self) -> Path: return self.res / "python_free_wallpaper_dark.png"
+        @property
+        def python_wallpaper_light(self) -> Path: return self.res / "python_free_wallpaper_light.png"
 
     @dataclass
     class Widget1:
         """Widget 1 config"""
-        QlineEditQSS: str = """
-        QLineEdit {
-            font-size: 12px;
-            min-width: 140px;
-            border: 2px solid rgb(65, 65, 63);
-            border-radius: 5px;
-            background-color: rgb(30, 30, 28);
-            color: rgb(220, 220, 220);
-        }
-        QLineEdit:hover {
-            border: 2px solid rgb(150, 60, 105);      /* dawn pink */
-            background-color: rgb(38, 38, 36);        /* light pink */
-        }
-        QLineEdit:focus {
-            border: 2px solid rgb(236, 100, 175);     /* full pink */
-            background-color: rgb(44, 44, 42);
-        }
-        """
+
+        @staticmethod
+        def qlineedit_qss(theme: str) -> str:
+            c = ThemeColors.get(theme)
+
+            return f"""
+            QLineEdit {{
+                font-size: 12px;
+                min-width: 140px;
+                border: 2px solid {c["border"]};
+                border-radius: 5px;
+                background-color: {c["background"]};
+                color: {c["text"]};
+            }}
+
+            QLineEdit:hover {{
+                border: 2px solid {c["border_hover"]};
+                background-color: {c["background_hover"]};
+            }}
+
+            QLineEdit:focus {{
+                border: 2px solid {c["border_focus"]};
+                background-color: {c["background_focus"]};
+            }}
+            """
+
+        @staticmethod
+        def qcombobox_qss(theme: str) -> str:
+            c = ThemeColors.get(theme)
+
+            return f"""
+            QComboBox {{
+                color: {c["text"]};
+                background-color: {c["background"]};
+            }}
+
+            QComboBox QAbstractItemView {{
+                color: {c["text"]};
+                background-color: {c["background"]};
+            }}
+            """
+
+        @staticmethod
+        def qstatusbar_qss(theme: str) -> str:
+            c = ThemeColors.get(theme)
+
+            return f"""
+                        QStatusBar {{
+                        
+                            background-color: {c["QStatusBar"]};
+                            color: #ffffff;
+                            font-size: 12px;
+                            border-top: 0.5px solid #555555;
+                                    }}
+                   """
+
         QlineTopTextQSS: str            = "font-size:10px; margin-top:0px; margin-bottom:6px;"
         github_box_top_label: str       = lang.MwConfig.Widget1.github_box_top_label
         github_box_placeholder_txt: str = lang.MwConfig.Widget1.github_box_placeholder_txt #insert a repo URL
@@ -165,117 +486,124 @@ class MwConfig:
         enabled_btns: set[int]   = field(default_factory=lambda: {0})
         cw_height:     int = 120
         max_btn_x_row: int = 3 #ex 5
-        lang_btns_qss: str = ("QPushButton {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #66676b,\n"
-                              "        stop:0.45 #5f6063,\n"
-                              "        stop:1 #57585a\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #f3eaf0;\n"
-                              "\n"
-                              "    border-top: 1.25px solid #c28cb7;\n"
-                              "    border-left: 1px solid #9e8299;\n"
-                              "    border-right: 1px solid #9e8299;\n"
-                              "    border-bottom: 2px solid #736473;\n"
-                              "\n"
-                              "    border-radius: 7px;\n"
-                              "    padding: 6px 18px;\n"
-                              "}\n"
-                              "\n"
-                              "QPushButton:hover {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #96788f,\n"
-                              "        stop:0.5 #896d84,\n"
-                              "        stop:1 #80637a\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #ffd9e9;\n"
-                              "\n"
-                              "    border-top: 1px solid #ffc5df;\n"
-                              "    border-left: 1px solid #f0a2c5;\n"
-                              "    border-right: 1px solid #d989b0;\n"
-                              "    border-bottom: 2px solid #8d627d;\n"
-                              "}\n"
-                              "\n"
-                              "QPushButton:pressed {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #4d424b,\n"
-                              "        stop:1 #433841\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #ffe3ef;\n"
-                              "\n"
-                              "    border-top: 1px solid #6d5565;\n"
-                              "    border-left: 1px solid #8e647d;\n"
-                              "    border-right: 1px solid #8e647d;\n"
-                              "    border-bottom: 1px solid #b97e9e;\n"
-                              "\n"
-                              "    padding-top: 7px;\n"
-                              "    padding-bottom: 5px;\n"
-                              "}\n"
-                              "\n"
-                              "QPushButton:checked {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #734860,\n"
-                              "        stop:0.5 #643a52,\n"
-                              "        stop:1 #593047\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #ffe0ec;\n"
-                              "\n"
-                              "    border-top: 1px solid #ffc8de;\n"
-                              "    border-left: 1px solid #f1a5c8;\n"
-                              "    border-right: 1px solid #d887ad;\n"
-                              "    border-bottom: 2px solid #8d5c77;\n"
-                              "}\n"
-                              "\n"
-                              "QPushButton:checked:hover {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #81506a,\n"
-                              "        stop:0.5 #74455e,\n"
-                              "        stop:1 #673a53\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #fff0f7;\n"
-                              "\n"
-                              "    border-top: 1px solid #ffd9ea;\n"
-                              "    border-left: 1px solid #ffb7d3;\n"
-                              "    border-right: 1px solid #e092b7;\n"
-                              "    border-bottom: 2px solid #99657f;\n"
-                              "}\n"
-                              "\n"
-                              "QPushButton:disabled {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #444548,\n"
-                              "        stop:1 #37383b\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #7f7178;\n"
-                              "    border: 1px solid #534a52;\n"
-                              "}\n"
-                              "\n"
-                              "QPushButton[selected=\"true\"]:disabled {\n"
-                              "    background-color: qlineargradient(\n"
-                              "        x1:0, y1:0, x2:0, y2:1,\n"
-                              "        stop:0 #734860,\n"
-                              "        stop:0.5 #643a52,\n"
-                              "        stop:1 #593047\n"
-                              "    );\n"
-                              "\n"
-                              "    color: #ffe0ec;\n"
-                              "\n"
-                              "    border-top: 1px solid #ffc8de;\n"
-                              "    border-left: 1px solid #f1a5c8;\n"
-                              "    border-right: 1px solid #d887ad;\n"
-                              "    border-bottom: 2px solid #8d5c77;\n"
-                              "}\n")
+
+        @staticmethod
+        def lang_btns_qss(theme: str) -> str:
+            c = ThemeColors.get(theme)
+
+            return f"""
+            QPushButton {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_top"]},
+                    stop:0.45 {c["lang_btn_mid"]},
+                    stop:1 {c["lang_btn_bottom"]}
+                );
+
+                color: {c["lang_btn_text"]};
+
+                border-top: 1.25px solid {c["lang_btn_border_top"]};
+                border-left: 1px solid {c["lang_btn_border_side"]};
+                border-right: 1px solid {c["lang_btn_border_side"]};
+                border-bottom: 2px solid {c["lang_btn_border_bottom"]};
+
+                border-radius: 7px;
+                padding: 6px 18px;
+            }}
+
+            QPushButton:hover {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_hover_top"]},
+                    stop:0.5 {c["lang_btn_hover_mid"]},
+                    stop:1 {c["lang_btn_hover_bottom"]}
+                );
+
+                color: {c["lang_btn_hover_text"]};
+
+                border-top: 1px solid {c["lang_btn_hover_border_top"]};
+                border-left: 1px solid {c["lang_btn_hover_border_left"]};
+                border-right: 1px solid {c["lang_btn_hover_border_right"]};
+                border-bottom: 2px solid {c["lang_btn_hover_border_bottom"]};
+            }}
+
+            QPushButton:pressed {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_pressed_top"]},
+                    stop:1 {c["lang_btn_pressed_bottom"]}
+                );
+
+                color: {c["lang_btn_pressed_text"]};
+
+                border-top: 1px solid {c["lang_btn_pressed_border_top"]};
+                border-left: 1px solid {c["lang_btn_pressed_border_side"]};
+                border-right: 1px solid {c["lang_btn_pressed_border_side"]};
+                border-bottom: 1px solid {c["lang_btn_pressed_border_bottom"]};
+
+                padding-top: 7px;
+                padding-bottom: 5px;
+            }}
+
+            QPushButton:checked {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_checked_top"]},
+                    stop:0.5 {c["lang_btn_checked_mid"]},
+                    stop:1 {c["lang_btn_checked_bottom"]}
+                );
+
+                color: {c["lang_btn_checked_text"]};
+
+                border-top: 1px solid {c["lang_btn_checked_border_top"]};
+                border-left: 1px solid {c["lang_btn_checked_border_left"]};
+                border-right: 1px solid {c["lang_btn_checked_border_right"]};
+                border-bottom: 2px solid {c["lang_btn_checked_border_bottom"]};
+            }}
+
+            QPushButton:checked:hover {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_checked_hover_top"]},
+                    stop:0.5 {c["lang_btn_checked_hover_mid"]},
+                    stop:1 {c["lang_btn_checked_hover_bottom"]}
+                );
+
+                color: {c["lang_btn_checked_hover_text"]};
+
+                border-top: 1px solid {c["lang_btn_checked_hover_border_top"]};
+                border-left: 1px solid {c["lang_btn_checked_hover_border_left"]};
+                border-right: 1px solid {c["lang_btn_checked_hover_border_right"]};
+                border-bottom: 2px solid {c["lang_btn_checked_hover_border_bottom"]};
+            }}
+
+            QPushButton:disabled {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_disabled_top"]},
+                    stop:1 {c["lang_btn_disabled_bottom"]}
+                );
+
+                color: {c["lang_btn_disabled_text"]};
+                border: 1px solid {c["lang_btn_disabled_border"]};
+            }}
+
+            QPushButton[selected="true"]:disabled {{
+                background-color: qlineargradient(
+                    x1:0, y1:0, x2:0, y2:1,
+                    stop:0 {c["lang_btn_checked_top"]},
+                    stop:0.5 {c["lang_btn_checked_mid"]},
+                    stop:1 {c["lang_btn_checked_bottom"]}
+                );
+
+                color: {c["lang_btn_checked_text"]};
+
+                border-top: 1px solid {c["lang_btn_checked_border_top"]};
+                border-left: 1px solid {c["lang_btn_checked_border_left"]};
+                border-right: 1px solid {c["lang_btn_checked_border_right"]};
+                border-bottom: 2px solid {c["lang_btn_checked_border_bottom"]};
+            }}
+            """
 
         # built once at init instead of being recreated on every access
         button_dict: dict = field(init=False)
@@ -320,14 +648,24 @@ class MwConfig:
         py_unb_interp_qlinedit_inner_txt: str = lang.MwConfig.Widget3.py_unb_interp_qlinedit_inner_txt
         py_frameworks_sep_label_txt: str = lang.MwConfig.Widget3.py_frameworks_sep_label_txt
 
+        py_qccombobox_toptxt_qss = f"""
+            QLabel {{
+                font-family: Arial;
+                font-weight: bold;
+                font-size: 10px;
+                color: white;
+            }}
+            """
+
         py_qlabel_qss: str = (
             ""
             "QLabel { \n"
             "    font-family: \"Arial\" ;\n"
             "    letter-spacing: 1.5px; \n"
             "    font-style: normal; \n"
+            "    color: white; \n"
             "    font-weight: 200;\n"
-            "    font-size: 23pt;\n"
+            f"    font-size: {23 if os.name != 'nt' else 18}pt;\n"
             "    padding: 20px;\n"
             "    qproperty-alignment: AlignCenter; \n"
             "}"
@@ -383,6 +721,35 @@ class MwConfig:
             "    font-weight: 500; \n"
             "}"
         )
+        py_qcheckbox_qss: str = """
+                                    QCheckBox {
+                                        font-family: "Arial";
+                                        font-size: 13pt;
+                                        font-weight: 300;
+                                        letter-spacing: 2px;
+                                        color: white;
+                                    
+                                        spacing: 5px;
+                                        padding: 0px;
+                                        margin-left: 57px; /* 7 px on the right to be aligned with the interpt. qcheckbox*/
+                                    }
+                                    
+                                    QCheckBox:hover {
+                                        color: rgba(230, 190, 255, 0.90);
+                                    }
+                                    
+                                    QCheckBox:checked {
+                                        color: rgba(255, 170, 220, 1.0);
+                                    }
+                                    
+                                    QCheckBox:checked:hover {
+                                        color: rgba(255, 190, 235, 1.0);
+                                    }
+                                    
+                                    QCheckBox:disabled {
+                                        color: gray;
+                                    }
+                                                      """
         uv_error_msg: str = lang.MwConfig.Widget3.uv_error_msg
         conda_mamaba_error_msg: str = lang.MwConfig.Widget3.conda_mamba_error_msg
 
@@ -447,6 +814,7 @@ class MwConfig:
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
         py_frameworks_sep_label_coords: tuple[int, int] = (4, 0)
         py_fmk_rbtns_coords: tuple[int, int] = (5, 0)
+        py_pytest_qcheckbox_coords: tuple[int, int] = (1,4)
 
         py_interpreter_qcombobox_coords: tuple[int, int] = (0, 4)
         py_unb_interpreter_box_coords: tuple[int, int] = (4, 4)
