@@ -22,5 +22,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-    #python -m src.app to run
-    # or uv run python -m src.app if you use uv
+    #python src/app/__main__.py to run
+    # or uv run pyside6-template if you use uv

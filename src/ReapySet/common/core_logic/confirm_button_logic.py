@@ -1054,6 +1054,28 @@ class ConfirmButton2ndThread(QThread):
 
                         )
 
+                case "PY:FLASK":
+                    InitFrameworks.init_flask(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("flask",), self.proj_path):
+                            return False
+
+
+                case "PY:STREAMLIT":
+                    InitFrameworks.init_streamlit(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("streamlit",), self.proj_path):
+                            return False
+
+
+                case "PY:FASTAPI":
+                    InitFrameworks.init_fastapi(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("fastapi","uvicorn"), self.proj_path):
+                            return False
 
                 case "PY:PYSCRIPT":
                     InitFrameworks.init_pyscript(self.proj_path)

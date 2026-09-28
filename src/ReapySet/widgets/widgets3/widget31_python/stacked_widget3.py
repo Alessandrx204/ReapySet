@@ -232,7 +232,7 @@ class PythonGenWidget(QWidget):
 
                 # Selects the package manager currently stored in the project TOML.
                 # If missing, it was initialised from the global default.
-            if i not in {0, 4, 5, 6, 7} :# a way to disable them
+            if i in {...} :# a way to disable them
                 btn.setEnabled(False) #disables all except the last
                 btn.setToolTip("") # disables all tooltip for un-enabled buttons
 
