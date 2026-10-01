@@ -22,6 +22,26 @@ class InitFrameworks:
 
             dirs_exist_ok=True,
         )
+
+
+
+
+    @staticmethod
+    def init_flet(p_path: str | Path) -> None :
+        p_path = Path(p_path)
+        file_to_remove: Path = p_path / "main.py"
+        file_to_remove.unlink(missing_ok=True) # doesnt crash if not found
+        source: Path = Path(__file__).parents[1] / "fmk_templates" / "flet"
+
+
+        shutil.copytree(
+
+            source,
+
+            p_path,
+
+            dirs_exist_ok=True,
+        )
         
 
     @staticmethod

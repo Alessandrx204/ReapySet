@@ -1,0 +1,9 @@
+[project]
+name = "Flet App (ReapySet)"
+version = "0.1.0"
+description = "Add your description here"
+
+
+
+[tool.flet.app]
+path = "src"

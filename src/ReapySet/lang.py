@@ -447,3 +447,11 @@ class MwConfig:
         py_jupyter_tooltip: str = _frameworks["jupyter"]["tooltip"]
         py_marimo_name: str = _frameworks["marimo"]["name"]
         py_marimo_tooltip: str = _frameworks["marimo"]["tooltip"]
+        py_flet_name: str = _frameworks["flet"]["name"]#todo
+        py_flet_tooltip: str = _frameworks["flet"]["tooltip"]#todo
+        py_tkinter_name: str = _frameworks["tkinter"]["name"]#todo
+        py_tkinter_tooltip: str = _frameworks["tkinter"]["tooltip"]#todo
+        py_ptb_name: str = _frameworks["ptb"]["name"]#todo
+        py_ptb_tooltip: str = _frameworks["ptb"]["tooltip"]#todo
+        py_discordpy_name: str = _frameworks["discordpy"]["name"]#todo
+        py_discordpy_tooltip: str = _frameworks["discordpy"]["tooltip"]#todo

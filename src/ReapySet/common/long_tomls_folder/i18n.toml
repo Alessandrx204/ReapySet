@@ -211,6 +211,30 @@ tooltip = """A modern, reactive alternative to Jupyter: notebooks executable as
 Python scripts, ideal for dashboards, data analysis, and reproducible research."""
 
 
+[en.MwConfig.Widget3.Frameworks.flet]
+name = "Flet"
+
+tooltip = """A modern framework for building web, desktop, and mobile apps in pure Python,
+using Flutter as rendering engine without needing to write any Dart code!"""
+
+
+[en.MwConfig.Widget3.Frameworks.tkinter]
+name = "Tkinter"
+
+tooltip = """tyqgf7yeqgf7"""
+
+
+[en.MwConfig.Widget3.Frameworks.ptb]
+name = "Python Telegram Bot"
+
+tooltip = """gqy7egrfu"""
+
+
+[en.MwConfig.Widget3.Frameworks.discordpy]
+name = "Discord.py"
+
+tooltip = """914738g2y3byir8"""
+
 
 #-----------------------------------------------------------------------#
 [it.MwConfig]
@@ -439,3 +463,26 @@ tooltip = """Alternativa moderna e reattiva a Jupyter: notebook eseguibili come
 script Python, perfetti per dashboard, riproducibilità e analisi dati."""
 
 
+[it.MwConfig.Widget3.Frameworks.flet]
+name = "Flet"
+
+tooltip = """Framework moderno per creare app web, desktop e mobile in puro Python,
+usando Flutter come motore grafico sottostante senza dover scrivere codice Dart."""
+
+
+
+[it.MwConfig.Widget3.Frameworks.tkinter]
+name = "Tkinter"
+
+tooltip = """tyqgf7yeqgf7"""
+
+[it.MwConfig.Widget3.Frameworks.ptb]
+name = "Python Telegram Bot"
+
+tooltip = """gqy7egrfu"""
+
+
+[it.MwConfig.Widget3.Frameworks.discordpy]
+name = "Discord.py"
+
+tooltip = """914738g2y3byir8"""

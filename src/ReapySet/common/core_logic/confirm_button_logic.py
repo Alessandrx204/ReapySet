@@ -953,6 +953,13 @@ class ConfirmButton2ndThread(QThread):
                             return False
 
 
+                case "PY:FLET":
+                    InitFrameworks.init_flet(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("flet[all]",), self.proj_path):
+                            return False
+
 
                 case "PY:MARIMO":
                     InitFrameworks.init_marimo(self.proj_path)
@@ -1217,7 +1224,8 @@ class ConfirmButtonLogic:
                             p_qlidedit_placeholder_txt: str = "app name is..?",
                             p_qlinedit_top_txt: str = "top text",
                             p_msg_txt: str = "insert value",
-                            p_info_txt: str = "Make sure it is installed and the path is correct in config.toml"
+                            p_info_txt: str = "Make sure it is installed and the path is correct in config.toml",
+                            p_NativeDialog: bool = False
                             ) -> None:
         """
 
@@ -1233,7 +1241,7 @@ class ConfirmButtonLogic:
 
             QMessageBox.Option.DontUseNativeDialog,
 
-            True # i doesnt support the qlinedit otherwise
+            not p_NativeDialog # it doesn't support the qlinedit otherwise by default doesnt us ethe natiove style
 
         )
 
@@ -1526,11 +1534,11 @@ class ConfirmButtonLogic:
         if self.worker is not None and self.worker.isRunning():
             return
 
-        data: TOMLDocument = TomlHandler._toml_read()
+        toml_data: TOMLDocument = TomlHandler._toml_read()
 
-        project_path: str = data["global"]["project_path"]
-        editor: str = data["global"]["fav_editor"]
-        active_framework: str = data["languages"]["common"]["selected_framework"]
+        project_path: str = toml_data["global"]["project_path"]
+        editor: str = toml_data["global"]["fav_editor"]
+        active_framework: str = toml_data["languages"]["common"]["selected_framework"]
         if active_framework == "PY:DJANGO":
             self._option_popup(p_window_title="Django", p_tool_name="Django",
                                p_qlinedit_top_txt="Enter the name of the Django app:", p_qlidedit_placeholder_txt="App Name...?", p_msg_txt="",
@@ -1543,4 +1551,4 @@ class ConfirmButtonLogic:
 
         self.editor: str = editor
 
-        self._start_2thread_worker(data=data, project_path=project_path)
+        self._start_2thread_worker(data=toml_data, project_path=project_path) # TODO: Use PY:TK_CHOICE as a temporary cache ID, ask Tkinter vs CustomTkinter, then replace it with PY:TKINTER or PY:CTK and trigger the corresponding init.

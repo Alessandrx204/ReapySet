@@ -34,18 +34,18 @@ def main() -> None:
     app.setOrganizationName("Alessandrx")
     app.setStyle("Fusion" if sys.platform == "win32" else "")
     app.styleHints().setColorScheme(Qt.ColorScheme.Dark) if theme_manager.get_set_theme() == "dark" else None # ENFORCES MANDATORY DARK MODE
-    if theme_manager.current_theme == "DISABLED":
-        app.setPalette(
-            qdarktheme.load_palette(
-                theme="dark",
-                custom_colors={
-                    "primary": "#FCE3F0", # pink-ish
-                    "background": "#202124",
-                    "foreground": "#E8EAED",
-
-                },
-            )
-            )
+    """    if theme_manager.current_theme == "DISABLED":
+            app.setPalette(
+                qdarktheme.load_palette(
+                    theme="dark",
+                    custom_colors={
+                        "primary": "#FCE3F0", # pink-ish
+                        "background": "#202124",
+                        "foreground": "#E8EAED",
+    
+                    },
+                )
+                )"""
 
 
 

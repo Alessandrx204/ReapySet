@@ -4,7 +4,6 @@ tests
 fonts
 LICENSE
 README.md
-config.toml
 __pycache__/
 *.py[cod]
 .venv

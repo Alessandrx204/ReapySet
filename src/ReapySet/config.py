@@ -809,6 +809,21 @@ class MwConfig:
              lang.MwConfig.Widget3.py_jupyter_tooltip),
             ("PY:MARIMO", "Marimo N.book", "marimo_logo.png",
              lang.MwConfig.Widget3.py_marimo_tooltip),
+
+            ("PY:FLET", "Flet", "flet_logo.png",
+             lang.MwConfig.Widget3.py_flet_tooltip),
+
+            ("PY:TKINTER", "Tkinter", "tkinter_logo.png",
+             lang.MwConfig.Widget3.py_tkinter_tooltip),
+
+            ("PY:PTB", "Telegram Bot", "ptb_logo.png",
+             lang.MwConfig.Widget3.py_ptb_tooltip),
+
+            ("PY:DISCORDPY", "Discord.py", "discordpy_logo.png",
+             lang.MwConfig.Widget3.py_discordpy_tooltip),
+
+
+
         ))
         py_python_qlabel_coords: tuple[int, int] = (0, 0)
         py_pkg_manager_rbtns_coords: tuple[int, int] = (2, 0)
