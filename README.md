@@ -85,6 +85,9 @@ Think of it as a **developer launcher + project initialiser**, with a focus on c
 (html css and python script + readme for instructions)
 - `PyTest`
 (library intallation as dev dependency if allowed by the packge manager Tests filder creation and little boilerplates files)
+- `FastApi`
+- `Streamlit`
+- `Flask`
 
 ---
 
