@@ -214,7 +214,7 @@ Python scripts, ideal for dashboards, data analysis, and reproducible research."
 [en.MwConfig.Widget3.Frameworks.flet]
 name = "Flet"
 
-tooltip = """A modern framework for building web, desktop, and mobile apps in pure Python,
+tooltip = """A modern framework for building web, desktop and mobile apps in pure Python,
 using Flutter as rendering engine without needing to write any Dart code!"""
 
 
