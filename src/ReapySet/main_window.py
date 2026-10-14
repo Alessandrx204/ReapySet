@@ -413,7 +413,7 @@ class RpsMainWindow(QMainWindow):
             # Allow Windows path characters, including drive letters such as C:\
             p_regex_validation=(
                 r"^(?:[A-Za-z](?::(?:\\[\w\s.-]*)*)?)?$"
-                if platform.system() == "Windows"
+                if platform.system() == "Windows" or platform.system() == "Linux"
                 else r"^[\w\s./-]*$"
             ),
         )

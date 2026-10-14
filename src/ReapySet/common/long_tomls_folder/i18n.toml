@@ -219,21 +219,25 @@ using Flutter as rendering engine without needing to write any Dart code!"""
 
 
 [en.MwConfig.Widget3.Frameworks.tkinter]
-name = "Tkinter"
+name = "ctk/Tkinter"
 
-tooltip = """tyqgf7yeqgf7"""
+tooltip = """Python’s standard, built-in GUI library (Tkinter),
+ideal for creating lightweight, fast desktop interfaces with minimal code.
+(CustomTkinter is a modern styled version)"""
 
 
 [en.MwConfig.Widget3.Frameworks.ptb]
 name = "Python Telegram Bot"
 
-tooltip = """gqy7egrfu"""
+tooltip = """PTB(Python Telegram Bot) is an asynchronous, high-performance Python library for Telegram Bot APIs,
+            perfect for building bots, automation and group chat tools with ease."""
 
 
 [en.MwConfig.Widget3.Frameworks.discordpy]
 name = "Discord.py"
 
-tooltip = """914738g2y3byir8"""
+tooltip = """An asynchronous Python wrapper for the Discord API, useful tool for
+the creation of custom bots, message handling and server moderation."""
 
 
 #-----------------------------------------------------------------------#
@@ -472,17 +476,20 @@ usando Flutter come motore grafico sottostante senza dover scrivere codice Dart.
 
 
 [it.MwConfig.Widget3.Frameworks.tkinter]
-name = "Tkinter"
+name = "ctk/Tkinter"
 
-tooltip = """tyqgf7yeqgf7"""
+tooltip = """Libreria GUI nativa Python (CustomTkinter per uno stile moderno Tkinter per uno piu classico),
+ideale per creare interfacce desktop leggere e veloci con codice essenziale."""
 
 [it.MwConfig.Widget3.Frameworks.ptb]
 name = "Python Telegram Bot"
 
-tooltip = """gqy7egrfu"""
+tooltip = """PTB(Python Telegram Bot) è una libreria Python asincrona ad alte prestazioni per interfacciarsi con le API di Telegram,
+ideale per sviluppare bot, automazioni e strumenti per chat di gruppo in modo semplice."""
 
 
 [it.MwConfig.Widget3.Frameworks.discordpy]
 name = "Discord.py"
 
-tooltip = """914738g2y3byir8"""
+tooltip = """Wrapper Python asincrono per l'API di Discord: permette di creare
+bot personalizzati, gestire messaggi e moderare i server."""

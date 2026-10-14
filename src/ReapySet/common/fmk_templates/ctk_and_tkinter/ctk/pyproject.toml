@@ -1,0 +1,9 @@
+[project]
+name = "ctk-template-rps"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13.5"
+dependencies = [
+    "customtkinter>=6.0.0",
+]

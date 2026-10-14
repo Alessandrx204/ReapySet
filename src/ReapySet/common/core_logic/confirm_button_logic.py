@@ -80,28 +80,28 @@ class ConfirmButton2ndThread(QThread):
 
     def _run_cmd(
             self,
-            cmd: list[str],
-            cwd: str | None = None,
+            p_cmd_as_list: list[str],
+            p_current_dir: str | None = None,
     ) -> CompletedProcess[str]:
         try:
             return subprocess.run(
-                cmd,
+                p_cmd_as_list,
                 capture_output=True,
                 text=True,
-                cwd=cwd,
+                cwd=p_current_dir,
                 env=self._make_clear_term_env(),
                 check=False,
             )
         except OSError as exc:
             return CompletedProcess(
-                args=cmd,
+                args=p_cmd_as_list,
                 returncode = -1,
                 stdout="",
                 stderr=str(exc),
             )
     def _run_cmd_list(
             self,
-            cmd_list: list[list[str]],
+            p_cmd_list: list[list[str]],
             p_error_code: str,
             *,
             p_first_cmd_outside_project: bool = True,
@@ -121,14 +121,14 @@ class ConfirmButton2ndThread(QThread):
                         if all successful:
                             return True
         """
-        for index, cmd in enumerate(cmd_list):
+        for index, cmd in enumerate(p_cmd_list):
             runs_outside_project = (
                     index == 0 and p_first_cmd_outside_project
             )
 
-            cwd: str | None = None if runs_outside_project else self.proj_path
+            current_working_dir: str | None = None if runs_outside_project else self.proj_path
 
-            result: CompletedProcess[str] = self._run_cmd(cmd, cwd=cwd)
+            result: CompletedProcess[str] = self._run_cmd(cmd, p_current_dir=current_working_dir)
 
             if result.returncode != 0:
                 error_message = (
@@ -406,7 +406,7 @@ class ConfirmButton2ndThread(QThread):
                 If no package manager is configured, the package manager is
                 unsupported, or development dependencies are not supported.
         """
-        errcode: str = "packageinstallerror"
+        errcode: str = "pythonpackageinstallerror"
         def _venv_python_path(_p_proj_path: str | Path) -> Path:
             venv_path: Path = Path(_p_proj_path) / ".venv"
 
@@ -905,7 +905,6 @@ class ConfirmButton2ndThread(QThread):
 
         return True
 
-
     def _setup_selected_framework(self) -> bool:
         py_config = self.data["languages"]["python"]
 
@@ -913,7 +912,7 @@ class ConfirmButton2ndThread(QThread):
             return True
 
         selected_framework = self.data["languages"]["common"].get(
-            "selected_framework" # common fmks
+            "selected_framework"  # common fmks
         )
 
         if not selected_framework:
@@ -930,21 +929,6 @@ class ConfirmButton2ndThread(QThread):
 
         try:
             match selected_framework:
-                case "PY:JUPYTER":
-                    python_version = (
-                            py_config.get("unb_interpreter_version")
-                            or py_config.get("interpreter_version")
-                    )
-
-                    InitFrameworks.init_jupyter_notebook(
-                        self.proj_path,
-                        python_version,
-                    )
-
-                    if install_packages_on_project_creation:
-                        if not self.python_package_install(("jupyterlab",), self.proj_path):
-                            return False
-
                 case "PY:PYSIDE6":
                     InitFrameworks.init_pyside6(self.proj_path)
 
@@ -952,20 +936,41 @@ class ConfirmButton2ndThread(QThread):
                         if not self.python_package_install(("pyside6",), self.proj_path):
                             return False
 
+                case "PY:TKINTER":
+                    InitFrameworks.init_tkinter(self.proj_path)
+                    TomlHandler.toml_edit("languages",
+                                          "selected_framework",
+                                          "PY:TK_CHOICE",
+                                          "common"
+                                          )
+
+
+                case "PY:CTK":
+                    InitFrameworks.init_ctk(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("customtkinter",), self.proj_path):
+                            return False
+
+                    TomlHandler.toml_edit("languages",
+                                          "selected_framework",
+                                          "PY:TK_CHOICE",
+                                          "common"
+                                          )
+
 
                 case "PY:FLET":
                     InitFrameworks.init_flet(self.proj_path)
 
                     if install_packages_on_project_creation:
-                        if not self.python_package_install(("flet[all]",), self.proj_path):
+                        if not self.python_package_install(("flet",), self.proj_path):
                             return False
 
-
-                case "PY:MARIMO":
-                    InitFrameworks.init_marimo(self.proj_path)
+                case "PY:FLASK":
+                    InitFrameworks.init_flask(self.proj_path)
 
                     if install_packages_on_project_creation:
-                        if not self.python_package_install(("marimo",), self.proj_path):
+                        if not self.python_package_install(("flask",), self.proj_path):
                             return False
 
                 case "PY:DJANGO":
@@ -1047,7 +1052,7 @@ class ConfirmButton2ndThread(QThread):
                         ):
                             return False
 
-                    finally: # whatever is the outcome clear it
+                    finally:  # whatever is the outcome clear it
 
                         TomlHandler.toml_edit(
 
@@ -1061,13 +1066,12 @@ class ConfirmButton2ndThread(QThread):
 
                         )
 
-                case "PY:FLASK":
-                    InitFrameworks.init_flask(self.proj_path)
+                case "PY:FASTAPI":
+                    InitFrameworks.init_fastapi(self.proj_path)
 
                     if install_packages_on_project_creation:
-                        if not self.python_package_install(("flask",), self.proj_path):
+                        if not self.python_package_install(("fastapi", "uvicorn"), self.proj_path):
                             return False
-
 
                 case "PY:STREAMLIT":
                     InitFrameworks.init_streamlit(self.proj_path)
@@ -1076,18 +1080,46 @@ class ConfirmButton2ndThread(QThread):
                         if not self.python_package_install(("streamlit",), self.proj_path):
                             return False
 
-
-                case "PY:FASTAPI":
-                    InitFrameworks.init_fastapi(self.proj_path)
-
-                    if install_packages_on_project_creation:
-                        if not self.python_package_install(("fastapi","uvicorn"), self.proj_path):
-                            return False
-
                 case "PY:PYSCRIPT":
                     InitFrameworks.init_pyscript(self.proj_path)
 
                     # PyScript does not use the local Python environment.
+
+                case "PY:JUPYTER":
+                    python_version = (
+                            py_config.get("unb_interpreter_version")
+                            or py_config.get("interpreter_version")
+                    )
+
+                    InitFrameworks.init_jupyter_notebook(
+                        self.proj_path,
+                        python_version,
+                    )
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("jupyterlab",), self.proj_path):
+                            return False
+
+                case "PY:MARIMO":
+                    InitFrameworks.init_marimo(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("marimo",), self.proj_path):
+                            return False
+
+                case "PY:PTB":
+                    InitFrameworks.init_ptb(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("python-telegram-bot",), self.proj_path):
+                            return False
+
+                case "PY:DISCORDPY":
+                    InitFrameworks.init_discordpy(self.proj_path)
+
+                    if install_packages_on_project_creation:
+                        if not self.python_package_install(("discord.py", "python-dotenv"), self.proj_path):
+                            return False
 
                 case _:
                     return True
@@ -1107,7 +1139,6 @@ class ConfirmButton2ndThread(QThread):
             return False
 
         return True
-
     def run(self) -> None:  # params are passed from the init here because qt handles them this way
         if self.package_to_install: # oif the pkg is specified run this
             install_outcome = DownloadPkg.install_package(
@@ -1299,7 +1330,68 @@ class ConfirmButtonLogic:
 
             )
 
+    @staticmethod
+    def _variant_window_popup(p_option1: str,
+                              p_option1_code: str,
+                              p_option2: str,
+                              p_option2_code: str,
+                              p_info_txt: str,
+                              p_question_text: str,
+                              p_window_title: str = "Framework Choice",
+                              p_learn_more_url: str = "about:blank",
+                              ) -> bool :
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setWindowTitle(p_window_title)
+        msg.setText(p_question_text)
+        #msg.setStyleSheet("QLabel{qproperty-alignment: AlignCenter;}")
+        msg.setInformativeText(
+            p_info_txt
+        )
 
+        opt1_btn = msg.addButton(
+            p_option1,
+            QMessageBox.ButtonRole.AcceptRole,
+        )
+
+
+        opt2_btn = msg.addButton(
+            p_option2,
+            QMessageBox.ButtonRole.AcceptRole,
+        )
+
+        cancel_btn: QPushButton = msg.addButton(
+            "Cancel",
+            QMessageBox.ButtonRole.RejectRole,
+        )
+
+
+        if p_learn_more_url != "about:blank":
+            learn_more_btn: QPushButton | None = msg.addButton(
+                f"{Mwc.learn_more_txt}",
+                QMessageBox.ButtonRole.HelpRole
+            )
+
+            learn_more_btn.clicked.connect( #type: ignore
+                lambda: QDesktopServices.openUrl(QUrl(p_learn_more_url))
+            )
+
+        msg.exec()
+
+        clicked_btn = msg.clickedButton()
+        if clicked_btn == cancel_btn or clicked_btn == learn_more_btn:
+            return False
+
+        logger.info(clicked_btn.text())
+
+        if clicked_btn == opt1_btn :
+
+            TomlHandler.toml_edit("languages", "selected_framework", p_option1_code,"common" )
+
+        if clicked_btn == opt2_btn:
+            TomlHandler.toml_edit("languages", "selected_framework", p_option2_code, "common")
+
+        return True
 
 
     def _window_popup(self,p_tool_name: str,
@@ -1376,23 +1468,37 @@ class ConfirmButtonLogic:
             p_editor: str,
             p_proj_path: str,
     ) -> None:
-        cmd = LcFg.EditorCmd.get_cmd(p_editor)
 
-        if not cmd or cmd.upper() == "NOEDITOR":
+        editor_cmd: str = LcFg.EditorCmd.get_cmd(p_editor)
+
+        if not editor_cmd or editor_cmd.upper() == "NOEDITOR":
             return
+
         proj_path = Path(p_proj_path).as_posix()
-        editor_openin_cmd = cmd.format(path=proj_path)
 
         try:
+            opening_command = shlex.split(# splits the command
+                editor_cmd.replace("\\", "/"),
+                posix=True,
+            )
+
+            opening_command = [
+                arg.replace("{path}", proj_path)
+                for arg in opening_command
+            ]
+
             subprocess.Popen(
-                shlex.split(
-                    editor_openin_cmd,
-                    posix=True,
-                ),
+                opening_command,
                 env=self._make_clear_term_env1()
             )
+
         except OSError as exc:
-            self._window_popup(p_editor, p_info_txt=str(exc))
+            self._window_popup(
+                p_editor,
+                p_info_txt=str(exc)
+            )
+
+
     def handle_2thread_outcomes(self, outcome: str, error_info: str):
         match outcome:
             # --- CCOOKIECUTTER OUTCOMES---
@@ -1416,6 +1522,17 @@ class ConfirmButtonLogic:
                 return
 
             # --- PYTHON OUTCOMES ---
+
+            case "pythonpackageinstallerror":
+                logger.error(f"PACKAGE INSTALL ERROR: {error_info}")
+
+                self._window_popup(
+                    "Python package",
+                    p_window_title="Package installation failed",
+                    p_msg_txt="could not be installed.",
+                    p_info_txt=error_info,
+                )
+                return
             case "uverror":
                 self._window_popup("uv", p_learn_more_url="https://docs.astral.sh/uv/guides/projects/",
                                    p_window_title="uv: project initialisation or sync failed!", p_msg_txt="",
@@ -1544,6 +1661,23 @@ class ConfirmButtonLogic:
                                p_qlinedit_top_txt="Enter the name of the Django app:", p_qlidedit_placeholder_txt="App Name...?", p_msg_txt="",
                                p_info_txt="Using snake_case is recommended.", p_learn_more_url="https://www.djangoproject.com/start/")
 
+        if active_framework == "PY:TK_CHOICE":
+            if not self._variant_window_popup(
+                    "Ctk",
+                    "PY:CTK",
+                    "Tkinter",
+                    "PY:TKINTER",
+                    "Tkinter is the original Built-in module from python standard library.\n\n CustomTkinter is an enhanced modernised version (developed by a third party).",
+                    "Select a choice between CustomTkinter(CTk) and Tkinter",
+                     p_learn_more_url= "https://github.com/tomschimansky/customtkinter"
+            ):
+                return
+
+            toml_data: TOMLDocument = TomlHandler._toml_read()
+
+
+
+
 
 
         if not self._check_editor(editor):
@@ -1551,4 +1685,4 @@ class ConfirmButtonLogic:
 
         self.editor: str = editor
 
-        self._start_2thread_worker(data=toml_data, project_path=project_path) # TODO: Use PY:TK_CHOICE as a temporary cache ID, ask Tkinter vs CustomTkinter, then replace it with PY:TKINTER or PY:CTK and trigger the corresponding init.
+        self._start_2thread_worker(data=toml_data, project_path=project_path)

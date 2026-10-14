@@ -289,8 +289,8 @@ class ThemeColors:
 
 
     @classmethod
-    def get(cls, theme: str) -> dict[str, str]:
-        return cls.LIGHT if theme == "light" else cls.DARK
+    def get(cls, p_theme: str) -> dict[str, str]:
+        return cls.LIGHT if p_theme == "light" else cls.DARK
 
 
 
@@ -402,8 +402,8 @@ class MwConfig:
         """Widget 1 config"""
 
         @staticmethod
-        def qlineedit_qss(theme: str) -> str:
-            c = ThemeColors.get(theme)
+        def qlineedit_qss(p_theme: str) -> str:
+            c:dict[str, str] = ThemeColors.get(p_theme)
 
             return f"""
             QLineEdit {{
@@ -427,8 +427,8 @@ class MwConfig:
             """
 
         @staticmethod
-        def qcombobox_qss(theme: str) -> str:
-            c = ThemeColors.get(theme)
+        def qcombobox_qss(p_theme: str) -> str:
+            c: dict[str, str] = ThemeColors.get(p_theme)
 
             return f"""
             QComboBox {{
@@ -443,8 +443,8 @@ class MwConfig:
             """
 
         @staticmethod
-        def qstatusbar_qss(theme: str) -> str:
-            c = ThemeColors.get(theme)
+        def qstatusbar_qss(p_theme: str) -> str:
+            c: dict[str, str] = ThemeColors.get(p_theme)
 
             return f"""
                         QStatusBar {{
@@ -488,8 +488,8 @@ class MwConfig:
         max_btn_x_row: int = 3 #ex 5
 
         @staticmethod
-        def lang_btns_qss(theme: str) -> str:
-            c = ThemeColors.get(theme)
+        def lang_btns_qss(p_theme: str) -> str:
+            c: dict[str, str] = ThemeColors.get(p_theme)
 
             return f"""
             QPushButton {{
@@ -813,7 +813,7 @@ class MwConfig:
             ("PY:FLET", "Flet", "flet_logo.png",
              lang.MwConfig.Widget3.py_flet_tooltip),
 
-            ("PY:TKINTER", "Tkinter", "tkinter_logo.png",
+            ("PY:TK_CHOICE", "Ctk/Tkinter", "tkinter_logo.png",
              lang.MwConfig.Widget3.py_tkinter_tooltip),
 
             ("PY:PTB", "Telegram Bot", "ptb_logo.png",
