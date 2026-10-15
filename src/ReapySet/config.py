@@ -357,6 +357,8 @@ class MwConfig:
     learn_more_txt: str = lang.MwConfig.learn_more_txt
     download_btn_txt: str = lang.MwConfig.download_btn_txt
     NONE_editor_display: str = lang.MwConfig.NONE_editor_display
+    confirm_btn_txt: str = lang.MwConfig.confirm_btn_txt
+    back_button_txt: str = lang.MwConfig.back_button_txt
 
     # ── nested classes ──────────────────────────────────
 

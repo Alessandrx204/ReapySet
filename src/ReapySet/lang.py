@@ -53,6 +53,8 @@ class MwConfig:
     learn_more_txt: str = _section["learn_more_txt"]
     download_btn_txt: str = _section["download_btn_txt"]
     NONE_editor_display: str = _section["NONE_editor_display"]
+    confirm_btn_txt: str = _section["confirm_btn_txt"]
+    back_button_txt: str = _section["back_button_txt"]
 
 
 

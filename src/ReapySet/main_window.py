@@ -362,7 +362,7 @@ class RpsMainWindow(QMainWindow):
 
         # 2. gets reference to internal buttons to configure them
         self.confirm_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Ok)
-        self.confirm_button.setText("Confirm")
+        self.confirm_button.setText(Mwc.confirm_btn_txt)
         self.confirm_button.clicked.connect(
 
             self.handle_confirm_clicked # it will be called in confirm_button_logic.py
@@ -383,7 +383,8 @@ class RpsMainWindow(QMainWindow):
         # it may be useful someday
         #self.cancel_button: QPushButton = self.button_box.button(QDialogButtonBox.StandardButton.Cancel)
 
-        self.back_button: QPushButton = QPushButton("Back")
+        self.back_button: QPushButton = QPushButton(Mwc.back_button_txt)
+
         self.back_button.setEnabled(False)
 
         self.confirm_button.setEnabled(False)

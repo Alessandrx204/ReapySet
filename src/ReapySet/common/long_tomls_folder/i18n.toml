@@ -31,6 +31,9 @@ toml_settings_window_close_button = "Close without saving"
 learn_more_txt = "Learn More"
 download_btn_txt = "Download"
 NONE_editor_display = "None"
+confirm_btn_txt = "Confirm"
+back_button_txt = "Back"
+
 
 [en.MwConfig.Widget1]
 github_box_top_label = """\nImport a project from GitHub"""
@@ -278,6 +281,9 @@ toml_settings_window_close_button = "Chiudi senza salvare"
 learn_more_txt = "scopri di più"
 download_btn_txt = "Scarica"
 NONE_editor_display = "Nessuno"
+confirm_btn_txt = "Conferma"
+back_button_txt = "Indietro"
+
 
 
 [it.MwConfig.Widget1]
@@ -331,7 +337,7 @@ py_unb_interp_qlinedit_top_txt = "Versione esatta dell'interprete\n(solo uv e st
 
 py_unb_interp_qlinedit_inner_txt = "es. 3.13.5 "
 
-py_frameworks_sep_label_txt = "(W.I.P.) Framework e template Python :3 "
+py_frameworks_sep_label_txt = "Framework e template Python :3 "
 
 [it.MwConfig.Widget3.PackageManagers.uv]
 
