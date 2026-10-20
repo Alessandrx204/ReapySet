@@ -32,7 +32,10 @@ learn_more_txt = "Learn More"
 download_btn_txt = "Download"
 NONE_editor_display = "None"
 confirm_btn_txt = "Confirm"
+if_enabled_txt = "(When Enabled)"
 back_button_txt = "Back"
+
+
 
 
 [en.MwConfig.Widget1]
@@ -53,7 +56,9 @@ ccboilerplates_box_placeholder_txt = "cctemplates/paths/example "
 cookiecutter_error_msg = "Invalid template path configured."
 
 browse_button_text = "Browse"
-
+browse_window_fails_title = "File Not Found"
+browse_window_fails_txt = "Impossible to find the file or directory."
+browse_window_fails_info = "the path:\n{path}\n  doesn't seem to exist"
 select_editor_Combobox_top_label = ""
 
 
@@ -259,7 +264,7 @@ settings_menu = "&impostazioni..."
 quit_action = "Chiudi ReapySet"
 locate_config_file_action_txt = "&Apri il file config.toml nel file manager"
 locate_input_cache_file_action_txt = "&Apri il file input_cache.toml nel file manager"
-locate_log_file_action_txt = "&Apri il file log nel file manager"
+locate_log_file_action_txt = "&Apri il file log nel file manager "
 reset_window_pos_action_txt = "&Ripristina la posizione della finestra"
 github_action = "& Repo GitHub "
 license_action = "Licensa d'uso"
@@ -282,6 +287,7 @@ learn_more_txt = "scopri di più"
 download_btn_txt = "Scarica"
 NONE_editor_display = "Nessuno"
 confirm_btn_txt = "Conferma"
+if_enabled_txt = "(Se abilitato)"
 back_button_txt = "Indietro"
 
 
@@ -304,6 +310,9 @@ cookiecutter_error_msg = "il percorso del template configurato non è valido."
 
 
 browse_button_text = "Sfoglia…"
+browse_window_fails_title = "File Non Trovato"
+browse_window_fails_txt = "Impossibile trovare il file o la cartella."
+browse_window_fails_info = "l'elemento al path:\n{path}\n  non sembra esistere"
 
 select_editor_Combobox_top_label = ""
 

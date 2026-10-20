@@ -54,6 +54,7 @@ class MwConfig:
     download_btn_txt: str = _section["download_btn_txt"]
     NONE_editor_display: str = _section["NONE_editor_display"]
     confirm_btn_txt: str = _section["confirm_btn_txt"]
+    if_enabled_txt: str = _section["if_enabled_txt"]
     back_button_txt: str = _section["back_button_txt"]
 
 
@@ -107,6 +108,10 @@ class MwConfig:
         cookiecutter_error_msg: str = _section["cookiecutter_error_msg"]
 
         browse_button_text: str = _section["browse_button_text"]
+        browse_window_fails_title: str = _section["browse_window_fails_title"]
+        browse_window_fails_txt: str = _section["browse_window_fails_txt"]
+        browse_window_fails_info: str = _section["browse_window_fails_info"]
+
         select_editor_Combobox_top_label: str = _section[
             "select_editor_Combobox_top_label"
         ]

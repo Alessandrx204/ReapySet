@@ -200,10 +200,11 @@ generics = [
 
 morning = [
   "\nBuongiorno, {name}!\n",
+  "\nBuongiornissimo caffe,\n {name}!",
   "\nBuona giornata, {name}!\n",
   "\nInizia una nuova giornata.\n",
   "\nPronto a partire?\n",
-  "\nCaffè e Codice.\n",
+  "\nCaffè e Codice\ndi prima mattina?",
   "\nNuovo giorno, nuove opportunità.\n",
   "\nPiccoli passi, grandi risultati.\n",
   "\nOggi si costruisce qualcosa.\n",
@@ -229,7 +230,7 @@ evening = [
   "\nBentornato.\n",
   "\nCom'è andata oggi?\n",
   "\nNon sarà tempo di rallentare?\n",
-  "\nTi auguro Una serata tranquilla {name}.\n",
+  "\nTi auguro una serata tranquilla {name}.\n",
   "\nAncora qualche obiettivo da raggiungere?\n",
   "\nLa giornata non è finita.\n",
   "\nUn altro capitolo completato.\n",
@@ -237,7 +238,7 @@ evening = [
 ]
 
 night = [
-  "\nCiao, {name} ancora sveglia?.\n",
+  "\nCiao, {name} ancora sveglia?.\n",#g
   "\nSono arrivate le ore tranquille.\n",
   "\nModalità notte attivata.\n",
   "\nOttimo momento per riflettere.\n",
@@ -309,7 +310,7 @@ late_night = [
 "17_05" = [
   "Liberi di amare, ovunque.\nBuona IDAHOBIT, {name}\n(Giornata internazionale contro omofobia, bifobia e transfobia).",
   "\nUniti contro ogni discriminazione, {name}. 🇪🇺🏳‍🌈\n",
-  "L’amore è amore, {name}. Sempre.\n"
+  "L’amore è amore, {name}. Sempre!\n"
 ]
 
 "01_06" = "Benvenuto giugno!\nComincia il mese del Pride, {name}.\n Hai già aperto Hyfetch oggi?"
@@ -323,7 +324,7 @@ late_night = [
 
 
 [it.anniversaries.tech]
-"01_02" = "Oggi celebriamo JetBrains™.\nCodice migliore, creato a Praga 🇨🇿🇪🇺"
+"01_02" = "Oggi celebriamo JetBrains™.\nCodice migliore, made in Praga 🇨🇿🇪🇺"
 
 "14_02" = "Buon anniversario a Godot Engine.\nLa potenza open source al servizio dei creatori."
 

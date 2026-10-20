@@ -116,7 +116,7 @@ class RpsMainWindow(QMainWindow):
                 TomlEditorDialog(CONFIG_PATH, self).exec()
             ))
 
-        quit_action = QAction("&Quit ReapySet", self)
+        quit_action = QAction(Mwc.quit_action_txt, self)
         quit_action.setShortcut(QKeySequence.StandardKey.Quit)
         quit_action.triggered.connect(self.close)
         quit_action.setMenuRole(QAction.MenuRole.QuitRole)
@@ -163,28 +163,28 @@ class RpsMainWindow(QMainWindow):
         view_menu.addAction(reset_window_pos_action) # todo bug puts i too hig if reposed when expaned
 
         # ----------------- HELP & LEGAL STUFFS ------------------------#
-        github_action = QAction(Mwc.github_action, self)
+        github_action = QAction(Mwc.github_action_txt, self)
         github_action.triggered.connect(
             lambda: QDesktopServices.openUrl(
                 QUrl("https://github.com/Alessandrx204/ReapySet")
             )
         )
 
-        license_action = QAction(Mwc.license_action, self)
+        license_action = QAction(Mwc.license_action_txt, self)
         license_action.triggered.connect(
             lambda: QDesktopServices.openUrl(
                 QUrl("https://github.com/Alessandrx204/ReapySet/blob/Master/LICENSE")
             )
         )
 
-        third_party_licenses_action = QAction("&Open Source Licenses", self)
+        third_party_licenses_action = QAction(Mwc.third_party_licenses_action_txt, self)
         third_party_licenses_action.triggered.connect(
             lambda: QDesktopServices.openUrl(
                 QUrl("https://github.com/Alessandrx204/ReapySet/blob/Master/LICENSE-3RD-PARTY.md")
             )
         )
 
-        about_action = QAction(Mwc.about_action, self)
+        about_action = QAction(Mwc.about_action_txt, self)
         about_action.setMenuRole(QAction.MenuRole.AboutRole)
         about_action.triggered.connect(self.show_about_dialog)
 
@@ -389,7 +389,7 @@ class RpsMainWindow(QMainWindow):
 
         self.confirm_button.setEnabled(False)
         self.confirm_button.setToolTip(self.confirm_shortcut
-                                       .key().toString(QKeySequence.SequenceFormat.NativeText)+"\n(if enabled)"
+                                       .key().toString(QKeySequence.SequenceFormat.NativeText)+f"\n{Mwc.if_enabled_txt}"
                                        ) #displays the right shortcut
         #self.cancel_button.setEnable d(False)
         # noinspection PyStatementEffect
@@ -461,9 +461,9 @@ class RpsMainWindow(QMainWindow):
             msg = QMessageBox(self)
 
             msg.setIcon(QMessageBox.Icon.Warning)
-            msg.setWindowTitle("File not found")
-            msg.setText("Impossible to find the file or directory.")
-            msg.setInformativeText(f"the path:\n{path}\n  doesnt seem to exist")
+            msg.setWindowTitle(Mwc.Widget1.browse_window_fails_title)
+            msg.setText(Mwc.Widget1.browse_window_fails_txt)
+            msg.setInformativeText(Mwc.Widget1.browse_window_fails_info.format(path=path))
             msg.setStandardButtons(QMessageBox.StandardButton.Ok)
 
             msg.exec()

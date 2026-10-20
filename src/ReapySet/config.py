@@ -311,16 +311,16 @@ class MwConfig:
     view_menu: str = lang.MwConfig.view_menu
     help_menu: str = lang.MwConfig.help_menu
     settings_menu: str = lang.MwConfig.settings_menu
-    quit_action: str = lang.MwConfig.quit_action
+    quit_action_txt: str = lang.MwConfig.quit_action
     locate_config_file_action_txt: str = lang.MwConfig.locate_config_file_action_txt
     locate_input_cache_file_action_txt: str = lang.MwConfig.locate_input_cache_file_action_txt
     locate_log_file_action_txt: str = lang.MwConfig.locate_log_file_action_txt
 
     reset_window_pos_action_txt: str = lang.MwConfig.reset_window_pos_action_txt
-    github_action: str = lang.MwConfig.github_action
-    license_action: str = lang.MwConfig.license_action
-    third_party_licenses_action: str = lang.MwConfig.third_party_licenses_action
-    about_action: str = lang.MwConfig.about_action
+    github_action_txt: str = lang.MwConfig.github_action
+    license_action_txt: str = lang.MwConfig.license_action
+    third_party_licenses_action_txt: str = lang.MwConfig.third_party_licenses_action
+    about_action_txt: str = lang.MwConfig.about_action
     about_txt_title: str = lang.MwConfig.about_txt_title
     about_txt: str = lang.MwConfig.about_txt
 
@@ -358,6 +358,7 @@ class MwConfig:
     download_btn_txt: str = lang.MwConfig.download_btn_txt
     NONE_editor_display: str = lang.MwConfig.NONE_editor_display
     confirm_btn_txt: str = lang.MwConfig.confirm_btn_txt
+    if_enabled_txt: str = lang.MwConfig.if_enabled_txt
     back_button_txt: str = lang.MwConfig.back_button_txt
 
     # ── nested classes ──────────────────────────────────
@@ -467,6 +468,10 @@ class MwConfig:
         ccboilerplates_box_placeholder_txt: str = lang.MwConfig.Widget1.ccboilerplates_box_placeholder_txt
         cookiecutter_error_msg: str = lang.MwConfig.Widget1.cookiecutter_error_msg
         browse_button_text: str         = "Browse"
+        browse_window_fails_title: str = lang.MwConfig.Widget1.browse_window_fails_title
+        browse_window_fails_txt: str = lang.MwConfig.Widget1.browse_window_fails_txt
+        browse_window_fails_info: str = lang.MwConfig.Widget1.browse_window_fails_info
+
         select_editor_Combobox_top_label: str = ""
 
         # plain class variable — accessible directly on the class without instantiation
