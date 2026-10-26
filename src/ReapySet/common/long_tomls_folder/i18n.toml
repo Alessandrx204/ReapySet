@@ -549,7 +549,7 @@ about_txt = """<h3>ReapySet</h3>
                 <p>Versiō: beta 5.5.1</p>
                 <p>Īnstrūmentum ad incepta paranda et ambitūs ēmittendōs.</p>
                 <p>Programmatūrā fontis apertī adiūtum</p>
-                <p>Iūs auctōris © Alessandra 2026</p>"""
+                <p>Iūs auctōris © Alessandra 2026 </p>"""
 
 toml_error_txt = "Fasciculus configūrātiōnis TOML errōrem continet"
 toml_error_txt_title = "Configūrātiō TOML invalida"
