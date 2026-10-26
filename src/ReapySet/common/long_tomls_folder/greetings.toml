@@ -363,3 +363,286 @@ late_night = [
 "15_06" = "\nAlla generazione che ha sfumato i confini europei.\nBuon Erasmus Day, {name}."
 
 "25_12" = "\nBuon Natale, {name}!\nTi auguriamo feste senza bug."
+
+#-------------------------------------
+# THIS IS JSUT A JOKE TAKE IT AS SUCH!
+# ==============================================================================
+# LATĪNĒ (la) — Latīnitās recentior, cum signīs longitūdinis (macrōnīs)
+# Servantur: {name}, dāta DD_MM, nōmina clāvium, et \n in sententiīs.
+# ==============================================================================
+[la.weekdays]
+monday = []
+tuesday = []
+wednesday = []
+thursday = []
+friday = []
+saturday = []
+sunday = [
+  "\nDiēs Sōlis placidus sit, {name}.\n",
+  "\nHodiē paululum requiēsce.\n",
+  "\nDiēs tranquillus, animus serēnus.\n",
+  "\nPost diem Sōlis diēs Lūnae venit.\n",
+  "\nHodiē sine festīnātiōne age, {name}.\n",
+  "\nParva cōnsilia magnōs frūctūs ferunt.\n",
+  "\nŌtium interdum ingenium alit.\n",
+  "\nDiē Sōlis novae ideae nāscuntur.\n"
+]
+
+[la.memes]
+developer_humor = [
+  "\"Heri certē operābātur!\" Nēmpe...\n",
+  "\nCōnāta esne id exstinguere et rūrsus accendere?\n",
+  "\nNōnāgintā novem menda in cōdice...\n",
+  "\nNūllus locus est sīcut localhost.\n",
+  "\nIn meā māchinā omnia bene operantur.\n",
+  "\nŪnum mendum corrēctum, duo reperta.\n",
+  "\nSignum «;» vītās servat.\n",
+  "\nMōs agendī incertus dēprehēnsus est.\n",
+  "\nGit omnia meminit, {name}.\n",
+  "\nStack Overflow scit quid fēcerīs.\n",
+  "\nPrīmō cōnātū compilātur? Suspectum est.\n",
+  "\nEtiam menda Latīnē loquuntur.\n",
+  "\nCūr tandem hanc interfaciēm Latīnē servās?\n",
+  "\nTōta interfacies Latīna est. Quid exspectābās?\n"
+]
+generics = [
+  "\"Sententia memorābilis hīc inscrībenda...\"\nSalvē, {name}! 😉\n",
+  "\nLorem ipsum... Heus, hoc paene Latīnum est!\nSalvē, {name}!\n",
+  "\nNūlla sententia lepida inventa.\nBene vēnistī, {name}.\n",
+  "\nNōnne tibi haec lingua satis antīqua est?\n",
+  "\nSalvē, {name}. Senātus cōdicem tuum probat.\n",
+  "\nCūr tandem hāc interfaciē Latīnā ūteris?\nSērio rogō.",
+  "\nAnnus est MMXXVI, {name}.\nEt tū adhūc Latīnē programmas.",
+
+  "\nNēmō hanc trānslātiōnem petīvit.\nSed ecce adest.",
+
+  "\nLingua mortua?\nAt haec interfacies vīvit.",
+
+  "\nEtiam Rōmānī Python nōn habēbant.\nQuam miserī!",
+
+  "\nSī hoc intellegis, {name},\nfortasse nimis multum Latīnē studuistī.",
+
+  "\nReapySet nunc Latīnē loquitur.\nCūr? Nē mē interrogēs.",
+
+  "\nSPQR: Senātus Populusque ReapySet.\nProbāre nōlī.",
+
+  "\nHanc linguam ēlēgistī.\nNunc consequentiās fer.",
+
+  "\nLingua Latīna immortālis est.\nCodex tuus fortasse nōn.",
+
+  "\nMāter tua scit tē\ninterfaciē Latīnā ūtī?",
+
+  "\nNōn est error.\nEst trānslātiō historica."
+]
+
+pronunciation = [
+  "\nLatīne loqueris? Bene.\nSed prōnūntiātiōnem tuam nōn probō.",
+
+  "\nC ante E semper K sonat.\nNōn disputābimus.",
+
+  "\nV ut W prōnūntiātur.\nScīlicet hoc iam sciēbās...",
+
+  "\nPrōnūntiātiō restitūta ūnica rēcta est.\nReliquae? Errorēs historicī.",
+
+  "\n'Cicero' dīcis an 'Kikerō'?\nCavē quid respondeās.",
+
+  "\nSī 'Caesar' per C mollitam dīcis,\nRōmānī tē nōn intellegerent.",
+
+  "\nLatīnitās sine macrīs?\nQuanta barbaria!",
+
+  "\nNōn sum arrogāns.\nModo Latīne rēctius quam tū loquor.",
+
+  "\nPrōnūntiātiō ecclēsiastica?\nQuam venusta... aetāte mediā.",
+
+  "\nMacra nōn sunt ōrnāmenta, {name}.\nDiscās tandem!",
+
+  "\nSī 'veni, vidi, vici' Italicē prōnūntiās,\nIūlius Caesar tacēret.",
+
+  "\nSalvē, {name}.\nSpērō tē saltem 'salvē' rēctē dīcere.",
+
+  "\nHaec nōn est opīniō.\nHaec est phōnologia historica.",
+
+  "\nEtiamne Latīnē sine macrīs scrībis?\nMīrābilis audācia.",
+
+  "\nRōma nōn ūnō diē aedificāta est.\nNec prōnūntiātiō tua ēmendāta."
+]
+[la.splashscreens.topics.greetings]
+morning = [
+  "\nBonum māne, {name}!\n",
+  "\nSalvē, mea sōlīcula! 😉\n",
+  "\nSurge et splende, {name}!\n",
+  "\nNovus diēs incipit, {name}.\n",
+  "\nParāta esne ad hodiērna certāmina, {name}?\n",
+  "\nCaffēum recens, initium novum.\n",
+  "\nNova lūx, novae occāsiōnēs.\n",
+  "\nHunc diem ūtiliter agāmus, {name}.\n",
+  "\nDiēs nēminem exspectat, {name}.\n",
+  "\nParvī gradūs, magnī frūctūs.\n",
+  "\nTempus est aliquid praeclārum creāre.\n"
+]
+afternoon = [
+  "\nSalvē post merīdiem, {name}.\n",
+  "\nRūrsus ad opus, {name}.\n",
+  "\nOpusne bene prōcēdit, {name}?\n",
+  "\nŪnum negōtium singulīs vicibus.\n",
+  "\nPergē prōgredī, {name}.\n",
+  "\nAdhūc satis diēī superest.\n",
+  "\nCōnstantia maiōris est quam impetus.\n",
+  "\nPlūs efficis quam putās.\n",
+  "\nRēbus tuīs intenta manē, {name}.\n",
+  "\nReliquum diem bene absolvāmus.\n"
+]
+evening = [
+  "\nBonus tibi vesper sit, {name}.\n",
+  "\nBene redīstī, {name}.\n",
+  "\nQuōmodo hodiē tibi cessit?\n",
+  "\nTempusne est paululum requiēscere?\n",
+  "\nVesper tranquillus multum iuvat.\n",
+  "\nAdhūcne ad fīnēs tuōs contendīs?\n",
+  "\nDiēs nōndum ad fīnem vēnit.\n",
+  "\nAliud opus hodiē? Scīlicet...\n",
+  "\nAlter diēs, alter liber vītae.\n",
+  "\nSpērō tē hodiē multa effēcisse.\n"
+]
+night = [
+  "\nSalvē, {name}.\n",
+  "\nHōrae silentiī advēnērunt.\n",
+  "\nModus nocturnus āctīvus est.\n",
+  "\nBonum tempus est ad cōgitandum.\n",
+  "\nMundus nunc tranquilliōr est.\n",
+  "\nNocte facilius animus intenditur.\n",
+  "\nTū et cōgitātiōnēs tuae, {name}.\n",
+  "\nStēllae fulgent. Tū quoque vigilās?\n",
+  "\nAlta nox, clārae cōgitātiōnēs.\n"
+]
+late_night = [
+  "\nAdhūc vigilās, {name}?\n",
+  "\nŪnum tantum negōtium restat, nōnne?\n",
+  "\nSōlae pertinācēs adhūc adsunt.\n",
+  "\nMenda numquam dormiunt.\n",
+  "\nPropriē dīcendō, iam crās est.\n",
+  "\nIndustria an prōcrāstinātiō?\n",
+  "\nSomnus est virtūs, nōn mendum.\n",
+  "\nŪltima tantum commīssiō... fortasse.\n",
+  "\nTastātūra hāc hōrā clāmāre vidētur.\n",
+  "\nĪnsigne vigilis nocturnae adeptā es.\n"
+]
+
+[la.holidays.europe]
+"01_01" = [
+  "Ūna monēta, iter commūne.\nFēlīx diēs monētae Eurōpaeae, {name}!",
+  "Ex annō 2002 historia scrībītur.\nFēlīx annīversārius diēs, {name}!"
+]
+"25_03" = "Γεια σου, Ελλάδα!\nHodiē Graeciae lībertās celebrātur. 🇬🇷\nSalvē rūrsus, {name}!"
+"09_05" = [
+  "In varietāte concordia.\nFēlīx diēs Eurōpae, {name}! 🇪🇺",
+  "Futūrum ūnā aedificāmus, {name}.\nVīvat Eurōpa! 🇪🇺"
+]
+"02_06" = "Fēlīx diēs Reī Pūblicae Italicae, {name}! 🇮🇹\n"
+"14_06" = [
+  "Sine fīnibus per Eurōpam.\nFēlīx diēs Schengen, {name}!",
+  "Līberē iter facere licet.\nFēlīx diēs Schengen, {name}!"
+]
+"14_07" = "\nLiberté, égalité, fraternité.\nFēlīx diēs XIV Iūliī, {name}! 🇫🇷"
+"21_07" = "Fēlīx diēs nātiōnālis Belgicae, {name}! 🇧🇪\n"
+"26_09" = [
+  "\nŪna Eurōpa, multae linguae.\nSalvē, {name}!",
+  "\nHodiē varietātem linguārum celebrāmus, {name}."
+]
+"12_10" = [
+  "\n¡Feliz Fiesta Nacional! 🇪🇸\nSalvē, {name}!",
+  "\nHodiē Hispānia diem nātiōnālem celebrat, {name}. 🇪🇸"
+]
+"09_11" = "\nMūrī corruunt, pontēs exstruuntur.\nSalvē, {name}."
+
+[la.holidays.lgbt]
+"01_02" = [
+  "Lynn Conway, mulier quae artem computātrīcem mūtāvit, hodiē nāta est. 🏳️‍⚧️",
+  "Lynn Conway memorāmus:\nmentem clāram, vītam līberam. 🏳️‍⚧️"
+]
+"01_04" = "\nAequālia coniugum iūra in Eurōpā celebrāmus, {name}.\n"
+"17_05" = [
+  "Līberē amāre omnibus licet.\nFēlīx diēs adversus discrīmen, {name}!",
+  "\nContrā omne discrīmen ūnā stāmus, {name}. 🇪🇺🏳️‍🌈",
+  "\nAmor amor est, {name}. Semper.\n"
+]
+"01_06" = "Mēnsis dīgnitātis LGBTQ+ incipit, {name}!\nHyfetch hodiē aperuistīne? 😉"
+"23_06" = [
+  "Alan Turing hodiē memorāmus.\nVir fuit quī scientiam computātrīcem mūtāvit.",
+  "Ratiō, fortitūdō, ingenium.\nTuring mundum commūtāvit.\n"
+]
+"11_10" = "Vīve ut vērē es, {name}.\nHodiē identitātem palam dēclārāmus."
+
+[la.anniversaries.tech]
+"01_02" = "JetBrains™ hodiē celebrāmus.\nMelior cōdex, arte Prāgensī. 🇨🇿🇪🇺"
+"14_02" = "Fēlīx diēs nātālis Godot Engine!\nVīs fontis apertī creātrīcibus adest."
+"20_02" = [
+  "Python annō 1991 in lūcem prōdiit.\nQuantum iter, {name}!",
+  "Fēlīx diēs nātālis, Python!\nSimplex, ēlegāns, potens.\n(etsi nōn semper celer.)"
+]
+"01_04" = "Fēlīx diēs annīversārius ASML™!\nMundum singulīs nanometrīs mūtat. 🇳🇱🇪🇺"
+"15_05" = "Fēlīx diēs Rust omnibus cultōribus!\nNōnne et tū Rustācēa es, {name}? 👀"
+"25_08" = "Annō 1991 dē nucleō Linux prīmum nūntiātum est.\nArch ūteris, nōnne, {name}? 👀"
+"29_09" = "Scientia et cooperātiō conveniunt.\nNox Investigātōrum Eurōpaeōrum adest, {name}!"
+"04_12" = [
+  "JavaScript annō 1995 in lūcem prōdiit...\nEuge...",
+  "Fēlīx diēs nātālis, JavaScript!\nRēte interāctīvum facis\n(et interdum impraevidēbilem)."
+]
+
+[la.holidays.history]
+"27_01" = "\nPraeteritī memoriam servāmus\nut futūrum tueāmur, {name}.\n"
+"25_04" = [
+  "Fēlīx diēs Līberātiōnis Italicae, {name}! 🇮🇹",
+  "Lībertātem hodiē celebrāmus, {name}.\n"
+]
+"27_04" = [
+  "\nFijne Koningsdag! 🇳🇱\nParāta esne ad colōrem aurantiacum, {name}?",
+  "\nFēlīx diēs Rēgis Nēderlandiae, {name}!\n"
+]
+"15_06" = "\nGenerātiōnī quae fīnēs superāvit.\nFēlīx diēs Erasmus, {name}!"
+"25_12" = "\nFēlīx Nātīvitātis diēs, {name}!\nSint fēriae sine mendīs."
+
+# Festī diēs Rōmānōrum antīquōrum; dāta ex calendāriō trāditō.
+# Clāvēs novae: integrātiōnī appāratūs fortasse addenda est haec tabula.
+[la.holidays.ancient_rome]
+"15_02" = "Hodiē Lupercālia celebrantur.\nRōma veterem mōrem commemorat, {name}."
+"23_02" = "Terminālia adsunt!\nFīnēs agrōrum et deus Terminus celebrantur."
+"01_03" = "Fēlīcia Mātrōnālia, {name}!\nHodiē Iūnō Lūcīna colitur."
+"17_03" = "Līberālia celebrantur!\nLīber Pater hodiē honōrātur, {name}."
+"19_03" = "Quīnquātrūs incipiunt.\nMinervae honōs habētur, {name}."
+"21_04" = [
+  "Parīlia celebrantur!\nFēlīx diēs nātālis Urbis Rōmae!",
+  "Ab Urbe conditā memoriam repetimus.\nVīvat Rōma, {name}!"
+]
+"09_06" = "Vestālia adsunt!\nIgnis sacer Vestae celebrātur, {name}."
+"23_07" = "Neptūnālia celebrantur.\nNeptūnus et aquae hodiē commemorantur."
+"23_08" = "Volcānālia adsunt!\nDeō Volcānō honōs tribuitur, {name}."
+"31_10" = [
+  "\nMundus pateat! Mundus pateat!\nNox arcāna tandem adest, {name}!",
+
+  "\nTitus Taphius adest!\nSalvē rēgem cucurbitārum!",
+
+  "\nHodiē mundus pateat!\nUmbrae et larvæ tē exspectant.",
+
+  "\nQuid est? Quid est?\nNum nova mīrācula invēnistī, {name}?",
+
+  "\nŌ rēx Cucurbitārum!\nCūr tam trīstis es in mediā glōriā?",
+
+  "\nCucurbitoīdēī cantant!\nNē ab eōrum chōrō absīs, {name}.",
+
+  "\nCavē sub lectō, {name}.\nNescīs quis ibi lateat.",
+
+  "\nQuid est? Nix? Lūmina? Laetitia?\nTitus Taphius obstupēscit.",
+
+  "\nPlūtō holerum convocātus est.\nFortasse melius dormīre dēbēbās.",
+
+  "\nNocte obscūrā omnia mūtantur.\nEtiam rēx umbrārum aliud optat.",
+
+  "\nHodiē Taphī rēgnum celebrāmus!\nNē timeās... nimium.",
+
+  "\nSalvē, {name}!\nMundus umbrārum tibi aperiātur."
+]
+"17_12" = [
+  "Iō Sāturnālia!\nHodiē lūdus et convīvia regnant, {name}!",
+  "Sāturnālia incipiunt!\nEtiam cōdex aliquandō requiēscat."
+]

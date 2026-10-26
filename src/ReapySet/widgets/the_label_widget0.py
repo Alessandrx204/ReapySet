@@ -92,7 +92,7 @@ class GreetingsGetter:
         name: str = TomlHandler.toml_get(CONFIG_PATH, "personal", "profile_name") or "User"
 
 
-        lang: str = val if (val := TomlHandler.toml_get(CONFIG_PATH, "personal", "language")) in {"en", "it"} else "en"
+        lang: str = val if (val := TomlHandler.toml_get(CONFIG_PATH, "personal", "language")) in {"en", "it", "la"} else "en"
         is_greetings_enabled = TomlHandler.toml_get(CONFIG_PATH, "personal", "enabled_greetings") is True
 
         if not is_greetings_enabled:
