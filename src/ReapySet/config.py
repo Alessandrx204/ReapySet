@@ -837,6 +837,8 @@ class MwConfig:
         py_frameworks_sep_label_coords: tuple[int, int] = (4, 0)
         py_fmk_rbtns_coords: tuple[int, int] = (5, 0)
         py_pytest_qcheckbox_coords: tuple[int, int] = (1,4)
+        py_pytest_tooltip: str = lang.MwConfig.Widget3.py_pytest_tooltip
+
 
         py_interpreter_qcombobox_coords: tuple[int, int] = (0, 4)
         py_unb_interpreter_box_coords: tuple[int, int] = (4, 4)

@@ -57,8 +57,7 @@ class PythonGenWidget(QWidget):
         self.pytest_qcbox = QCheckBox(self)
         self.pytest_qcbox.setText("PyTest")
         self.pytest_qcbox.setStyleSheet(Mwc.Widget3.py_qcheckbox_qss)
-        self.pytest_qcbox.setToolTip("PyTest is a unit testing framework for Python,\n"
-                                     "it allows you to write and run tests for your Python code.")
+        self.pytest_qcbox.setToolTip(Mwc.Widget3.py_pytest_tooltip)
         self.pytest_qcbox.toggled.connect(
             lambda checked: self._add_src_to_path(p_checked=checked)
         )

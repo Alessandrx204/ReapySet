@@ -17,7 +17,7 @@ third_party_licenses_action = "&Open Source Licenses"
 about_action = "&About ReapySet"
 about_txt_title = "About ReapySet"
 about_txt = """<h3>ReapySet</h3>
-                <p>Version: beta 5.0</p>
+                <p>Version: beta 5.5</p>
                 <p>Project setup and environment launcher.</p>
                 <p>Powered by Open source software</p>
                 <p>Copyright © Alessandra 2026</p>"""
@@ -247,6 +247,12 @@ name = "Discord.py"
 tooltip = """An asynchronous Python wrapper for the Discord API, useful tool for
 the creation of custom bots, message handling and server moderation."""
 
+[en.MwConfig.Widget3.Frameworks.pytest]
+name = "PyTest"
+
+tooltip = """PyTest is a unit testing framework for Python,\n"
+             "it allows you to write and run tests for your Python code."""
+
 
 #-----------------------------------------------------------------------#
 [it.MwConfig]
@@ -272,7 +278,7 @@ third_party_licenses_action = "licenze di terze parti"
 about_action = "ReapySet"
 about_txt_title = "riguardo a ReapySet"
 about_txt = """<h3>ReapySet</h3>
-                <p>Version: beta 5.0</p>
+                <p>Version: beta 5.5</p>
                 <p>Project setup and environment launcher.</p>
                 <p>Powered by Open source software</p>
                 <p>Copyright © Alessandra 2026</p>"""
@@ -508,3 +514,276 @@ name = "Discord.py"
 
 tooltip = """Wrapper Python asincrono per l'API di Discord: permette di creare
 bot personalizzati, gestire messaggi e moderare i server."""
+
+[it.MwConfig.Widget3.Frameworks.pytest]
+name = "PyTest"
+
+tooltip = """PyTest è un framework di unit testing per Python:
+             permette di scrivere ed eseguire test per il tuo codice Python.
+             """
+
+
+
+#---------------------------------------------------
+
+
+[la.MwConfig]
+mw_title = "ReapySet"
+default_label = "(praedef.)"
+
+file_menu = "&Fasciculus"
+view_menu = "&Aspectus"
+help_menu = "&Auxilium"
+settings_menu = "&Optiōnēs..."
+quit_action = "&Exī ex ReapySet"
+locate_config_file_action_txt = "&Inveniē fasciculum config.toml"
+locate_input_cache_file_action_txt = "&Inveniē fasciculum memoriae intrōitūs"
+locate_log_file_action_txt = "&Inveniē fasciculum commentāriī"
+reset_window_pos_action_txt = "&Restitue locum fenestrae"
+github_action = "Repositorium &GitHub"
+license_action = "&Licentia ReapySet"
+third_party_licenses_action = "Licentiae programmatūrae &apertae"
+about_action = "&De ReapySet"
+about_txt_title = "De ReapySet"
+about_txt = """<h3>ReapySet</h3>
+                <p>Versiō: beta 5.5</p>
+                <p>Īnstrūmentum ad incepta paranda et ambitūs ēmittendōs.</p>
+                <p>Programmatūrā fontis apertī adiūtum</p>
+                <p>Iūs auctōris © Alessandra 2026</p>"""
+
+toml_error_txt = "Fasciculus configūrātiōnis TOML errōrem continet"
+toml_error_txt_title = "Configūrātiō TOML invalida"
+toml_settings_window_title = "Optiōnēs"
+toml_settings_window_save_button = "&Servā && exī"
+toml_settings_window_close_button = "Exī sine servandō"
+
+learn_more_txt = "Plūra discere"
+download_btn_txt = "Dēfer"
+NONE_editor_display = "Nūllus"
+confirm_btn_txt = "Cōnfirmā"
+if_enabled_txt = "(Sī activātum)"
+back_button_txt = "Redī"
+
+
+
+
+[la.MwConfig.Widget1]
+github_box_top_label = """\nImportā incēptum ex GitHub"""
+
+github_box_placeholder_txt = "PROXIMĒ "
+
+path_box_top_label = """
+\nLocus incēptī:
+(Bis cliccā ad quaerendum)"""
+
+path_box_placeholder_txt = "Via incēptī..."
+
+sample_box_top_label = "🍪 CookieCutter (Beta):\n  Viam inserē\n  (aut bis cliccā ad quaerendum)"
+
+ccboilerplates_box_placeholder_txt = "cctemplates/paths/example "
+
+cookiecutter_error_msg = "Via exemplāris configūrāta invalida est."
+
+browse_button_text = "Quaere"
+browse_window_fails_title = "Fasciculus nōn inventus"
+browse_window_fails_txt = "Fasciculum aut directōrium invenīre nōn potest."
+browse_window_fails_info = "Via:\n{path}\n  nōn exstāre vidētur"
+select_editor_Combobox_top_label = ""
+
+
+[la.MwConfig.LangBtnWidget]
+python_button_text = "Python"
+
+javascript_button_text = "TypeScript/JavaScript (in prōgressū)"
+
+rust_button_text = "Rust (in prōgressū)"
+
+dotnet_button_text = ".NET (in prōgressū)"
+
+kotlin_button_text = "Kotlin/Java (in prōgressū)"
+
+cpp_button_text = "C/C++"
+
+go_button_text = "Go"
+
+lua_button_text = "Lua"
+
+gdscript_button_text = "GDScript"
+
+
+[la.MwConfig.Widget3]
+py_qlabel_txt = "Parā, quaesō, spatium operis Python! (^-^)/"
+
+py_interp_qcbox_top_txt = "Interpretēs locāliter īnstitūtī"
+
+py_unb_interp_qlinedit_top_txt = "Versiō interpretis exacta\n(tantum īnstrūmenta uv et conda)"
+
+py_unb_interp_qlinedit_inner_txt = "e.g. 3.13.5"
+
+py_frameworks_sep_label_txt = " Compāgēs et exemplāria Python :3  "
+
+
+[la.MwConfig.Widget3.PackageManagers.uv]
+name = "uv"
+
+tooltip = """Administer sarcinārum et incēptōrum Python modernus et ultrā celer,
+             in Rust scrīptus, optima ēlectiō plērīsque incēptīs Python novīs."""
+
+error_msg = """:( \nNota: cavē ut uv īnstitūtum sit, interpres Python validus,
+                        et via incēptī ūtilis.\n\nSingula"""
+[la.MwConfig.Widget3.PackageManagers.venv]
+name = "Pip"
+
+tooltip = """Administer sarcinārum Python vulgāris et īnsitus, cum ratiōne ambitūs virtuālis."""
+
+
+[la.MwConfig.Widget3.PackageManagers.poetry]
+name = "Poetry"
+
+tooltip = """Aptissimus ad dependentiās fīgendās, incepta administrandā et sarcinās ēdendās."""
+
+
+[la.MwConfig.Widget3.PackageManagers.hatch]
+name = "Hatch"
+
+tooltip = """Optimus ad sarcinās compōnendās, probandās et ēvolvendās in complūribus ambitibus."""
+
+
+[la.MwConfig.Widget3.PackageManagers.conda]
+name = "Conda"
+
+tooltip = """Aptissimus incēptīs scientificīs et ambitibus quī dependentiās
+nātīvās aut aliēnās ā Python continent."""
+
+conda_mamba_error_msg = "creātiō ambitūs dēfēcit!"
+
+[la.MwConfig.Widget3.PackageManagers.pixi]
+name = "Pixi"
+
+tooltip = """Ratiō operandī moderna, celeris et reprōducibilis, cum Conda cōnsentiēns, in Rust scrīpta."""
+
+pixi_error_msg = "initium incēptī dēfēcit!"
+[la.MwConfig.Widget3.PackageManagers.mamba]
+name = "Mamba"
+
+tooltip = """Succedāneum multō celerius et magnā ex parte cōnsentiēns
+ratiōnis Conda ex linea imperiōrum vulgāris."""
+
+
+[la.MwConfig.Widget3.PackageManagers.pipenv]
+name = "Pipenv"
+
+tooltip = """Ratiō operandī tradītiōnālis in Pipfile fundāta, quae pip,
+fīxiōnem dependentiārum et ambitūs virtuālēs coniungit."""
+
+
+[la.MwConfig.Widget3.PackageManagers.virtualenv]
+name = "Virtualenv"
+
+tooltip = """Ambitūs virtuālēs creat cum optiōnibus compatibilitātis
+ultrā modulum venv Python vulgārem."""
+
+
+[la.MwConfig.Widget3.PackageManagers.pdm]
+name = "PDM"
+
+tooltip = """Administer incēptōrum et dependentiārum modernus, ad norma fundātus,
+eīs quī ratiōnem Poetry nōn optant."""
+
+
+[la.MwConfig.Widget3.Frameworks.django]
+name = "Django"
+
+tooltip = """Compāgēs interrēti plēna, cum ORM, auctōrizātiōne,
+tabulā administrātiōnis et multīs partibus īnsitīs."""
+
+
+[la.MwConfig.Widget3.Frameworks.flask]
+name = "Flask"
+
+tooltip = """Compāgēs interrēti minima et flexibilis, apta incēptīs parvīs,
+API et architectūrīs propriīs."""
+
+
+[la.MwConfig.Widget3.Frameworks.fastapi]
+name = "FastAPI"
+
+tooltip = """Compāgēs API perfōrmāns, cum validātiōne automaticā,
+indicibus typōrum et documentātiōne OpenAPI."""
+
+
+[la.MwConfig.Widget3.Frameworks.streamlit]
+name = "Streamlit"
+
+tooltip = """Applicātiōnēs et tabulās datōrum interactīvās immediātē ex Python
+aedificā, paucō cōdice."""
+
+
+[la.MwConfig.Widget3.Frameworks.pyscript]
+name = "PyScript"
+
+tooltip = """Python in pāginā interrētī currit per WebAssembly,
+CPython plēnum per Pyodide aut MicroPython adhibēns,
+cum aditū ad API pāginae."""
+
+
+[la.MwConfig.Widget3.Frameworks.pyside6]
+name = "PySide6"
+
+tooltip = """Compāgēs Python officiālis Qt, ad applicātiōnēs mensae multiplatformās provectās
+cum interfaciē nātīvā creandās.\t(velut haec ipsa quā nunc ūteris!)"""
+
+
+[la.MwConfig.Widget3.Frameworks.jupyter]
+name = "Jupyter Notebook"
+
+tooltip = """Libellī interactīvī ad datōrum analysin, imāginēs ostendendās,
+experīmenta et discipulātiōnem māchinālem."""
+
+
+[la.MwConfig.Widget3.Frameworks.marimo]
+name = "marimo"
+
+tooltip = """Alternātīva moderna et reactīva Jupyter: libellī ut scrīpta Python exsequendī,
+apti tabulīs, analysī datōrum et investīgātiōnī reprōducibilī."""
+
+
+[la.MwConfig.Widget3.Frameworks.flet]
+name = "Flet"
+
+tooltip = """Compāgēs moderna ad applicātiōnēs interrēti, mensae et mobilēs in Python pūrō aedificandās,
+Flutter ut mōtōre reddendī ūtēns, sine ullō cōdice Dart scrībendō!"""
+
+
+[la.MwConfig.Widget3.Frameworks.tkinter]
+name = "ctk/Tkinter"
+
+tooltip = """Bibliothēca GUI Python vulgāris et īnsita (Tkinter),
+apta interfaciēbus mensae levibus et celeribus paucō cōdice.
+(CustomTkinter versiō moderna ōrnāta est)"""
+
+
+[la.MwConfig.Widget3.Frameworks.ptb]
+name = "Python Telegram Bot"
+
+tooltip = """PTB (Python Telegram Bot) est bibliothēca Pythonica asynchrōna
+             ad Telegram API, optima ad automata et circulōs colloquiī creanda."""
+
+
+[la.MwConfig.Widget3.Frameworks.discordpy]
+name = "Discord.py"
+
+tooltip = """Bibliothēca Pythonica asynchrona ad Discord API,
+             ūtilē ad automata creanda et nūntia tractanda."""
+
+[la.MwConfig.Widget3.Frameworks.pytest]
+name = "PyTest"
+
+tooltip = """PyTest est structūra probātiōnum ūnitāriārum Pythōnis,
+             quae sinit tē probātiōnēs cōdicī tuō
+             Pythōnico scrībere et exsequī."""
+
+#---
+
+
+
