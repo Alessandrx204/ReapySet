@@ -17,7 +17,7 @@ third_party_licenses_action = "&Open Source Licenses"
 about_action = "&About ReapySet"
 about_txt_title = "About ReapySet"
 about_txt = """<h3>ReapySet</h3>
-                <p>Version: beta 5.5</p>
+                <p>Version: beta 5.5.1</p>
                 <p>Project setup and environment launcher.</p>
                 <p>Powered by Open source software</p>
                 <p>Copyright © Alessandra 2026</p>"""
@@ -278,7 +278,7 @@ third_party_licenses_action = "licenze di terze parti"
 about_action = "ReapySet"
 about_txt_title = "riguardo a ReapySet"
 about_txt = """<h3>ReapySet</h3>
-                <p>Version: beta 5.5</p>
+                <p>Version: beta 5.5.1</p>
                 <p>Project setup and environment launcher.</p>
                 <p>Powered by Open source software</p>
                 <p>Copyright © Alessandra 2026</p>"""
@@ -286,7 +286,7 @@ about_txt = """<h3>ReapySet</h3>
 toml_error_txt = "Il file Config TOML contiene un errore"
 toml_error_txt_title = "il file Config TOML non è valido"
 toml_settings_window_title = "Impostazioni"
-toml_settings_window_save_button = "&Salva ed Esci"
+toml_settings_window_save_button = "&Salva e Chiudi"
 toml_settings_window_close_button = "Chiudi senza salvare"
 
 learn_more_txt = "scopri di più"
@@ -546,7 +546,7 @@ third_party_licenses_action = "Licentiae programmatūrae &apertae"
 about_action = "&De ReapySet"
 about_txt_title = "De ReapySet"
 about_txt = """<h3>ReapySet</h3>
-                <p>Versiō: beta 5.5</p>
+                <p>Versiō: beta 5.5.1</p>
                 <p>Īnstrūmentum ad incepta paranda et ambitūs ēmittendōs.</p>
                 <p>Programmatūrā fontis apertī adiūtum</p>
                 <p>Iūs auctōris © Alessandra 2026</p>"""

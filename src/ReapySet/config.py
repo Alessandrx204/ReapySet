@@ -870,7 +870,11 @@ class LogicVariables:
         @staticmethod
         def get_cmd(p_editor: str) -> str:
             """reads from config.toml reading th openin command for each editor"""
-            key = p_editor.lower().replace(" ", "_") + "_cmd"
+            if p_editor == MwConfig.NONE_editor_display:
+                key = "NONE_cmd"
+            else:
+                key = p_editor.lower().replace(" ", "_") + "_cmd"
+
             return TomlHandler.toml_get(CONFIG_PATH, "editors", key) or ""
 
         @staticmethod
@@ -889,11 +893,11 @@ class LogicVariables:
 
                 for key in editors:
                     if key.endswith("_cmd"):
-                        base = key.removesuffix("_cmd")
+                        base: str = key.removesuffix("_cmd")
                         display_name: str = (
                                 editors.get(f"{base}_display") # if has got banana_cmd it looks for a banana_display in case its spelled funny alike 90% of code editors like BånaNà
                                 or base.replace("_", " ").title()# if  none it capitalises each word in the base name and replaces underscores with spaces, e.g. "vscode" becomes "Vscode"
-                                if base != "none".upper() else f"{MwConfig.NONE_editor_display}" #No editor option for localisation
+                                if base.upper() != "NONE" else MwConfig.NONE_editor_display # oif No editor option for localisation
 
 
 
