@@ -21,6 +21,7 @@ from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 from ReapySet.config import LogicVariables as LcFg
 from ReapySet.config import MwConfig as Mwc
 from ReapySet.common.core_logic.download_pkg import DownloadPkg
+from ReapySet.lang import MwConfig as Lmwc
 
 
 #common/confirm_button.py
@@ -1658,8 +1659,8 @@ class ConfirmButtonLogic:
         active_framework: str = toml_data["languages"]["common"]["selected_framework"]
         if active_framework == "PY:DJANGO":
             self._option_popup(p_window_title="Django", p_tool_name="Django",
-                               p_qlinedit_top_txt="Enter the name of the Django app:", p_qlidedit_placeholder_txt="App Name...?", p_msg_txt="",
-                               p_info_txt="Using snake_case is recommended.", p_learn_more_url="https://www.djangoproject.com/start/")
+                               p_qlinedit_top_txt=Lmwc.Widget3.py_django_toptext, p_qlidedit_placeholder_txt=Lmwc.Widget3.py_django_qlinedit_innertext, p_msg_txt="",
+                               p_info_txt=Lmwc.Widget3.py_django_subtitle, p_learn_more_url="https://www.djangoproject.com/start/")
 
         if active_framework == "PY:TK_CHOICE":
             if not self._variant_window_popup(

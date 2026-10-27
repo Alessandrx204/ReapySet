@@ -164,7 +164,9 @@ who do not want the Poetry workflow."""
 
 [en.MwConfig.Widget3.Frameworks.django]
 name = "Django"
-
+popup_subtitle = "Using snake_case is recommended"
+popup_qlinedit_innertext = "App Name...?"
+popup_toptext = "Enter the name of the Django app:"
 tooltip = """A full-featured web framework with an ORM, authentication,
 an administration panel and many built-in components."""
 
@@ -434,7 +436,9 @@ adatto a chi cerca un'alternativa al flusso di lavoro di Poetry."""
 [it.MwConfig.Widget3.Frameworks.django]
 
 name = "Django"
-
+popup_subtitle = "si consiglia l'uso dello snake_case"
+popup_qlinedit_innertext = "Nome App...?"
+popup_toptext = "Scrivere il nome dell'app Django:"
 tooltip = """Framework web completo con ORM, autenticazione, pannello di amministrazione
 e numerosi componenti già integrati."""
 
@@ -693,6 +697,9 @@ eīs quī ratiōnem Poetry nōn optant."""
 
 [la.MwConfig.Widget3.Frameworks.django]
 name = "Django"
+popup_subtitle = "Formātum «snake_case» adhibēre commendātur"
+popup_qlinedit_innertext = "Nōmen app..?"
+popup_toptext = "Inscribe nōmen applicātīōnis Django:"
 
 tooltip = """Compāgēs interrēti plēna, cum ORM, auctōrizātiōne,
 tabulā administrātiōnis et multīs partibus īnsitīs."""

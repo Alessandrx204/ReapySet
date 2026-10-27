@@ -433,6 +433,9 @@ class MwConfig:
         # Frameworks and project templates
 
         py_django_name: str = _frameworks["django"]["name"]
+        py_django_subtitle: str = _frameworks["django"]["popup_subtitle"]
+        py_django_qlinedit_innertext: str = _frameworks["django"]["popup_qlinedit_innertext"]
+        py_django_toptext: str = _frameworks["django"]["popup_toptext"]
         py_django_tooltip: str = _frameworks["django"]["tooltip"]
 
         py_flask_name: str = _frameworks["flask"]["name"]
@@ -452,15 +455,21 @@ class MwConfig:
 
         py_jupyter_name: str = _frameworks["jupyter"]["name"]
         py_jupyter_tooltip: str = _frameworks["jupyter"]["tooltip"]
+
         py_marimo_name: str = _frameworks["marimo"]["name"]
         py_marimo_tooltip: str = _frameworks["marimo"]["tooltip"]
+
         py_flet_name: str = _frameworks["flet"]["name"]
         py_flet_tooltip: str = _frameworks["flet"]["tooltip"]
+
         py_tkinter_name: str = _frameworks["tkinter"]["name"]
         py_tkinter_tooltip: str = _frameworks["tkinter"]["tooltip"]
+
         py_ptb_name: str = _frameworks["ptb"]["name"]
         py_ptb_tooltip: str = _frameworks["ptb"]["tooltip"]
+
         py_discordpy_name: str = _frameworks["discordpy"]["name"]
         py_discordpy_tooltip: str = _frameworks["discordpy"]["tooltip"]
+
         py_pytest_name: str = _frameworks["pytest"]["name"]
         py_pytest_tooltip: str = _frameworks["pytest"]["tooltip"]
