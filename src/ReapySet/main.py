@@ -1,5 +1,5 @@
 import atexit
-import os
+#import os
 import sys
 import time
 
@@ -12,7 +12,7 @@ start_time: float | int = time.perf_counter()
 def main() -> None:
     i_sh.init_macos_term_path()
 
-    import qdarktheme
+    #import qdarktheme
     from PySide6.QtCore import QTimer
     from PySide6.QtGui import QIcon, Qt
     from PySide6.QtWidgets import QApplication, QMenuBar

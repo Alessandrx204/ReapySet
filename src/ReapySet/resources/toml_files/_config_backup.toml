@@ -27,6 +27,7 @@ grammatical_gender = "F" # soon
 # Default fallback is "F". Used for basic string agreement instead of full pronoun mapping.
 # NOTE: Certain localised strings may still exhibit minor grammatical mismatches.
 application_theme = "auto" # "dark", "light", or "auto" (Light theme is still a bit off yet)
+# NOTE: Restart after changing application_theme otherwise you might encounter UI glitches
 language = "en" # defaults to enUK/Ca
 enabled_greetings = true
 

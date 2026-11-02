@@ -235,6 +235,10 @@ tooltip = """Python’s standard, built-in GUI library (Tkinter),
 ideal for creating lightweight, fast desktop interfaces with minimal code.
 (CustomTkinter is a modern styled version)"""
 
+tk_choice_question_txt = "Select a choice between CustomTkinter(CTk) and Tkinter"
+tk_choice_info_txt = "Tkinter is the original Built-in module from python standard library.\n\n CustomTkinter is an enhanced modernised version (developed by a third party)."
+
+
 
 [en.MwConfig.Widget3.Frameworks.ptb]
 name = "Python Telegram Bot"
@@ -506,6 +510,10 @@ name = "ctk/Tkinter"
 tooltip = """Libreria GUI nativa Python (CustomTkinter per uno stile moderno Tkinter per uno piu classico),
 ideale per creare interfacce desktop leggere e veloci con codice essenziale."""
 
+tk_choice_question_txt = "Seleziona se usare CustomTkinter (CTk) o Tkinter"
+tk_choice_info_txt = "Tkinter è il modulo integrato originale della libreria standard di Python.\n\n CustomTkinter è una versione modernizzata e migliorata (sviluppata da terze parti)."
+
+
 [it.MwConfig.Widget3.Frameworks.ptb]
 name = "Python Telegram Bot"
 
@@ -769,6 +777,8 @@ tooltip = """Bibliothēca GUI Python vulgāris et īnsita (Tkinter),
 apta interfaciēbus mensae levibus et celeribus paucō cōdice.
 (CustomTkinter versiō moderna ōrnāta est)"""
 
+tk_choice_question_txt = "Ēlige inter CustomTkinter (CTk) et Tkinter"
+tk_choice_info_txt = "Tkinter est bibliothēcae normātīvae Pythonis.\n\nCustomTkinter est versio hodierna atque aucta (ab aliō confecta)."
 
 [la.MwConfig.Widget3.Frameworks.ptb]
 name = "Python Telegram Bot"

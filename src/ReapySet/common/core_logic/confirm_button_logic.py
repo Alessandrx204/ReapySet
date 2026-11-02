@@ -1668,8 +1668,8 @@ class ConfirmButtonLogic:
                     "PY:CTK",
                     "Tkinter",
                     "PY:TKINTER",
-                    "Tkinter is the original Built-in module from python standard library.\n\n CustomTkinter is an enhanced modernised version (developed by a third party).",
-                    "Select a choice between CustomTkinter(CTk) and Tkinter",
+                    Lmwc.Widget3.py_tk_choice_info_txt,
+                    Lmwc.Widget3.py_tk_choice_question_txt,
                      p_learn_more_url= "https://github.com/tomschimansky/customtkinter"
             ):
                 return

@@ -9,7 +9,7 @@ from pathlib import Path
 import tomlkit
 from PySide6.QtCore import QEasingCurve
 
-from ReapySet import lang
+import ReapySet.lang as lang
 from ReapySet.common.toml_handler import TomlHandler, CONFIG_PATH
 
 
@@ -295,6 +295,9 @@ class ThemeColors:
 
 
 def _get_root() -> Path:
+    """Returns the executable's folder if frozen (e.g., Nuitka, PyInstaller pyside_deploy),
+        otherwise the current script's folder (during development).
+        to reliably locate external files (config.toml, assets, etc.)."""
     if hasattr(sys, "frozen"):
         return Path(os.path.dirname(sys.executable))
     return Path(__file__).resolve().parent
@@ -489,7 +492,7 @@ class MwConfig:
     @dataclass
     class LangBtnWidget:
         """Widget 2: language selector buttons"""
-        images: MwConfig.Images = field(default_factory=lambda: MwConfig.Images()) # aving future i can usw MwConfig.Images
+        images: MwConfig.Images = field(default_factory=lambda: MwConfig.Images()) # aving future i can use MwConfig.Images
         enabled_btns: set[int]   = field(default_factory=lambda: {0})
         cw_height:     int = 120
         max_btn_x_row: int = 3 #ex 5
@@ -860,6 +863,9 @@ class MwConfig:
                              "                    background-color: rgb(44, 44, 42);\n"
                              "                }\n"
                              "                ")
+
+
+
 
 #@dataclass()
 class LogicVariables:

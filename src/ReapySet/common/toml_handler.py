@@ -24,21 +24,27 @@ _cfg_dir = Path(_platform_data_dirs.user_config_dir)
 _cfg_dir.mkdir(parents=True, exist_ok=True)
 
 CONFIG_PATH: Path = _cfg_dir / "config.toml"
-SRC_PATH: Traversable = resources.files("ReapySet.common") / "_rpsproj.toml"
 
-BACKUP_CONFIG_PATH: Traversable = resources.files("ReapySet.common") / "_config_backup.toml"
-I18N_FILE_PATH: Traversable = resources.files("ReapySet.common") / "long_tomls_folder" / "i18n.toml"
+SRC_PATH: Traversable = (
+    resources.files("ReapySet.resources") / "toml_files" / "_rpsproj.toml"
+)
+
+BACKUP_CONFIG_PATH: Traversable = (
+    resources.files("ReapySet.resources") / "toml_files" / "_config_backup.toml"
+)
+
+I18N_FILE_PATH: Traversable = (
+    resources.files("ReapySet.resources") / "toml_files" / "long_tomls_folder" / "i18n.toml"
+)
 # ---------------------------------------------------------------------#
 # Bundled resources
 # These are Traversable objects, NOT guaranteed real pathlib.Path objects.
 # ---------------------------------------------------------------------#
 
-SRC_RESOURCE: Traversable = resources.files("ReapySet.common") / "_rpsproj.toml"
-
-BACKUP_CONFIG_RESOURCE: Traversable = resources.files("ReapySet.common") / "_config_backup.toml"
+SRC_RESOURCE: Traversable = resources.files("ReapySet.resources") / "toml_files" / "_rpsproj.toml"
 
 GREETINGS_PATH: Traversable = (
-    resources.files("ReapySet.common.long_tomls_folder") / "greetings.toml"
+    resources.files("ReapySet.resources") / "toml_files" / "long_tomls_folder" / "greetings.toml"
 )
 class TomlHandler:
     _temp_dir: Path | None = None

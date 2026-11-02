@@ -464,6 +464,8 @@ class MwConfig:
 
         py_tkinter_name: str = _frameworks["tkinter"]["name"]
         py_tkinter_tooltip: str = _frameworks["tkinter"]["tooltip"]
+        py_tk_choice_question_txt: str = _frameworks["tkinter"]["tk_choice_question_txt"]
+        py_tk_choice_info_txt: str = _frameworks["tkinter"]["tk_choice_info_txt"]
 
         py_ptb_name: str = _frameworks["ptb"]["name"]
         py_ptb_tooltip: str = _frameworks["ptb"]["tooltip"]
