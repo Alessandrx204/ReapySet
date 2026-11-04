@@ -8,7 +8,8 @@ developer environment initialiser wrote in pyside6 still eavily in development
 
 ReapySet is a desktop application designed to quickly scaffold development workspaces for multiple programming languages with minimal setup friction.
 
-> ⚠️ **Work in Progress (WIP)**  
+> ⚠️ **Work in Progress (WIP)**
+> 
 > ReapySet is currently under active development. Features may be incomplete, unstable, or subject to breaking changes.
 
 ---
