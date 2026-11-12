@@ -239,7 +239,7 @@ If you see something that can be improved, written better, or optimized:
 
 ReapySet is a **source-available** project. 
 
-* **Non-Commercial Use:** You are free to view, modify, and compile the software from source for personal, educational, or non-commercial purposes.
+* **Non-Commercial Use:** You are free to view, modify, and compile the software from source or use it uncompiled for personal, educational, or non-commercial purposes.
 * **Commercial Use:** If you are using ReapySet within a company, for commercial projects, or to generate revenue, you are required to purchase a commercial license.
 
 
