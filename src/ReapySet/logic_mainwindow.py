@@ -25,7 +25,7 @@ class LogicMainWindow(RpsMainWindow):
         self.og_height = self.height()
         self.og_width = self.width()
 
-        #self.python_gen_widget = SW3.PythonGenWidget(self)
+        #self.python_gen_widget = SW3.PythonWidget31(self)
         #self.python_gen_widget.hide()
         self.lang_btn_cfg = Mwc.LangBtnWidget()
         self._lang_widget = None
@@ -53,7 +53,7 @@ class LogicMainWindow(RpsMainWindow):
         match lang_id:
             case "PY":
                 TomlHandler.set_enabled_1lang("python")
-                self._lang_widget = SW3.PythonGenWidget(
+                self._lang_widget = SW3.PythonWidget31(
                                                     theme_manager=self.theme_manager,
                                                     parent=self,
                                                         )

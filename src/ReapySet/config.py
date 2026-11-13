@@ -24,6 +24,7 @@ class ThemeColors:
         "background": "rgb(30, 30, 28)",
         "background_hover": "rgb(38, 38, 36)",
         "background_focus": "rgb(44, 44, 42)",
+        "background_disabled": "rgb(35, 35, 34)",
 
         # Text
         "text": "rgb(220, 220, 220)",
@@ -35,6 +36,7 @@ class ThemeColors:
         "border": "rgb(65, 65, 63)",
         "border_hover": "rgb(150, 60, 105)",
         "border_focus": "rgb(236, 100, 175)",
+        "border_disabled": "rgb(55, 55, 53)",
 
         # Accent
         "accent": "rgba(255, 170, 220, 1.0)",
@@ -160,6 +162,7 @@ class ThemeColors:
         "background": "rgb(246, 246, 250)",#"rgb(216, 206, 192)",
         "background_hover": "rgb(234, 204, 202)",
         "background_focus": "rgb(238, 228, 222)",
+        "background_disabled": "rgb(225, 222, 224)",
 
         # Text
         "text": "rgb(45, 42, 40)",
@@ -171,6 +174,7 @@ class ThemeColors:
         "border": "rgb(160, 148, 138)",
         "border_hover": "rgb(150, 60, 105)",
         "border_focus": "rgb(210, 70, 145)",
+        "border_disabled": "rgb(185, 177, 174)",
 
         # Accent
         "accent": "rgb(180, 70, 130)",
@@ -430,6 +434,17 @@ class MwConfig:
                 border: 2px solid {c["border_focus"]};
                 background-color: {c["background_focus"]};
             }}
+            
+            QLineEdit:disabled {{
+            background-color: {c["background_disabled"]};
+            color: {c["text_disabled"]};
+            border: 1px solid {c["border_disabled"]};
+            }}
+            
+            QLineEdit#unb_interp_qlinedit {{
+            min-width: 60px;
+            max-width: 65px;
+                            }}
             """
 
         @staticmethod

@@ -3,7 +3,8 @@ from pathlib import Path
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon, QPixmap, Qt, QColor, QPalette
 from PySide6.QtWidgets import (
-    QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit, QCheckBox
+    QWidget, QGridLayout, QRadioButton, QButtonGroup, QComboBox, QSizePolicy, QLabel, QLineEdit, QCheckBox,
+    QAbstractButton
 )
 
 from ReapySet.common.core_logic.MwFunctions import MwFuncs as Mwf
@@ -25,7 +26,7 @@ MAX_PER_ROW: int = 4  # p_max_entry_x_row
 QSS: str = Mwc.Widget3.py_radiobutton_qss
 
 
-class PythonGenWidget(QWidget):
+class PythonWidget31(QWidget):
     def __init__(self, theme_manager: ThemeManager
                  , parent=None):
         super().__init__(parent)
@@ -67,11 +68,11 @@ class PythonGenWidget(QWidget):
 
         self.setup_interpreter_selector(Mwc.Widget3.py_interpreter_qcombobox_coords[0],
                                         Mwc.Widget3.py_interpreter_qcombobox_coords[1])
-        self.setup_py_pms_selector(PMS_ENTRIES, self.pms_group, max_per_row=MAX_PER_ROW)
-        self.setup_py_fmk_selector(FMK_ENTRIES, self.frameworks_group, max_per_row=MAX_PER_ROW)
+        self.setup_py_pms_selector(PMS_ENTRIES, self.pms_group, p_max_per_row=MAX_PER_ROW)
+        self.setup_py_fmk_selector(FMK_ENTRIES, self.frameworks_group, p_max_per_row=MAX_PER_ROW)
 
         self.unb_interp_qlinedit = QLineEdit(self)
-        self.unb_interp_qlinedit.setStyleSheet(Mwc.Widget3.QlineEditQSS)
+        self.unb_interp_qlinedit.setObjectName("unb_interp_qlinedit")
         self.unb_interp_qlinedit.setMaximumWidth(60)
         self.unb_interp_qlinedit.setSizePolicy(
                             QSizePolicy.Policy.Fixed,
@@ -89,9 +90,12 @@ class PythonGenWidget(QWidget):
             Mwc.Widget3.py_unb_interpreter_box_coords[1],
 
             alignment=Qt.AlignmentFlag.AlignVCenter)
-        self.unb_interp_qlinedit.setPlaceholderText(Mwc.Widget3.py_unb_interp_qlinedit_inner_txt)
+        self.unb_interp_qlinedit.setPlaceholderText(
+            Mwc.Widget3.py_unb_interp_qlinedit_inner_txt
+        )
+        self._update_unb_interpreter_state()
 
-        self.theme_manager = theme_manager
+        self.theme_manager: ThemeManager = theme_manager
         self.theme_manager.theme_changed.connect(
 
             self.apply_theme
@@ -121,11 +125,11 @@ class PythonGenWidget(QWidget):
         )
 
     def setup_py_pms_selector(self,
-                            entries,
-                              btn_group: QButtonGroup,
-                            max_per_row=Mwc.Widget3.py_MAX_RBTNS_PER_ROW,
-                            row_offset=Mwc.Widget3.py_pkg_manager_rbtns_coords[0],
-                            col_offset=Mwc.Widget3.py_pkg_manager_rbtns_coords[1],
+                            p_entries: tuple[tuple[str, str, str, str], ...],
+                            p_btn_group: QButtonGroup,
+                            p_max_per_row: int = Mwc.Widget3.py_MAX_RBTNS_PER_ROW,
+                            p_row_offset: int = Mwc.Widget3.py_pkg_manager_rbtns_coords[0],
+                            p_col_offset: int = Mwc.Widget3.py_pkg_manager_rbtns_coords[1],
                                        ) -> None:
 
         self.setStyleSheet(QSS)
@@ -159,8 +163,8 @@ class PythonGenWidget(QWidget):
                 subsection="python"
             )
 
-        for i, (key, label, icon_path, tooltip) in enumerate(entries):
-            row, col = divmod(i, max_per_row)
+        for i, (key, label, icon_path, tooltip) in enumerate(p_entries):
+            row, col = divmod(i, p_max_per_row)
             btn_label: str = label
             if key == default_pm:
                 btn_label += Mwc.default_label # adds default label to the default pm
@@ -169,7 +173,7 @@ class PythonGenWidget(QWidget):
             btn.setIcon(QIcon(icon_path))
             btn.setToolTip(tooltip)
             btn.setIconSize(QSize(20, 20))
-            btn_group.addButton(btn, i)
+            p_btn_group.addButton(btn, i)
             pm_layout.addWidget(btn, row, col)
             if key == checked_pm:
                 btn.setChecked(True)
@@ -178,29 +182,46 @@ class PythonGenWidget(QWidget):
             """if i == len(entries) - 1:
                 btn.setEnabled(False) #disables mojo"""
 
-        btn_group.buttonClicked.connect(self.on_package_manager_changed)
+        p_btn_group.buttonClicked.connect(self.on_package_manager_changed)
 
 
 
-        self.main_layout.addWidget(pm_widget, row_offset, col_offset)
+        self.main_layout.addWidget(pm_widget, p_row_offset, p_col_offset)
+
+    def _update_unb_interpreter_state(self) -> None:
+        selected_pm: QAbstractButton | None = self.pms_group.checkedButton()
+
+        supported: bool = (
+                selected_pm is not None
+                and selected_pm.property("key") in {
+                    "PY:UV",
+                    "PY:CONDA",
+                    "PY:MAMBA",
+                    "PY:PIXI",
+                }
+        )
+
+        self.unb_interp_qlinedit.setEnabled(supported)
 
 
-    @staticmethod
-    def on_package_manager_changed(button: QRadioButton) -> None:
-        key = button.property("key")
+    def on_package_manager_changed(self, p_button: QRadioButton) -> None:
+        key = p_button.property("key")
+
         TomlHandler.toml_edit(
             "languages",
             "package_manager",
             str(key),
             subsection="python"
         )
+
+        self._update_unb_interpreter_state()
         #------ frameworks --------#
     def setup_py_fmk_selector(self,
-                            entries,
-                              btn_group: QButtonGroup,
-                            max_per_row=Mwc.Widget3.py_MAX_RBTNS_PER_ROW,
-                            row_offset=Mwc.Widget3.py_fmk_rbtns_coords[0],
-                            col_offset=Mwc.Widget3.py_fmk_rbtns_coords[1],
+                            p_entries: tuple[tuple[str, str, str, str], ...],
+                            p_btn_group: QButtonGroup,
+                            p_max_per_row: int = Mwc.Widget3.py_MAX_RBTNS_PER_ROW,
+                            p_row_offset: int = Mwc.Widget3.py_fmk_rbtns_coords[0],
+                            p_col_offset:int = Mwc.Widget3.py_fmk_rbtns_coords[1],
                                        ) -> None:
 
         self.setStyleSheet(QSS)
@@ -217,8 +238,8 @@ class PythonGenWidget(QWidget):
 
 
 
-        for i, (key, label, icon_path, tooltip) in enumerate(entries):
-            row, col = divmod(i, max_per_row)
+        for i, (key, label, icon_path, tooltip) in enumerate(p_entries):
+            row, col = divmod(i, p_max_per_row)
             btn_label: str = label
 
             btn = QRadioButton(btn_label)
@@ -226,7 +247,7 @@ class PythonGenWidget(QWidget):
             btn.setIcon(QIcon(icon_path))
             btn.setIconSize(QSize(20, 20))
             btn.setToolTip(tooltip)
-            btn_group.addButton(btn, i)
+            p_btn_group.addButton(btn, i)
             fmk_layout.addWidget(btn, row, col)
 
                 # Selects the package manager currently stored in the project TOML.
@@ -235,11 +256,11 @@ class PythonGenWidget(QWidget):
                 btn.setEnabled(False) #disables all except the last
                 btn.setToolTip("") # disables all tooltip for un-enabled buttons
 
-        btn_group.buttonClicked.connect(self.on_framework_changed)
+        p_btn_group.buttonClicked.connect(self.on_framework_changed)
 
 
 
-        self.main_layout.addWidget(fmk_widget, row_offset, col_offset)
+        self.main_layout.addWidget(fmk_widget, p_row_offset, p_col_offset)
 
     def on_framework_changed(self, button: QRadioButton) -> None:
         fmk_qbgroup: QButtonGroup = button.group()  # returns the qbgroup the button is part of
@@ -342,9 +363,9 @@ class PythonGenWidget(QWidget):
         self.select_interpreter.setPalette(palette)
 
         # QLineEdit
-        """self.unb_interp_qlinedit.setStyleSheet(
+        self.unb_interp_qlinedit.setStyleSheet(
             Mwc.Widget1.qlineedit_qss(p_theme)
-        )"""
+        )
 
         # Background
         if p_theme == "dark":
